@@ -38,7 +38,7 @@ test = [
 lint = [
     "black~=23.7",
     "isort~=5.12",
-    "pre-commit~=3.8.0",
+    "pre-commit~=4.3.0",
 ]
 doc = [
     "sybil~=6.1",
