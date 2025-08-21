@@ -36,7 +36,7 @@ test = [
     "pytest_image_diff~=0.0",
 ]
 lint = [
-    "black~=23.7",
+    "black~=25.1",
     "isort~=5.12",
     "pre-commit~=3.8.0",
 ]
