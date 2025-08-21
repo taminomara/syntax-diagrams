@@ -1,0 +1,95 @@
+[project]
+name = "neat-railroad-diagrams"
+authors = [{name = "Tamika Nomara", email = "taminomara@gmail.com"}]
+description = "A library for generating railroad syntax diagrams"
+dynamic = ["version"]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "grapheme~=0.6",
+    "wcwidth~=0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest-cov~=6.0.0",
+    "neat-railroad-diagrams[test,lint,doc]",
+]
+test = [
+    "pyright~=1.1",
+    "pytest~=7.4",
+    "sybil~=6.1",
+    "reportlab[pycairo]~=4.4",
+    "svglib~=1.5",
+    "pytest_image_diff~=0.0",
+]
+lint = [
+    "black~=23.7",
+    "isort~=5.12",
+    "pre-commit~=3.8.0",
+]
+doc = [
+    "sybil~=6.1",
+    "furo>=2024",
+    "sphinx_design>=0.6",
+]
+
+[project.urls]
+Documentation = "https://neat-railroad-diagrams.readthedocs.io/en/stable/"
+Issues = "https://github.com/taminomara/neat-railroad-diagrams/issues"
+Source = "https://github.com/taminomara/neat-railroad-diagrams/"
+Changelog = "https://github.com/taminomara/neat-railroad-diagrams/blob/main/CHANGELOG.md"
+
+
+[build-system]
+requires = ["setuptools>=60", "setuptools_scm[toml]>=8", "wheel>=0.40"]
+
+[tool.setuptools_scm]
+write_to = "neat_railroad_diagrams/_version.py"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = ["--strict-markers", "-p no:doctest"]
+testpaths = ["test", "neat_railroad_diagrams", "docs"]
+
+[tool.pyright]
+include = ["neat_railroad_diagrams"]
+exclude = ["**/__pycache__"]
+typeCheckingMode = "strict"
+pythonVersion = "3.12"
+pythonPlatform = "All"
+
+# deprecateTypingAliases = true
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedFunction = "none"
+reportPrivateUsage = "none"
+reportMissingParameterType = "none"
+reportUnknownParameterType = "none"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownArgumentType = "none"
+reportUnknownLambdaType = "none"
+reportUnnecessaryIsInstance = "none"
+reportConstantRedefinition = "none"
+reportRedeclaration = "none"
+reportAttributeAccessIssue = "none"
+
+[tool.black]
+extend-exclude = '^/docs'
+
+[tool.isort]
+profile = "black"
+extend_skip_glob = ["docs/*"]
+skip_gitignore = true
