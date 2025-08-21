@@ -24,7 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest-cov~=6.0.0",
+    "pytest-cov~=6.2.1",
     "neat-railroad-diagrams[test,lint,doc]",
 ]
 test = [
