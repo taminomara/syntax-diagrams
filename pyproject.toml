@@ -24,26 +24,26 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest-cov~=6.0.0",
+    "pytest-cov==6.2.1",
     "neat-railroad-diagrams[test,lint,doc]",
 ]
 test = [
-    "pyright~=1.1",
-    "pytest~=7.4",
-    "sybil~=6.1",
-    "reportlab[pycairo]~=4.4",
-    "svglib~=1.5",
-    "pytest_image_diff~=0.0",
+    "pyright==1.1.404",
+    "pytest==7.4.4",
+    "sybil==9.2.0",
+    "reportlab[pycairo]==4.4.3",
+    "svglib==1.5.1",
+    "pytest-image-diff==0.0.14",
 ]
 lint = [
-    "black~=23.7",
-    "isort~=5.12",
-    "pre-commit~=3.8.0",
+    "black==25.1.0",
+    "isort==6.0.1",
+    "pre-commit==4.3.0",
 ]
 doc = [
-    "sybil~=6.1",
-    "furo>=2024",
-    "sphinx_design>=0.6",
+    "sybil==9.2.0",
+    "furo==2025.7.19",
+    "sphinx_design==0.6.1",
 ]
 
 [project.urls]
