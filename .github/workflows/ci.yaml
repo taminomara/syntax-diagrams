@@ -26,8 +26,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - macos-latest
-          - windows-latest
         python-version:
           - "3.12"
           - "3.13"
@@ -41,6 +39,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+      - name: Install image diff dependencies
+        run: apt-get install libcairo2-dev libjpeg-dev libgif-dev
       - name: Set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
