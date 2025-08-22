@@ -558,7 +558,7 @@ class DiagramNode:
     def _precedence(self) -> int:
         return 3
 
-    def _get_node_with_layout_info(
+    def _make_node_with_layout_info(
         self, width: int, layout_settings: _LayoutSettings
     ) -> DiagramNode:
         self_with_layout_info = self._copy_for_layout_info()
@@ -1614,7 +1614,7 @@ def render_text(
 
     max_width = max(0, max_width - settings.padding[3] - settings.padding[1])
 
-    node_with_layout_info = node._get_node_with_layout_info(max_width, layout_settings)
+    node_with_layout_info = node._make_node_with_layout_info(max_width, layout_settings)
 
     render = _TextRender(
         (settings.padding[3] + node_with_layout_info._width + settings.padding[1]),
@@ -2130,7 +2130,7 @@ def render_svg(
 
     max_width = max(0, max_width - settings.padding[3] - settings.padding[1])
 
-    node_with_layout_info = node._get_node_with_layout_info(max_width, layout_settings)
+    node_with_layout_info = node._make_node_with_layout_info(max_width, layout_settings)
 
     render = _SvgRender(
         (settings.padding[3] + node_with_layout_info._width + settings.padding[1]),
