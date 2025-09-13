@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/neat-railroad-diagrams
+      url: https://pypi.org/p/syntax-diagrams
     permissions:
       id-token: write
     steps:

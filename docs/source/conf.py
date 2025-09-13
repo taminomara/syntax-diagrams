@@ -1,0 +1,38 @@
+import datetime
+
+import syntax_diagrams
+
+project = "Syntax Diagrams"
+copyright = f"{datetime.date.today().year}, Tamika Nomara"
+author = "Tamika Nomara"
+release = version = syntax_diagrams.__version__
+
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+extensions = [
+    "sphinx.ext.githubpages",
+    "sphinx.ext.autodoc",
+    "sphinx_design",
+]
+
+templates_path = ["_templates"]
+exclude_patterns = []
+
+primary_domain = "py"
+default_role = "py:obj"
+autodoc_type_aliases = {
+    "Element": "syntax_diagrams.Element"
+}
+# python_maximum_signature_line_length = 60
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+html_theme = "furo"
+html_extra_path = ["_extra/robots.txt"]
+html_theme_options = {
+    "source_repository": "https://github.com/taminomara/syntax-diagrams",
+    "source_branch": "main",
+    "source_directory": "docs/source",
+}

@@ -1,0 +1,90 @@
+.DiagramSettings {
+  display: grid;
+  gap: 0.3rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
+}
+
+.DiagramSettings-Group {
+  display: grid;
+  grid-template-columns: auto 150px max-content;
+  gap: 0.3rem;
+}
+
+.DiagramSettings-Group label {
+  display: block;
+  overflow: hidden;
+}
+
+.DiagramSettings-Group input {
+  margin: 0;
+}
+
+.DiagramSettings-More-Toggle {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8rem;
+  margin: 0.3rem 0;
+}
+
+.DiagramSettings-More-Message {
+  transition: 150ms ease-in-out;
+  overflow: hidden;
+  margin-top: 0.3rem;
+}
+
+.DiagramSettings-More-Message--Active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.DiagramSettings-More-Message--Hidden {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+}
+
+.DiagramSettings-Help {
+  position: relative;
+}
+
+.DiagramSettings-Help-Toggle {
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  font-size: 0.8rem;
+  background-color: #2d2d2d;
+  border: 1px solid #3c3c3c;
+  color: #bfbfbf;
+  padding: 2px;
+  border-radius: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  line-height: 0.7rem;
+  text-align: center;
+}
+
+.DiagramSettings-Help-Message {
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  width: 300px;
+  background-color: #2d2d2d;
+  border: 1px solid #3c3c3c;
+  transition: 150ms ease-in-out;
+  box-shadow: 1px 1px 3px #1e1e1e;
+  border-radius: 3px;
+  z-index: 1;
+  text-align: left;
+}
+
+.DiagramSettings-Help-Message--Active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.DiagramSettings-Help-Message--Hidden {
+  visibility: hidden;
+  opacity: 0;
+}

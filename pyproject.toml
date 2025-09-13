@@ -1,5 +1,5 @@
 [project]
-name = "neat-railroad-diagrams"
+name = "syntax-diagrams"
 authors = [{name = "Tamika Nomara", email = "taminomara@gmail.com"}]
 description = "A library for generating railroad syntax diagrams"
 dynamic = ["version"]
@@ -25,7 +25,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest-cov==6.2.1",
-    "neat-railroad-diagrams[test,lint,doc]",
+    "syntax-diagrams[test,lint,doc]",
 ]
 test = [
     "pyright==1.1.404",
@@ -47,25 +47,25 @@ doc = [
 ]
 
 [project.urls]
-Documentation = "https://neat-railroad-diagrams.readthedocs.io/en/stable/"
-Issues = "https://github.com/taminomara/neat-railroad-diagrams/issues"
-Source = "https://github.com/taminomara/neat-railroad-diagrams/"
-Changelog = "https://github.com/taminomara/neat-railroad-diagrams/blob/main/CHANGELOG.md"
+Documentation = "https://syntax-diagrams.readthedocs.io/en/stable/"
+Issues = "https://github.com/taminomara/syntax-diagrams/issues"
+Source = "https://github.com/taminomara/syntax-diagrams/"
+Changelog = "https://github.com/taminomara/syntax-diagrams/blob/main/CHANGELOG.md"
 
 
 [build-system]
 requires = ["setuptools>=60", "setuptools_scm[toml]>=8", "wheel>=0.40"]
 
 [tool.setuptools_scm]
-write_to = "neat_railroad_diagrams/_version.py"
+write_to = "syntax_diagrams/_version.py"
 
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = ["--strict-markers", "-p no:doctest"]
-testpaths = ["test", "neat_railroad_diagrams", "docs"]
+testpaths = ["test", "syntax_diagrams", "docs"]
 
 [tool.pyright]
-include = ["neat_railroad_diagrams"]
+include = ["syntax_diagrams"]
 exclude = ["**/__pycache__"]
 typeCheckingMode = "strict"
 pythonVersion = "3.12"
@@ -78,13 +78,13 @@ reportPrivateUsage = "none"
 reportMissingParameterType = "none"
 reportUnknownParameterType = "none"
 reportUnknownVariableType = "none"
-reportUnknownMemberType = "none"
+# reportUnknownMemberType = "none"
 reportUnknownArgumentType = "none"
 reportUnknownLambdaType = "none"
 reportUnnecessaryIsInstance = "none"
-reportConstantRedefinition = "none"
-reportRedeclaration = "none"
-reportAttributeAccessIssue = "none"
+# reportConstantRedefinition = "none"
+# reportRedeclaration = "none"
+# reportAttributeAccessIssue = "none"
 
 [tool.black]
 extend-exclude = '^/docs'

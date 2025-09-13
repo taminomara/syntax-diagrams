@@ -1,32 +1,18 @@
-import neat_railroad_diagrams as rr
-
-default_opts = rr._LayoutSettings(
-    horizontal_seq_separation=2,
-    vertical_choice_separation=0,
-    vertical_seq_separation=2,
-    arc_radius=0.5,
-    arc_margin=1,
-    terminal_padding=2,
-    terminal_radius=0,
-    terminal_height=2,
-    non_terminal_padding=2,
-    non_terminal_radius=0,
-    non_terminal_height=2,
-    comment_padding=2,
-    comment_radius=0,
-    comment_height=2,
-    character_advance=1,
-    wide_character_advance=2,
-    marker_width=4,
-    marker_projected_height=0,
-    end_class=rr.EndClass.COMPLEX,
+import syntax_diagrams as rr
+from syntax_diagrams._impl.load import load
+from syntax_diagrams._impl.render import (
+    ConnectionType,
+    LayoutContext,
+    RenderContext,
 )
+from syntax_diagrams._impl.render.text import TextRender
+from syntax_diagrams._impl.vec import Vec
 
 
-def test_line():
-    render = rr._TextRender(5, 2, default_opts)
-    render.line(1, 0).segment(3)
-    render.line(4, 1).segment(-3)
+def test_line(text_layout_settings):
+    render = TextRender(5, 2, text_layout_settings)
+    ((render).line(Vec(1, 0)).segment_abs(4))
+    ((render).line(Vec(4, 1)).segment_abs(1))
     # fmt: off
     expected = (
         " ─── \n"
@@ -36,48 +22,70 @@ def test_line():
     assert render.to_string() == expected
 
 
-def test_line_arrow():
-    render = rr._TextRender(5, 8, default_opts)
-    render.line(0, 0).segment(5, arrow_begin=True)
-    render.line(0, 1, reverse=True).segment(5, arrow_begin=True)
-    render.line(0, 2).segment(5, arrow_end=True)
-    render.line(0, 3, reverse=True).segment(5, arrow_end=True)
-    render.line(5, 4).segment(-5, arrow_begin=True)
-    render.line(5, 5, reverse=True).segment(-5, arrow_begin=True)
-    render.line(5, 6).segment(-5, arrow_end=True)
-    render.line(5, 7, reverse=True).segment(-5, arrow_end=True)
+def test_line_arrow(text_layout_settings):
+    render = TextRender(5, 4, text_layout_settings)
+    ((render).line(Vec(0, 0)).segment_abs(5, arrow_begin=True))
+    ((render).line(Vec(0, 1)).segment_abs(5, arrow_end=True))
+    ((render).line(Vec(5, 2)).segment_abs(0, arrow_begin=True))
+    ((render).line(Vec(5, 3)).segment_abs(0, arrow_end=True))
     # fmt: off
     expected = (
         "→────\n"
-        "←────\n"
         "────→\n"
         "────←\n"
-        "────←\n"
-        "────→\n"
         "←────\n"
-        "→────\n"
     )
     # fmt: on
     assert render.to_string() == expected
 
 
-def test_line_bend_reverse():
-    render = rr._TextRender(5, 11, default_opts)
-    render.line(3, 0).segment(1).bend_reverse(0, "w").segment(-3).bend_reverse(
-        0, "e"
-    ).segment(1)
-    render.line(3, 1).segment(1).bend_reverse(1, "w").segment(-3).bend_reverse(
-        -1, "e"
-    ).segment(1)
-    render.line(3, 4).segment(1).bend_reverse(-1, "w").segment(-3).bend_reverse(
-        1, "e"
-    ).segment(1)
-    render.line(3, 5).segment(1).bend_reverse(2, "w").segment(-3).bend_reverse(
-        -2, "e"
-    ).segment(1)
-    render.line(3, 10).segment(1).bend_reverse(-2, "w").segment(-3).bend_reverse(
-        2, "e"
-    ).segment(1)
+def test_line_bend_reverse(text_layout_settings):
+    render = TextRender(5, 11, text_layout_settings)
+    (
+        (render)
+        .line(Vec(3, 0))
+        .segment_abs(4)
+        .bend_backward_reverse_abs(0)
+        .segment_abs(1)
+        .bend_backward_abs(0)
+        .segment_abs(2)
+    )
+    (
+        (render)
+        .line(Vec(3, 1))
+        .segment_abs(4)
+        .bend_backward_reverse_abs(2)
+        .segment_abs(1)
+        .bend_backward_abs(1)
+        .segment_abs(2)
+    )
+    (
+        (render)
+        .line(Vec(3, 4))
+        .segment_abs(4)
+        .bend_backward_reverse_abs(3)
+        .segment_abs(1)
+        .bend_backward_abs(4)
+        .segment_abs(2)
+    )
+    (
+        (render)
+        .line(Vec(3, 5))
+        .segment_abs(4)
+        .bend_backward_reverse_abs(7)
+        .segment_abs(1)
+        .bend_backward_abs(5)
+        .segment_abs(2)
+    )
+    (
+        (render)
+        .line(Vec(3, 10))
+        .segment_abs(4)
+        .bend_backward_reverse_abs(8)
+        .segment_abs(1)
+        .bend_backward_abs(10)
+        .segment_abs(2)
+    )
     # fmt: off
     expected = (
         "╶───╴\n"
@@ -96,13 +104,13 @@ def test_line_bend_reverse():
     assert render.to_string() == expected
 
 
-def test_line_bend_forward():
-    render = rr._TextRender(5, 11, default_opts)
-    render.line(0, 0).segment(2).bend_forward(0).segment(2)
-    render.line(0, 1).segment(2).bend_forward(1).segment(2)
-    render.line(0, 4).segment(2).bend_forward(-1).segment(2)
-    render.line(0, 5).segment(2).bend_forward(2).segment(2)
-    render.line(0, 10).segment(2).bend_forward(-2).segment(2)
+def test_line_bend_forward(text_layout_settings):
+    render = TextRender(5, 11, text_layout_settings)
+    ((render).line(Vec(0, 0)).segment_abs(2).bend_forward_abs(0).segment_abs(5))
+    ((render).line(Vec(0, 1)).segment_abs(2).bend_forward_abs(2).segment_abs(5))
+    ((render).line(Vec(0, 4)).segment_abs(2).bend_forward_abs(3).segment_abs(5))
+    ((render).line(Vec(0, 5)).segment_abs(2).bend_forward_abs(7).segment_abs(5))
+    ((render).line(Vec(0, 10)).segment_abs(2).bend_forward_abs(8).segment_abs(5))
     # fmt: off
     expected = (
         "─────\n"
@@ -121,27 +129,52 @@ def test_line_bend_forward():
     assert render.to_string() == expected
 
 
-def test_node():
-    render = rr._TextRender(27, 9, default_opts)
+def test_node(text_layout_settings):
+    render = TextRender(27, 9, text_layout_settings)
 
-    node = rr.comment("fully automated")._make_node_with_layout_info(25, default_opts)
-    node._render(render, 0, 1, False)
-
-    node = rr.terminal("luxury")._make_node_with_layout_info(25, default_opts)
-    node._render(render, 0, 4, False)
-
-    node = rr.non_terminal("🌈gay space communism🌈")._make_node_with_layout_info(
-        25, default_opts
+    node = load(rr.comment("fully automated"), lambda x: x)
+    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(0, 1),
+            reverse=False,
+            start_connection_pos=Vec(0, 1),
+            end_connection_pos=Vec(27, 1),
+        ),
     )
-    node._render(render, 0, 7, False)
+
+    node = load(rr.terminal("luxury"), lambda x: x)
+    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(0, 4),
+            reverse=False,
+            start_connection_pos=Vec(0, 4),
+            end_connection_pos=Vec(27, 4),
+        ),
+    )
+
+    node = load(rr.non_terminal("🌈gay space communism🌈"), lambda x: x)
+    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(0, 7),
+            reverse=False,
+            start_connection_pos=Vec(0, 4),
+            end_connection_pos=Vec(27, 4),
+        ),
+    )
 
     # fmt: off
     expected = (
         "                           \n"
-        "╴ fully automated ╶        \n"
+        "╴ fully automated ╶────────\n"
         "                           \n"
         "┌────────┐                 \n"
-        "┤ luxury ├                 \n"
+        "┤ luxury ├─────────────────\n"
         "└────────┘                 \n"
         "╔═════════════════════════╗\n"
         "╢ 🌈gay space communism🌈 ╟\n"
@@ -151,275 +184,95 @@ def test_node():
     assert render.to_string() == expected
 
 
-def test_end_class():
-    rendered = rr.render_text(
-        rr.skip(),
-        max_width=60,
-        settings=rr.TextRenderSettings(
-            end_class=rr.EndClass.SIMPLE,
+def test_node_enter(text_layout_settings):
+    render = TextRender(27, 7, text_layout_settings)
+    node = load(rr.terminal("XXX"), lambda x: x)
+    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(0, 3),
+            reverse=False,
+            start_connection_pos=Vec(0, 3),
+            end_connection_pos=Vec(27, 3),
         ),
     )
     # fmt: off
     expected = (
-        "├──────┤\n"
+        "                           \n"
+        "                           \n"
+        "┌─────┐                    \n"
+        "┤ XXX ├────────────────────\n"
+        "└─────┘                    \n"
+        "                           \n"
+        "                           \n"
     )
     # fmt: on
-    assert rendered == expected
+    assert render.to_string() == expected
 
-    rendered = rr.render_text(
-        rr.skip(),
-        max_width=60,
-        settings=rr.TextRenderSettings(
-            end_class=rr.EndClass.COMPLEX,
+    render = TextRender(27, 7, text_layout_settings)
+    node = load(rr.terminal("XXX"), lambda x: x)
+    node._calculate_layout(
+        text_layout_settings,
+        LayoutContext(
+            width=25,
+            is_outer=True,
+            start_connection=ConnectionType.SPLIT,
+            end_connection=ConnectionType.SPLIT,
+        ),
+    )
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(0, 3),
+            reverse=False,
+            start_connection_pos=Vec(0, 0),
+            end_connection_pos=Vec(27, 6),
         ),
     )
     # fmt: off
     expected = (
-        "├┼────┼┤\n"
+       "╮                          \n"
+       "↓                          \n"
+       "│ ┌─────┐                  \n"
+       "╰→┤ XXX ├────────────────→╮\n"
+       "  └─────┘                 │\n"
+       "                          ↓\n"
+       "                          ╰\n"
     )
     # fmt: on
-    assert rendered == expected
+    assert render.to_string() == expected
 
-
-def test_seq():
-    rendered = rr.render_text(
-        rr.sequence(
-            rr.terminal("A"),
-            rr.non_terminal("B"),
+    render = TextRender(27, 7, text_layout_settings)
+    node = load(rr.terminal("XXX"), lambda x: x)
+    node._calculate_layout(
+        text_layout_settings,
+        LayoutContext(
+            width=25,
+            is_outer=True,
+            start_connection=ConnectionType.STACK,
+            end_connection=ConnectionType.STACK,
         ),
-        max_width=60,
     )
-    # fmt: off
-    expected = (
-        "    ┌───┐  ╔═══╗    \n"
-        "├┼──┤ A ├──╢ B ╟──┼┤\n"
-        "    └───┘  ╚═══╝    \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.sequence(
-            rr.terminal("if"),
-            rr.non_terminal("expr"),
-            rr.terminal("{"),
-            rr.non_terminal("body"),
-            rr.terminal("}"),
-            rr.terminal("else"),
-            rr.terminal("{"),
-            rr.non_terminal("body"),
-            rr.terminal("}"),
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(0, 3),
+            reverse=False,
+            start_connection_pos=Vec(1, 0),
+            end_connection_pos=Vec(26, 6),
         ),
-        max_width=60,
-    )
-
-    # fmt: off
-    expected = (
-        "      ┌────┐  ╔══════╗  ┌───┐  ╔══════╗  ┌───┐      \n"
-        "├┼────┤ if ├──╢ expr ╟──┤ { ├──╢ body ╟──┤ } ├─╮    \n"
-        "      └────┘  ╚══════╝  └───┘  ╚══════╝  └───┘ │    \n"
-        "                                               │    \n"
-        "    ╭──────────────────────────────────────────╯    \n"
-        "    │                                               \n"
-        "    │ ┌──────┐  ┌───┐  ╔══════╗  ┌───┐              \n"
-        "    ╰─┤ else ├──┤ { ├──╢ body ╟──┤ } ├────────────┼┤\n"
-        "      └──────┘  └───┘  ╚══════╝  └───┘              \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.sequence(
-            rr.terminal("if"),
-            rr.non_terminal("expr"),
-            rr.terminal("{"),
-            rr.non_terminal("body"),
-            rr.terminal("}"),
-            rr.terminal("else"),
-            rr.terminal("{"),
-            rr.non_terminal("body"),
-            rr.terminal("}"),
-        ),
-        max_width=60,
-        reverse=True,
-    )
-
-    # fmt: off
-    expected = (
-        "      ┌───┐  ╔══════╗  ┌───┐  ╔══════╗  ┌────┐      \n"
-        "    ╭─┤ } ├──╢ body ╟──┤ { ├──╢ expr ╟──┤ if ├────┼┤\n"
-        "    │ └───┘  ╚══════╝  └───┘  ╚══════╝  └────┘      \n"
-        "    │                                               \n"
-        "    ╰──────────────────────────────────────────╮    \n"
-        "                                               │    \n"
-        "              ┌───┐  ╔══════╗  ┌───┐  ┌──────┐ │    \n"
-        "├┼────────────┤ } ├──╢ body ╟──┤ { ├──┤ else ├─╯    \n"
-        "              └───┘  ╚══════╝  └───┘  └──────┘      \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-
-def test_choice():
-    rendered = rr.render_text(rr.optional(rr.terminal("UwU")), max_width=60)
-    # fmt: off
-    expected = (
-        "    ╭→───────→╮    \n"
-        "    ↑ ┌─────┐ ↓    \n"
-        "├┼──┴→┤ UwU ├→┴──┼┤\n"
-        "      └─────┘      \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.choice(
-            rr.terminal("1: A *"),
-            rr.non_terminal("2: B **"),
-            rr.terminal("3: C ***"),
-            default=1,
-        ),
-        max_width=60,
-    )
-
-    # fmt: off
-    expected = (
-        "      ┌────────┐        \n"
-        "    ╭→┤ 1: A * ├──→╮    \n"
-        "    │ └────────┘   │    \n"
-        "    ↑ ╔═════════╗  ↓    \n"
-        "├┼──┼→╢ 2: B ** ╟─→┼──┼┤\n"
-        "    ↓ ╚═════════╝  ↑    \n"
-        "    │ ┌──────────┐ │    \n"
-        "    ╰→┤ 3: C *** ├→╯    \n"
-        "      └──────────┘      \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.choice(
-            rr.terminal("1: A *"),
-            rr.non_terminal("2: B **"),
-            rr.terminal("3: C ***"),
-            default=1,
-        ),
-        max_width=60,
-        reverse=True,
-    )
-
-    # fmt: off
-    expected = (
-        "        ┌────────┐      \n"
-        "    ╭←──┤ 1: A * ├←╮    \n"
-        "    │   └────────┘ │    \n"
-        "    ↓  ╔═════════╗ ↑    \n"
-        "├┼──┼←─╢ 2: B ** ╟←┼──┼┤\n"
-        "    ↑  ╚═════════╝ ↓    \n"
-        "    │ ┌──────────┐ │    \n"
-        "    ╰←┤ 3: C *** ├←╯    \n"
-        "      └──────────┘      \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-
-def test_one_or_more():
-    rendered = rr.render_text(
-        rr.one_or_more(
-            rr.terminal("UwU"),
-        ),
-        max_width=60,
-    )
-
-    # fmt: off
-    expected = (
-        "      ┌─────┐      \n"
-        "├┼──┬→┤ UwU ├→┬──┼┤\n"
-        "    ↑ └─────┘ ↓    \n"
-        "    ╰←───────←╯    \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.one_or_more(
-            rr.terminal("UwU"),
-            repeat=rr.terminal("R"),
-        ),
-        max_width=60,
-    )
-
-    # fmt: off
-    expected = (
-        "      ┌─────┐      \n"
-        "├┼──┬→┤ UwU ├→┬──┼┤\n"
-        "    ↑ └─────┘ ↓    \n"
-        "    │  ┌───┐  │    \n"
-        "    ╰←─┤ R ├─←╯    \n"
-        "       └───┘       \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.one_or_more(rr.terminal("UwU"), repeat=rr.optional(rr.terminal("OwO"))),
-        max_width=60,
     )
     # fmt: off
     expected = (
-        "      ┌─────┐      \n"
-        "├┼──┬→┤ UwU ├→┬──┼┤\n"
-        "    ↑ └─────┘ ↓    \n"
-        "    ├←───────←┤    \n"
-        "    │ ┌─────┐ │    \n"
-        "    ╰←┤ OwO ├←╯    \n"
-        "      └─────┘      \n"
+       "╭                          \n"
+       "↓                          \n"
+       "│ ┌─────┐                  \n"
+       "╰→┤ XXX ├────────────────→╮\n"
+       "  └─────┘                 │\n"
+       "                          ↓\n"
+       "                          ╯\n"
+       ""
     )
     # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.one_or_more(rr.terminal("UwU"), repeat=rr.one_or_more(rr.terminal("B"))),
-        max_width=60,
-    )
-    # fmt: off
-    expected = (
-        "       ┌─────┐       \n"
-        "├┼──┬→─┤ UwU ├─→┬──┼┤\n"
-        "    ↑  └─────┘  ↓    \n"
-        "    │   ┌───┐   │    \n"
-        "    ╰←┬←┤ B ├←┬←╯    \n"
-        "      ↓ └───┘ ↑      \n"
-        "      ╰→─────→╯      \n"
-    )
-    # fmt: on
-    assert rendered == expected
-
-    rendered = rr.render_text(
-        rr.one_or_more(
-            rr.terminal("UwU"),
-            repeat=rr.one_or_more(
-                rr.terminal("B"),
-                repeat=rr.one_or_more(
-                    rr.terminal("C"),
-                ),
-            ),
-        ),
-        max_width=60,
-    )
-    # fmt: off
-    expected = (
-        "         ┌─────┐         \n"
-        "├┼──┬→───┤ UwU ├───→┬──┼┤\n"
-        "    ↑    └─────┘    ↓    \n"
-        "    │     ┌───┐     │    \n"
-        "    ╰←┬←──┤ B ├──←┬←╯    \n"
-        "      ↓   └───┘   ↑      \n"
-        "      │   ┌───┐   │      \n"
-        "      ╰→┬→┤ C ├→┬→╯      \n"
-        "        ↑ └───┘ ↓        \n"
-        "        ╰←─────←╯        \n"
-    )
-    # fmt: on
-    assert rendered == expected
+    assert render.to_string() == expected

@@ -1,92 +1,239 @@
 from dataclasses import replace
 
-import neat_railroad_diagrams as rr
+import syntax_diagrams as rr
+from syntax_diagrams._impl.load import load
+from syntax_diagrams._impl.render import (
+    ConnectionType,
+    LayoutContext,
+    RenderContext,
+)
+from syntax_diagrams._impl.render.svg import SvgRender
+from syntax_diagrams._impl.vec import Vec
 
 
 def test_line(regression, svg_layout_settings, svg_css):
-    render = rr._SvgRender(50, 15, svg_layout_settings, "", svg_css)
-    render.line(10, 5).segment(30)
-    render.line(40, 10).segment(-30)
+    render = SvgRender(50, 15, svg_layout_settings, "", svg_css, None, None)
+    ((render).line(Vec(10, 5)).segment_abs(40))
+    ((render).line(Vec(40, 10)).segment_abs(10))
     regression(render.to_string())
 
 
 def test_line_bend_reverse(regression, svg_layout_settings, svg_css):
-    render = rr._SvgRender(50, 210, svg_layout_settings, "", svg_css)
-    render.line(30, 10).segment(10).bend_reverse(0, "w").segment(-30).bend_reverse(
-        00, "e"
-    ).segment(10)
-    render.line(30, 30).segment(10).bend_reverse(15, "w").segment(-30).bend_reverse(
-        -15, "e"
-    ).segment(10)
-    render.line(30, 80).segment(10).bend_reverse(-15, "w").segment(-30).bend_reverse(
-        15, "e"
-    ).segment(10)
-    render.line(30, 100).segment(10).bend_reverse(40, "w").segment(-30).bend_reverse(
-        -40, "e"
-    ).segment(10)
-    render.line(30, 200).segment(10).bend_reverse(-40, "w").segment(-30).bend_reverse(
-        40, "e"
-    ).segment(10)
+    render = SvgRender(50, 210, svg_layout_settings, "", svg_css, None, None)
+    (
+        (render)
+        .line(Vec(30, 10))
+        .segment_abs(40)
+        .bend_backward_reverse_abs(10)
+        .segment_abs(10)
+        .bend_backward_abs(10)
+        .segment_abs(20)
+    )
+    (
+        (render)
+        .line(Vec(30, 30))
+        .segment_abs(40)
+        .bend_backward_reverse_abs(45)
+        .segment_abs(10)
+        .bend_backward_abs(30)
+        .segment_abs(20)
+    )
+    (
+        (render)
+        .line(Vec(30, 80))
+        .segment_abs(40)
+        .bend_backward_reverse_abs(65)
+        .segment_abs(10)
+        .bend_backward_abs(80)
+        .segment_abs(20)
+    )
+    (
+        (render)
+        .line(Vec(30, 100))
+        .segment_abs(40)
+        .bend_backward_reverse_abs(140)
+        .segment_abs(10)
+        .bend_backward_abs(100)
+        .segment_abs(20)
+    )
+    (
+        (render)
+        .line(Vec(30, 200))
+        .segment_abs(40)
+        .bend_backward_reverse_abs(160)
+        .segment_abs(10)
+        .bend_backward_abs(200)
+        .segment_abs(20)
+    )
     regression(render.to_string())
 
 
 def test_line_bend_forward(regression, svg_layout_settings, svg_css):
-    render = rr._SvgRender(50, 210, svg_layout_settings, "", svg_css)
-    render.line(0, 10).segment(20).bend_forward(0).segment(20)
-    render.line(0, 30).segment(20).bend_forward(15).segment(20)
-    render.line(0, 80).segment(20).bend_forward(-15).segment(20)
-    render.line(0, 100).segment(20).bend_forward(40).segment(20)
-    render.line(0, 200).segment(20).bend_forward(-40).segment(20)
+    render = SvgRender(50, 210, svg_layout_settings, "", svg_css, None, None)
+    ((render).line(Vec(0, 10)).segment_abs(20).bend_forward_abs(10).segment_abs(50))
+    ((render).line(Vec(0, 30)).segment_abs(20).bend_forward_abs(45).segment_abs(50))
+    ((render).line(Vec(0, 80)).segment_abs(20).bend_forward_abs(65).segment_abs(50))
+    ((render).line(Vec(0, 100)).segment_abs(20).bend_forward_abs(140).segment_abs(50))
+    ((render).line(Vec(0, 200)).segment_abs(20).bend_forward_abs(160).segment_abs(50))
     regression(render.to_string())
 
 
 def test_line_bend_forward_rtl(regression, svg_layout_settings, svg_css):
-    render = rr._SvgRender(50, 210, svg_layout_settings, "", svg_css)
-    render.line(50, 10).segment(-20).bend_forward(0, "w").segment(-20)
-    render.line(50, 30).segment(-20).bend_forward(15, "w").segment(-20)
-    render.line(50, 80).segment(-20).bend_forward(-15, "w").segment(-20)
-    render.line(50, 100).segment(-20).bend_forward(40, "w").segment(-20)
-    render.line(50, 200).segment(-20).bend_forward(-40, "w").segment(-20)
+    render = SvgRender(50, 210, svg_layout_settings, "", svg_css, None, None)
+    (
+        (render)
+        .line(Vec(50, 10), True)
+        .segment_abs(30)
+        .bend_forward_abs(10)
+        .segment_abs(0)
+    )
+    (
+        (render)
+        .line(Vec(50, 30), True)
+        .segment_abs(30)
+        .bend_forward_abs(45)
+        .segment_abs(0)
+    )
+    (
+        (render)
+        .line(Vec(50, 80), True)
+        .segment_abs(30)
+        .bend_forward_abs(65)
+        .segment_abs(0)
+    )
+    (
+        (render)
+        .line(Vec(50, 100), True)
+        .segment_abs(30)
+        .bend_forward_abs(140)
+        .segment_abs(0)
+    )
+    (
+        (render)
+        .line(Vec(50, 200), True)
+        .segment_abs(30)
+        .bend_forward_abs(160)
+        .segment_abs(0)
+    )
     regression(render.to_string())
 
 
 def test_node(regression, svg_layout_settings, svg_css):
-    render = rr._SvgRender(400, 150, svg_layout_settings, "", svg_css)
+    render = SvgRender(200, 150, svg_layout_settings, "", svg_css, None, None)
 
-    node = rr.comment("fully automated")._make_node_with_layout_info(
-        25, svg_layout_settings
+    node = load(rr.comment("fully automated"), lambda x: x)
+    node._calculate_layout(
+        svg_layout_settings, LayoutContext(width=200, is_outer=True)
     )
-    node._render(render, 5, 20, False)
-
-    node = rr.terminal("luxury")._make_node_with_layout_info(25, svg_layout_settings)
-    node._render(render, 5, 60, False)
-
-    node = rr.non_terminal("gay space communism")._make_node_with_layout_info(
-        25, svg_layout_settings
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(5, 20),
+            reverse=False,
+            start_connection_pos=Vec(0, 20),
+            end_connection_pos=Vec(200, 20),
+        ),
     )
-    node._render(render, 5, 100, False)
+
+    node = load(rr.terminal("luxury"), lambda x: x)
+    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(5, 60),
+            reverse=False,
+            start_connection_pos=Vec(0, 60),
+            end_connection_pos=Vec(200, 60),
+        ),
+    )
+
+    node = load(rr.non_terminal("gay space communism"), lambda x: x)
+    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(5, 100),
+            reverse=False,
+            start_connection_pos=Vec(0, 100),
+            end_connection_pos=Vec(200, 100),
+        ),
+    )
 
     regression(render.to_string())
+
+
+def test_node_enter(regression, svg_layout_settings, svg_css):
+    render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
+    node = load(rr.terminal("XXX"), lambda x: x)
+    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(10, 50),
+            reverse=False,
+            start_connection_pos=Vec(0, 50),
+            end_connection_pos=Vec(200, 50),
+        ),
+    )
+    regression(render.to_string(), "normal")
+
+    render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
+    node = load(rr.terminal("XXX"), lambda x: x)
+    node._calculate_layout(
+        svg_layout_settings,
+        LayoutContext(
+            width=200,
+            is_outer=True,
+            start_connection=ConnectionType.SPLIT,
+            end_connection=ConnectionType.SPLIT,
+        ),
+    )
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(10, 50),
+            reverse=False,
+            start_connection_pos=Vec(0, 0),
+            end_connection_pos=Vec(200, 100),
+        ),
+    )
+    regression(render.to_string(), "split")
+
+    render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
+    node = load(rr.terminal("XXX"), lambda x: x)
+    node._calculate_layout(
+        svg_layout_settings,
+        LayoutContext(
+            width=200,
+            is_outer=True,
+            start_connection=ConnectionType.STACK,
+            end_connection=ConnectionType.STACK,
+        ),
+    )
+    node._render(
+        render,
+        RenderContext(
+            pos=Vec(10, 50),
+            reverse=False,
+            start_connection_pos=Vec(10, 0),
+            end_connection_pos=Vec(190, 100),
+        ),
+    )
+    regression(render.to_string(), "stack")
 
 
 def test_end_class(regression, svg_render_settings):
     rendered = rr.render_svg(
         rr.skip(),
         max_width=400,
-        settings=replace(
-            svg_render_settings,
-            end_class=rr.EndClass.SIMPLE,
-        ),
+        settings=replace(svg_render_settings, end_class=rr.EndClass.SIMPLE),
     )
     regression(rendered, "simple")
 
     rendered = rr.render_svg(
         rr.skip(),
         max_width=400,
-        settings=replace(
-            svg_render_settings,
-            end_class=rr.EndClass.COMPLEX,
-        ),
+        settings=replace(svg_render_settings, end_class=rr.EndClass.COMPLEX),
     )
     regression(rendered, "complex")
 
@@ -138,77 +285,6 @@ class TestArcRadius:
 
 
 class TestSeq:
-    def test_skip(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.skip(),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_wrapped_skip(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.sequence(rr.skip()),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered, "one")
-
-        rendered = rr.render_svg(
-            rr.sequence(rr.skip(), rr.skip(), rr.skip()),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered, "several")
-
-    def test_normal(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.sequence(
-                rr.terminal("A"),
-                rr.non_terminal("B"),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_long_seq(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.sequence(
-                rr.terminal("if"),
-                rr.non_terminal("expr"),
-                rr.terminal("{"),
-                rr.non_terminal("body"),
-                rr.terminal("}"),
-                rr.terminal("else"),
-                rr.terminal("{"),
-                rr.non_terminal("body"),
-                rr.terminal("}"),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_long_seq_reverse(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.sequence(
-                rr.terminal("if"),
-                rr.non_terminal("expr"),
-                rr.terminal("{"),
-                rr.non_terminal("body"),
-                rr.terminal("}"),
-                rr.terminal("else"),
-                rr.terminal("{"),
-                rr.non_terminal("body"),
-                rr.terminal("}"),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-            reverse=True,
-        )
-        regression(rendered)
-
     def test_break(self, regression, svg_render_settings):
         rendered = rr.render_svg(
             rr.sequence(
@@ -252,325 +328,6 @@ class TestSeq:
                     rr.LineBreak.HARD,
                     rr.LineBreak.NO_BREAK,
                 ],
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_arc_radius_too_big_to_break(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.sequence(
-                rr.terminal("A"),
-                rr.terminal("B"),
-                rr.terminal("C"),
-                rr.terminal("D"),
-            ),
-            max_width=50,
-            settings=replace(
-                svg_render_settings,
-                arc_radius=500,
-            ),
-        )
-        regression(rendered)
-
-    def test_up_down_height(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("XX"),
-                rr.sequence(
-                    rr.terminal("A"),
-                    rr.terminal("B"),
-                    linebreaks=[
-                        rr.LineBreak.HARD,
-                    ],
-                ),
-                rr.terminal("XX"),
-                default=1,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_stack(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.stack(
-                rr.sequence(rr.terminal("A"), rr.terminal("B")),
-                rr.sequence(rr.terminal("C"), rr.terminal("D")),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-
-class TestChoice:
-    def test_skip(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.optional(
-                rr.skip(),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_multiple_skips(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("A"),
-                rr.skip(),
-                rr.terminal("B"),
-                rr.skip(),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_multiple_skips_default(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("A"),
-                rr.skip(),
-                rr.terminal("B"),
-                rr.skip(),
-                default=1,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_optional(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.optional(
-                rr.terminal("A"),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_optional_skip(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.optional(
-                rr.terminal("A"),
-                skip=True,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_default_0(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("A"),
-                rr.terminal("B"),
-                rr.terminal("C"),
-                default=0,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_default_1(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("A"),
-                rr.terminal("B"),
-                rr.terminal("C"),
-                default=1,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_default_2(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("A"),
-                rr.terminal("B"),
-                rr.terminal("C"),
-                default=2,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_reverse(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.sequence(
-                    rr.terminal("A"),
-                    rr.terminal("B"),
-                ),
-                rr.stack(
-                    rr.sequence(
-                        rr.terminal("C"),
-                        rr.terminal("D"),
-                    ),
-                    rr.terminal("E"),
-                ),
-                rr.terminal("F"),
-                default=1,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-            reverse=True,
-        )
-        regression(rendered)
-
-    def test_up_down_height(self, regression, svg_render_settings):
-        stack = rr.stack(rr.terminal("A"), rr.terminal("B"))
-
-        rendered = rr.render_svg(
-            rr.choice(
-                rr.terminal("XX"),
-                stack,
-                stack,
-                stack,
-                rr.terminal("YY"),
-                default=1,
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-
-class TestOneOrMore:
-    def test_skip(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.zero_or_more(
-                rr.skip(),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_skip_nonempty_repeat(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.zero_or_more(rr.skip(), repeat=rr.terminal("A")),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_zero_or_more(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.zero_or_more(
-                rr.terminal("A"),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_zero_or_more_repeat(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.zero_or_more(
-                rr.terminal("A"),
-                repeat=rr.terminal("B"),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_normal(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.one_or_more(
-                rr.sequence(
-                    rr.terminal("A"),
-                    rr.terminal("B"),
-                    rr.terminal("C"),
-                ),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_repeat(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.one_or_more(
-                rr.sequence(
-                    rr.terminal("A"),
-                    rr.terminal("B"),
-                    rr.terminal("C"),
-                ),
-                repeat=rr.sequence(
-                    rr.terminal("D"),
-                    rr.terminal("E"),
-                    rr.terminal("F"),
-                ),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_repeat_choice(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.one_or_more(
-                rr.non_terminal("arg"),
-                repeat=rr.choice(
-                    rr.terminal(","),
-                    rr.terminal(";"),
-                ),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_repeat_choice_reverse(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.one_or_more(
-                rr.non_terminal("arg"),
-                repeat=rr.sequence(
-                    rr.one_or_more(
-                        rr.non_terminal("arg"),
-                        repeat=rr.choice(
-                            rr.terminal(","),
-                            rr.terminal(";"),
-                        ),
-                    ),
-                    rr.choice(
-                        rr.terminal(","),
-                        rr.terminal(";"),
-                    ),
-                ),
-            ),
-            max_width=400,
-            settings=svg_render_settings,
-        )
-        regression(rendered)
-
-    def test_up_down_height(self, regression, svg_render_settings):
-        rendered = rr.render_svg(
-            rr.one_or_more(
-                rr.stack(
-                    rr.sequence(
-                        rr.terminal("A"),
-                        rr.terminal("B"),
-                    ),
-                    rr.terminal("C"),
-                ),
-                repeat=rr.stack(
-                    rr.sequence(
-                        rr.terminal("D"),
-                        rr.terminal("E"),
-                    ),
-                    rr.terminal("F"),
-                ),
             ),
             max_width=400,
             settings=svg_render_settings,

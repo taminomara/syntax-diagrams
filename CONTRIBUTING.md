@@ -5,7 +5,7 @@
 1. Check out the repo:
 
    ```shell
-   git clone git@github.com:taminomara/neat-railroad-diagrams.git
+   git clone git@github.com:taminomara/syntax-diagrams.git
    ```
 
 2. Create a virtual environment with python `3.12` or newer.
