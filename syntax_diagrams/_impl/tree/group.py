@@ -46,11 +46,7 @@ class Group(Element[T], _t.Generic[T]):
             width=max(
                 0,
                 context.width
-                - 2
-                * (
-                    settings.group_vertical_padding
-                    + settings.group_thickness
-                ),
+                - 2 * (settings.group_vertical_padding + settings.group_thickness),
             ),
             allow_shrinking_stacks=False,
         )

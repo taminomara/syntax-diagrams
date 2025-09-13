@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import io
+import itertools
 import sys
 import typing as _t
-import itertools
 
 from syntax_diagrams._impl.render import (
     ConnectionDirection,

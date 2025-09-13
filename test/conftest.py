@@ -10,9 +10,7 @@ from reportlab.graphics import renderPM
 from svglib import svglib  # type: ignore
 
 import syntax_diagrams as rr
-from syntax_diagrams._impl.render.svg import (
-    svg_layout_settings as _svg_layout_settings,
-)
+from syntax_diagrams._impl.render.svg import svg_layout_settings as _svg_layout_settings
 from syntax_diagrams._impl.render.text import (
     text_layout_settings as _text_layout_settings,
 )

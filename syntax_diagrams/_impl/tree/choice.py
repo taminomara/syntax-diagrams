@@ -275,9 +275,7 @@ class Choice(Element[T], _t.Generic[T]):
                     context.end_top_is_clear
                     if (
                         i == 0
-                        and (
-                            not self._connect_opt_enter or not context.opt_enter_top
-                        )
+                        and (not self._connect_opt_enter or not context.opt_enter_top)
                     )
                     else False
                 ),
@@ -292,7 +290,7 @@ class Choice(Element[T], _t.Generic[T]):
                     else False
                 ),
                 end_direction=direction,
-                allow_shrinking_stacks=context.allow_shrinking_stacks and i == 0
+                allow_shrinking_stacks=context.allow_shrinking_stacks and i == 0,
             )
 
             if i == 0:

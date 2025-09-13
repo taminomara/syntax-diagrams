@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import textwrap
 import types
 import typing as _t
-from enum import Enum
 from dataclasses import dataclass
-import textwrap
+from enum import Enum
 
 __all__ = [
     "Terminal",

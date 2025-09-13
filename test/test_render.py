@@ -868,7 +868,7 @@ _STACK = rr.stack(rr.terminal("A"), rr.terminal("B"))
                                 repeat: ","
                               - ")"
                               repeat: ","
-                       text: select-core
+                        text: select-core
                       repeat:
                         non_terminal: "compound-operator"
                     - optional:

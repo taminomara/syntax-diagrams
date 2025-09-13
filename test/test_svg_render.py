@@ -122,9 +122,7 @@ def test_node(regression, svg_layout_settings, svg_css):
     render = SvgRender(200, 150, svg_layout_settings, "", svg_css, None, None)
 
     node = load(rr.comment("fully automated"), lambda x: x)
-    node._calculate_layout(
-        svg_layout_settings, LayoutContext(width=200, is_outer=True)
-    )
+    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
     node._render(
         render,
         RenderContext(

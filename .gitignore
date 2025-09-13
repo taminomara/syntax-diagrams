@@ -134,3 +134,5 @@ _version.py
 # IDEs
 .idea/
 .vscode/
+
+test/image_diff/

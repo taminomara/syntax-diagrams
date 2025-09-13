@@ -185,8 +185,8 @@ def render_text(
         convert_resolver_data = lambda x: x
 
     # Prevent circular import.
-    from syntax_diagrams._impl.render.text import render_text as _render_text
     from syntax_diagrams._impl.load import load as _load
+    from syntax_diagrams._impl.render.text import render_text as _render_text
 
     return _render_text(
         _load(node, convert_resolver_data),
@@ -546,8 +546,8 @@ def render_svg(
         convert_resolver_data = lambda x: x
 
     # Prevent circular import.
-    from syntax_diagrams._impl.render.svg import render_svg as _render_svg
     from syntax_diagrams._impl.load import load as _load
+    from syntax_diagrams._impl.render.svg import render_svg as _render_svg
 
     return _render_svg(
         _load(element, convert_resolver_data),

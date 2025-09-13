@@ -1,4 +1,9 @@
-from syntax_diagrams._impl.ridge_line import RidgeLine, find_distance, merge_ridge_lines, reverse_ridge_line
+from syntax_diagrams._impl.ridge_line import (
+    RidgeLine,
+    find_distance,
+    merge_ridge_lines,
+    reverse_ridge_line,
+)
 from syntax_diagrams._impl.vec import Vec
 
 

@@ -26,7 +26,8 @@ def test_str():
     assert str(load(rr.one_or_more(a), lambda x: x)) == "A+"
     assert str(load(rr.one_or_more(rr.sequence(a, b, c)), lambda x: x)) == "(A B C)+"
     assert (
-        str(load(rr.one_or_more(rr.sequence(a, b), repeat=c), lambda x: x)) == "A B (C A B)*"
+        str(load(rr.one_or_more(rr.sequence(a, b), repeat=c), lambda x: x))
+        == "A B (C A B)*"
     )
     assert (
         str(load(rr.one_or_more(rr.choice(a, b), repeat=c), lambda x: x))

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from contextlib import contextmanager
 import math
 import typing as _t
+from contextlib import contextmanager
 from dataclasses import replace
 from functools import cached_property
 
@@ -323,8 +323,12 @@ class Element(_t.Generic[T]):
                 if start
                 else self._cached_context.start_connection
             ),
-            start_top_is_clear=(True if start else self._cached_context.start_top_is_clear),
-            start_bottom_is_clear=(True if start else self._cached_context.start_bottom_is_clear),
+            start_top_is_clear=(
+                True if start else self._cached_context.start_top_is_clear
+            ),
+            start_bottom_is_clear=(
+                True if start else self._cached_context.start_bottom_is_clear
+            ),
             start_direction=(
                 ConnectionDirection.STRAIGHT
                 if start
@@ -340,7 +344,9 @@ class Element(_t.Generic[T]):
                 else self._cached_context.end_connection
             ),
             end_top_is_clear=(True if end else self._cached_context.end_top_is_clear),
-            end_bottom_is_clear=(True if end else self._cached_context.end_bottom_is_clear),
+            end_bottom_is_clear=(
+                True if end else self._cached_context.end_bottom_is_clear
+            ),
             end_direction=(
                 ConnectionDirection.STRAIGHT
                 if end

@@ -1,11 +1,12 @@
-from flask import Flask, request, render_template_string
-import syntax_diagrams as rr
 import yaml
+from flask import Flask, render_template_string, request
+
+import syntax_diagrams as rr
 
 app = Flask(__name__)
 
 # HTML template with embedded CSS for better styling
-HTML_TEMPLATE = '''
+HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
@@ -368,20 +369,22 @@ HTML_TEMPLATE = '''
     </script>
 </body>
 </html>
-'''
+"""
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    diag_input = ''
+    diag_input = ""
 
-    if request.method == 'POST':
-        diag_input = request.form.get('diag_input', '').strip()
+    if request.method == "POST":
+        diag_input = request.form.get("diag_input", "").strip()
         diag = yaml.safe_load(diag_input)
         svg = rr.render_svg(diag, max_width=600)
         return render_template_string(HTML_TEMPLATE, svg=svg, diag_input=diag_input)
 
     return render_template_string(HTML_TEMPLATE, svg=None, diag_input=diag_input)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print("Open your browser and go to: http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000)
