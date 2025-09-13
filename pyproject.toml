@@ -34,6 +34,7 @@ test = [
     "reportlab[pycairo]==4.4.3",
     "svglib==1.5.1",
     "pytest-image-diff==0.0.14",
+    "PyYAML==6.0.2",
 ]
 lint = [
     "black==25.1.0",
