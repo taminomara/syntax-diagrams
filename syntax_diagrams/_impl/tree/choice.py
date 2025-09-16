@@ -85,21 +85,21 @@ class Choice(Element[T], _t.Generic[T]):
         return self
 
     @cached_property
-    def _precedence(self) -> int:
+    def precedence(self) -> int:
         # Optional renders as an unary operator
         return 3 if self._has_skip else 1
 
     @cached_property
-    def _contains_choices(self) -> bool:
+    def contains_choices(self) -> bool:
         # Optionals are not true choices
         return not self._is_optional
 
     @cached_property
-    def _can_use_opt_enters(self) -> bool:
+    def can_use_opt_enters(self) -> bool:
         return self._has_skip
 
     @cached_property
-    def _can_use_opt_exits(self) -> bool:
+    def can_use_opt_exits(self) -> bool:
         return self._has_skip
 
     def _calculate_content_layout(
@@ -183,18 +183,18 @@ class Choice(Element[T], _t.Generic[T]):
                     if i > 0:
                         upper_rail = items[i - 1]
                         self._upper_rail_can_use_added_opt_enters = (
-                            upper_rail._can_use_opt_enters
+                            upper_rail.can_use_opt_enters
                         )
                         self._upper_rail_can_use_added_opt_exits = (
-                            upper_rail._can_use_opt_exits
+                            upper_rail.can_use_opt_exits
                         )
                     if i < len(items) - 1:
                         lower_rail = items[i + 1]
                         self._lower_rail_can_use_added_opt_enters = (
-                            lower_rail._can_use_opt_enters
+                            lower_rail.can_use_opt_enters
                         )
                         self._lower_rail_can_use_added_opt_exits = (
-                            lower_rail._can_use_opt_exits
+                            lower_rail.can_use_opt_exits
                         )
                     break
 
@@ -220,7 +220,7 @@ class Choice(Element[T], _t.Generic[T]):
             if self._lower_rail_can_use_added_opt_exits:
                 self._upper_rail_can_use_added_opt_enters = False
 
-        if any(item._contains_choices for item in self._items):
+        if any(item.contains_choices for item in self._items):
             vertical_separation = settings.vertical_choice_separation_outer
         else:
             vertical_separation = settings.vertical_choice_separation
@@ -310,21 +310,21 @@ class Choice(Element[T], _t.Generic[T]):
                 if self._upper_rail_can_use_added_opt_exits:
                     line_context.opt_exit_bottom = True
 
-            item._calculate_layout(settings, line_context)
+            item.calculate_layout(settings, line_context)
 
             if i == 0:
-                current_pos += item._up
+                current_pos += item.up
             else:
                 current_pos += (
-                    find_distance(items[i - 1]._bottom_ridge_line, item._top_ridge_line)
+                    find_distance(items[i - 1].bottom_ridge_line, item.top_ridge_line)
                     + vertical_separation
                 )
 
             if i == default:
                 self._layout.append((item, current_pos))
 
-                self._up = current_pos
-                self._height = item._height
+                self.up = current_pos
+                self.height = item.height
 
                 for j, (item, pos) in enumerate(self._layout):
                     self._layout[j] = (item, pos - current_pos)
@@ -333,63 +333,63 @@ class Choice(Element[T], _t.Generic[T]):
             else:
                 self._layout.append((item, current_pos))
 
-            current_pos += item._height
+            current_pos += item.height
 
-            width = max(width, item._width)
-            display_width = max(display_width, item._display_width)
+            width = max(width, item.width)
+            display_width = max(display_width, item.display_width)
 
             start_padding = (
-                item._start_padding
+                item.start_padding
                 if start_padding is None
-                else min(start_padding, item._start_padding)
+                else min(start_padding, item.start_padding)
             )
             start_margin_offset = (
-                -item._start_margin + item._start_padding
+                -item.start_margin + item.start_padding
                 if start_margin_offset is None
                 else min(
                     start_margin_offset,
-                    -item._start_margin + item._start_padding,
+                    -item.start_margin + item.start_padding,
                 )
             )
             end_padding = (
-                item._end_padding
+                item.end_padding
                 if end_padding is None
-                else min(end_padding, item._end_padding)
+                else min(end_padding, item.end_padding)
             )
             end_margin_offset = (
-                item._width + item._end_margin - item._end_padding
+                item.width + item.end_margin - item.end_padding
                 if end_margin_offset is None
                 else max(
                     end_margin_offset,
-                    item._width + item._end_margin - item._end_padding,
+                    item.width + item.end_margin - item.end_padding,
                 )
             )
 
-        self._down = current_pos + items[-1]._down - self._height
+        self.down = current_pos + items[-1].down - self.height
 
         start_padding = start_padding or 0
         end_padding = end_padding or 0
 
-        self._display_width = display_width
-        self._content_width = max(0, width - start_padding - end_padding)
-        self._start_padding = start_padding
-        self._end_padding = end_padding
+        self.display_width = display_width
+        self.content_width = max(0, width - start_padding - end_padding)
+        self.start_padding = start_padding
+        self.end_padding = end_padding
         if start_margin_offset is None:
-            self._start_margin = 0
+            self.start_margin = 0
         else:
-            self._start_margin = max(0, (-start_margin_offset) + start_padding)
+            self.start_margin = max(0, (-start_margin_offset) + start_padding)
         if end_margin_offset is None:
-            self._end_margin = 0
+            self.end_margin = 0
         else:
-            self._end_margin = max(0, (end_margin_offset - width) + end_padding)
+            self.end_margin = max(0, (end_margin_offset - width) + end_padding)
 
         if self._connect_opt_exit:
-            self._start_margin = max(
-                self._start_margin, settings.arc_margin + self._start_padding
+            self.start_margin = max(
+                self.start_margin, settings.arc_margin + self.start_padding
             )
         if self._connect_opt_enter:
-            self._end_margin = max(
-                self._end_margin, settings.arc_margin + self._end_padding
+            self.end_margin = max(
+                self.end_margin, settings.arc_margin + self.end_padding
             )
 
     def _render_content(self, render: Render[T], context: RenderContext):
@@ -418,7 +418,7 @@ class Choice(Element[T], _t.Generic[T]):
                     line_context.opt_exit_top = (
                         "e" if not context.reverse else "w",
                         Vec(
-                            context.pos.x + context.dir * (self._width - end_arc_size),
+                            context.pos.x + context.dir * (self.width - end_arc_size),
                             line_pos,
                         ),
                         None,
@@ -437,13 +437,13 @@ class Choice(Element[T], _t.Generic[T]):
                     line_context.opt_exit_bottom = (
                         "e" if not context.reverse else "w",
                         Vec(
-                            context.pos.x + context.dir * (self._width - end_arc_size),
+                            context.pos.x + context.dir * (self.width - end_arc_size),
                             line_pos,
                         ),
                         None,
                     )
 
-            item._render(render, line_context)
+            item.render(render, line_context)
 
         if self._connect_opt_enter and not (
             self._connect_opt_exit
@@ -533,21 +533,21 @@ class Choice(Element[T], _t.Generic[T]):
         elem, pos = self._layout[0]
         return merge_ridge_lines(
             merge_ridge_lines(
-                elem._top_ridge_line - Vec(0, pos),
+                elem.top_ridge_line - Vec(0, pos),
                 RidgeLine(
                     0,
                     [
                         Vec(0, -pos),
-                        Vec(self._start_padding, -pos - elem._height),
-                        Vec(self._width, -self._height),
+                        Vec(self.start_padding, -pos - elem.height),
+                        Vec(self.width, -self.height),
                     ],
                 ),
             ),
             RidgeLine(
                 0,
                 [
-                    Vec(0, self._up),
-                    Vec(self._display_width, -self._height),
+                    Vec(0, self.up),
+                    Vec(self.display_width, -self.height),
                 ],
             ),
             cmp=min,
@@ -555,24 +555,24 @@ class Choice(Element[T], _t.Generic[T]):
 
     def _calculate_bottom_ridge_line(self) -> RidgeLine:
         elem, pos = self._layout[-1]
-        pos -= self._height
+        pos -= self.height
         return merge_ridge_lines(
             merge_ridge_lines(
-                elem._bottom_ridge_line + Vec(0, pos + elem._height),
+                elem.bottom_ridge_line + Vec(0, pos + elem.height),
                 RidgeLine(
-                    -self._height,
+                    -self.height,
                     [
                         Vec(0, pos),
-                        Vec(self._start_padding, pos + elem._height),
-                        Vec(self._width, 0),
+                        Vec(self.start_padding, pos + elem.height),
+                        Vec(self.width, 0),
                     ],
                 ),
             ),
             RidgeLine(
-                -self._height,
+                -self.height,
                 [
-                    Vec(0, self._down),
-                    Vec(self._display_width, 0),
+                    Vec(0, self.down),
+                    Vec(self.display_width, 0),
                 ],
             ),
             cmp=min,
@@ -581,7 +581,7 @@ class Choice(Element[T], _t.Generic[T]):
     def __str__(self):
         is_optional = any(isinstance(item, Skip) for item in self._items)
         items = [
-            f"{item}" if item._precedence >= self._precedence else f"({item})"
+            f"{item}" if item.precedence >= self.precedence else f"({item})"
             for item in self._items
             if not isinstance(item, Skip)
         ]

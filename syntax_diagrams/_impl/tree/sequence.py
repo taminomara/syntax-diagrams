@@ -60,6 +60,8 @@ class Sequence(Element[T], _t.Generic[T]):
         self._linebreaks = []
 
         for item, linebreak in itertools.zip_longest(items, linebreaks):
+            if isinstance(item, Skip):
+                continue
             if isinstance(item, Sequence):
                 self._items.extend(item._items)  # type: ignore
                 self._linebreaks.extend(item._linebreaks)
@@ -71,29 +73,43 @@ class Sequence(Element[T], _t.Generic[T]):
         return self
 
     @cached_property
-    def _precedence(self) -> int:
+    def precedence(self) -> int:
         return 2
 
     @cached_property
-    def _contains_choices(self) -> bool:
-        return any(item._contains_choices for item in self._items)
+    def contains_choices(self) -> bool:
+        return any(item.contains_choices for item in self._items)
 
     @cached_property
-    def _can_use_opt_enters(self) -> bool:
-        return self._items[0]._can_use_opt_enters
+    def can_use_opt_enters(self) -> bool:
+        return self._items[0].can_use_opt_enters
 
     @cached_property
-    def _can_use_opt_exits(self) -> bool:
-        return self._items[-1]._can_use_opt_exits
+    def can_use_opt_exits(self) -> bool:
+        return self._items[-1].can_use_opt_exits
 
     def _calculate_content_layout(
         self, settings: LayoutSettings[T], context: LayoutContext
     ):
+        if LineBreak.NO_BREAK in self._linebreaks and not all(
+            linebreak is LineBreak.NO_BREAK for linebreak in self._linebreaks
+        ):
+            self._join_no_breaks()
+
         if LineBreak.HARD not in self._linebreaks:
-            single_line_width = self._calculate_layout_single_line(settings, context)
-            if single_line_width <= context.width or all(
-                linebreak is LineBreak.NO_BREAK for linebreak in self._linebreaks
-            ):
+            single_line_width, gaps_width = self._calculate_layout_single_line(
+                settings, context
+            )
+            if single_line_width <= context.width:
+                self._item_rows = [self._items]
+                self._calculate_layout_metrics(settings, context)
+                return
+            elif all(linebreak is LineBreak.NO_BREAK for linebreak in self._linebreaks):
+                if gaps_width < context.width and context.width > 0:
+                    scale = (context.width - gaps_width) / (
+                        single_line_width - gaps_width
+                    )
+                    self._calculate_layout_single_line(settings, context, scale)
                 self._item_rows = [self._items]
                 self._calculate_layout_metrics(settings, context)
                 return
@@ -110,20 +126,41 @@ class Sequence(Element[T], _t.Generic[T]):
         self._calculate_layout_multi_line(settings, context)
         self._calculate_layout_metrics(settings, context)
 
+    def _join_no_breaks(self):
+        new_items: list[Element[T]] = []
+        new_linebreaks: list[LineBreak] = []
+        current_seq: list[Element[T]] = []
+
+        for item, linebreak in itertools.zip_longest(self._items, self._linebreaks):
+            current_seq.append(item)
+            if linebreak is not LineBreak.NO_BREAK:
+                new_items.append(Sequence(current_seq, LineBreak.NO_BREAK))
+                new_linebreaks.append(linebreak)
+                current_seq.clear()
+
+        self._items = new_items
+        self._linebreaks = new_linebreaks
+
     def _calculate_layout_single_line(
         self,
         settings: LayoutSettings[T],
         context: LayoutContext,
+        scale: float | None = None,
     ):
         self._start_connection = context.start_connection
         self._end_connection = context.end_connection
         self._shift_first_line = False
 
         width = 0
+        gaps_width = 0
 
         for i, item in enumerate(self._items):
+            if scale is not None:
+                max_width = math.floor(item.display_width * scale)
+            else:
+                max_width = context.width
             item_context = LayoutContext(
-                width=context.width,
+                width=max_width,
                 is_outer=context.is_outer,
                 start_top_is_clear=True,
                 start_bottom_is_clear=True,
@@ -146,12 +183,13 @@ class Sequence(Element[T], _t.Generic[T]):
                 item_context.end_top_is_clear = context.end_top_is_clear
                 item_context.end_bottom_is_clear = context.end_bottom_is_clear
                 item_context.allow_shrinking_stacks = context.allow_shrinking_stacks
-            item._calculate_layout(settings, item_context)
+            item.calculate_layout(settings, item_context)
             if i > 0:
                 gap = self._calculate_gap(self._items[i - 1], item, settings)
                 width += gap
-            width += item._width
-        return width
+                gaps_width += gap
+            width += item.display_width
+        return width, gaps_width
 
     def _calculate_layout_multi_line(
         self,
@@ -185,19 +223,16 @@ class Sequence(Element[T], _t.Generic[T]):
         width_at_last_soft_break = 0
         margin_after_last_soft_break = 0
 
-        # TODO!
-        # last_normal_break_idx = 0
-        # width_at_last_normal_break = 0
-        # margin_after_last_normal_break = 0
+        # Adjust line width for first line shift.
+        if self._shift_first_line:
+            max_width = context.width - math.floor(settings.arc_radius)
+        else:
+            max_width = context.width
+        max_line_width = context.width
 
         for i, (item, linebreak) in enumerate(
             itertools.zip_longest(self._items, self._linebreaks)
         ):
-            # Adjust line width for first line shift.
-            if i == 0 and self._shift_first_line:
-                max_line_width = context.width - math.floor(settings.arc_radius)
-            else:
-                max_line_width = context.width
 
             # Prepare item's layout context.
             item_context = LayoutContext(
@@ -229,7 +264,7 @@ class Sequence(Element[T], _t.Generic[T]):
                 item_context.allow_shrinking_stacks = context.allow_shrinking_stacks
 
             # Calculate item's layout.
-            item._calculate_layout(settings, item_context)
+            item.calculate_layout(settings, item_context)
 
             # Calculate margin between current node and the previous one, if any.
             if current_row:
@@ -240,7 +275,8 @@ class Sequence(Element[T], _t.Generic[T]):
             # Make a soft break, if needed and possible.
             if (
                 current_row
-                and current_width + margin + item._width + arc_size > max_line_width
+                and current_width + margin + item.display_width + arc_size
+                > max_line_width
                 and last_soft_break_idx
             ):
                 self._item_rows.append(current_row[:last_soft_break_idx])
@@ -249,7 +285,7 @@ class Sequence(Element[T], _t.Generic[T]):
                 last_soft_break_idx = 0
                 width_at_last_soft_break = 0
                 margin_after_last_soft_break = 0
-                max_line_width = context.width
+                max_line_width = max_width
                 item_context = replace(
                     item_context,
                     width=max_line_width,
@@ -259,21 +295,22 @@ class Sequence(Element[T], _t.Generic[T]):
                 if current_row:
                     # Item at `last_soft_break_idx` is now first in its row.
                     # Recalculate its layout to account for stack connection.
-                    current_width -= current_row[0]._width
-                    current_row[0]._calculate_layout(settings, item_context)
-                    current_width += current_row[0]._width
+                    current_width -= current_row[0].display_width
+                    current_row[0].calculate_layout(settings, item_context)
+                    current_width += current_row[0].display_width
                     margin = self._calculate_gap(current_row[-1], item, settings)
                 else:
                     # Current item is now first in its row. Recalculate its layout
                     # to account for stack connection.
-                    item._calculate_layout(settings, item_context)
+                    item.calculate_layout(settings, item_context)
                     margin = 0
 
             # If we still need a break, then a soft break wasn't possible
             # (or enough), so we'll have to break here.
             if (
                 current_row
-                and current_width + margin + item._width + arc_size > max_line_width
+                and current_width + margin + item.display_width + arc_size
+                > max_line_width
             ):
                 self._item_rows.append(current_row)
 
@@ -283,7 +320,7 @@ class Sequence(Element[T], _t.Generic[T]):
                 width_at_last_soft_break = 0
                 margin_after_last_soft_break = 0
                 margin = 0
-                max_line_width = context.width
+                max_line_width = max_width
                 item_context = replace(
                     item_context,
                     width=max_line_width,
@@ -292,10 +329,10 @@ class Sequence(Element[T], _t.Generic[T]):
                 )
                 # Current item is now first in its row. Recalculate its layout
                 # to account for stack connection
-                item._calculate_layout(settings, item_context)
+                item.calculate_layout(settings, item_context)
 
             current_row.append(item)
-            current_width += margin + item._width
+            current_width += margin + item.display_width
 
             if linebreak is LineBreak.HARD:
                 self._item_rows.append(current_row)
@@ -304,6 +341,7 @@ class Sequence(Element[T], _t.Generic[T]):
                 last_soft_break_idx = 0
                 width_at_last_soft_break = 0
                 margin_after_last_soft_break = 0
+                max_line_width = max_width
             elif linebreak is LineBreak.SOFT:
                 last_soft_break_idx = len(current_row)
                 width_at_last_soft_break = current_width
@@ -325,7 +363,7 @@ class Sequence(Element[T], _t.Generic[T]):
         #     ↓
         #     ╰─ C ──
         for i, row in enumerate(self._item_rows[:-1]):
-            item_context = row[-1]._cached_context
+            item_context = row[-1].context
             assert item_context
             item_context = replace(
                 item_context,
@@ -334,7 +372,7 @@ class Sequence(Element[T], _t.Generic[T]):
                 opt_exit_bottom=True,
                 allow_shrinking_stacks=True,
             )
-            row[-1]._calculate_layout(settings, item_context)
+            row[-1].calculate_layout(settings, item_context)
 
     def _calculate_layout_metrics(
         self, settings: LayoutSettings[T], context: LayoutContext
@@ -378,16 +416,16 @@ class Sequence(Element[T], _t.Generic[T]):
             for j, item in enumerate(row):
                 if j == 0:
                     start_padding = (
-                        item._start_padding + line_shift
+                        item.start_padding + line_shift
                         if start_padding is None
-                        else min(start_padding, item._start_padding + line_shift)
+                        else min(start_padding, item.start_padding + line_shift)
                     )
                     start_margin_offset = (
-                        line_shift - item._start_margin + item._start_padding
+                        line_shift - item.start_margin + item.start_padding
                         if start_margin_offset is None
                         else min(
                             start_margin_offset,
-                            line_shift - item._start_margin + item._start_padding,
+                            line_shift - item.start_margin + item.start_padding,
                         )
                     )
 
@@ -395,29 +433,29 @@ class Sequence(Element[T], _t.Generic[T]):
                     gap = self._calculate_gap(row[j - 1], item, settings)
                     row_width += gap
 
-                row_width += item._width
+                row_width += item.width
 
                 if j == len(row) - 1:
                     end_padding_offset = (
-                        row_width - item._end_padding
+                        row_width - item.end_padding
                         if end_padding_offset is None
-                        else max(end_padding_offset, row_width - item._end_padding)
+                        else max(end_padding_offset, row_width - item.end_padding)
                     )
                     end_margin_offset = (
-                        row_width + item._end_margin - item._end_padding
+                        row_width + item.end_margin - item.end_padding
                         if end_margin_offset is None
                         else max(
                             end_margin_offset,
-                            row_width + item._end_margin - item._end_padding,
+                            row_width + item.end_margin - item.end_padding,
                         )
                     )
 
-                row_up = max(row_up, item._up - row_pos)
-                row_pos += item._height
-                row_down_offset = max(row_down_offset, row_pos + item._down)
+                row_up = max(row_up, item.up - row_pos)
+                row_pos += item.height
+                row_down_offset = max(row_down_offset, row_pos + item.down)
 
             width = max(width, row_width)
-            row_display_width = row_width - row[-1]._width + row[-1]._display_width
+            row_display_width = row_width - row[-1].width + row[-1].display_width
             display_width = max(display_width, row_display_width)
 
             if i > 0:
@@ -425,40 +463,40 @@ class Sequence(Element[T], _t.Generic[T]):
                 pos += self._vertical_seq_separation + row_up
                 self._item_rows_layout.append((row_upper_line, pos, row_display_width))
             else:
-                self._up = row_up
+                self.up = row_up
                 self._item_rows_layout.append((None, pos, row_display_width))
 
             if i < len(self._item_rows) - 1:
                 pos += row_down_offset + self._vertical_seq_separation
             else:
                 pos += row_pos
-                self._down = max(0, row_down_offset - row_pos)
+                self.down = max(0, row_down_offset - row_pos)
 
-        self._height = pos
+        self.height = pos
 
-        self._display_width = display_width
+        self.display_width = display_width
 
         start_padding = start_padding or 0
         if context.allow_shrinking_stacks:
             # We can use width of the last row instead of the width of the longest row.
             last_elem = self._item_rows[-1][-1]
             width = row_width
-            end_padding = last_elem._end_padding
-            end_margin_offset = width - last_elem._end_padding + last_elem._end_margin
+            end_padding = last_elem.end_padding
+            end_margin_offset = width - last_elem.end_padding + last_elem.end_margin
         else:
             end_padding = max(0, width - (end_padding_offset or 0))
 
-        self._content_width = max(0, width - start_padding - end_padding)
-        self._start_padding = start_padding
-        self._end_padding = end_padding
+        self.content_width = max(0, width - start_padding - end_padding)
+        self.start_padding = start_padding
+        self.end_padding = end_padding
         if start_margin_offset is None:
-            self._start_margin = 0
+            self.start_margin = 0
         else:
-            self._start_margin = max(0, (-start_margin_offset) + start_padding)
+            self.start_margin = max(0, (-start_margin_offset) + start_padding)
         if end_margin_offset is None:
-            self._end_margin = 0
+            self.end_margin = 0
         else:
-            self._end_margin = max(0, (end_margin_offset - width) + end_padding)
+            self.end_margin = max(0, (end_margin_offset - width) + end_padding)
 
     def _render_content(self, render: Render[T], context: RenderContext):
         arc_radius = math.ceil(render.settings.arc_radius)
@@ -494,7 +532,7 @@ class Sequence(Element[T], _t.Generic[T]):
                 else:
                     start_connection_pos = pos
 
-                end_pos = pos + Vec(context.dir * item._width, item._height)
+                end_pos = pos + Vec(context.dir * item.width, item.height)
 
                 if j == len(row) - 1 and row_lower_line:
                     end_connection_pos = Vec(
@@ -547,7 +585,7 @@ class Sequence(Element[T], _t.Generic[T]):
                         ),
                     )
 
-                item._render(render, item_context)
+                item.render(render, item_context)
 
                 pos = end_pos
 
@@ -567,11 +605,11 @@ class Sequence(Element[T], _t.Generic[T]):
                 )
 
     def _calculate_top_ridge_line(self) -> RidgeLine:
-        assert self._cached_settings
+        assert self.settings
 
         seen_width = 0
 
-        result = RidgeLine(-self._height, [])
+        result = RidgeLine(-self.height, [])
 
         for i, row in enumerate(self._item_rows):
             _, row_pos, row_display_width = self._item_rows_layout[i]
@@ -584,17 +622,17 @@ class Sequence(Element[T], _t.Generic[T]):
             else:
                 pos = Vec(self._line_shift, -row_pos)
 
-            row_ridge = RidgeLine(-self._height, [])
+            row_ridge = RidgeLine(-self.height, [])
 
             for j, item in enumerate(row):
                 if j > 0:
-                    gap = self._calculate_gap(row[j - 1], item, self._cached_settings)
+                    gap = self._calculate_gap(row[j - 1], item, self.settings)
                     pos = pos + Vec(gap, 0)
 
-                item_ridge = item._top_ridge_line + pos
+                item_ridge = item.top_ridge_line + pos
                 row_ridge = merge_ridge_lines(row_ridge, item_ridge)
 
-                end_pos = pos + Vec(item._width, -item._height)
+                end_pos = pos + Vec(item.width, -item.height)
 
                 pos = end_pos
 
@@ -603,9 +641,9 @@ class Sequence(Element[T], _t.Generic[T]):
             row_ridge = merge_ridge_lines(
                 row_ridge,
                 RidgeLine(
-                    self._up,
+                    self.up,
                     [
-                        Vec(row_display_width, -self._height),
+                        Vec(row_display_width, -self.height),
                     ],
                 ),
                 cmp=min,
@@ -615,11 +653,11 @@ class Sequence(Element[T], _t.Generic[T]):
         return result
 
     def _calculate_bottom_ridge_line(self) -> RidgeLine:
-        assert self._cached_settings
+        assert self.settings
 
         row = self._item_rows[-1]
 
-        pos = Vec(0, self._item_rows_layout[-1][1] - self._height)
+        pos = Vec(0, self._item_rows_layout[-1][1] - self.height)
         before = pos.y
         if len(self._item_rows) > 1:
             pos = pos + Vec(self._line_shift, 0)
@@ -627,21 +665,21 @@ class Sequence(Element[T], _t.Generic[T]):
         result = RidgeLine(pos.y, [])
         for i, item in enumerate(row):
             if i > 0:
-                gap = self._calculate_gap(row[i - 1], item, self._cached_settings)
+                gap = self._calculate_gap(row[i - 1], item, self.settings)
                 pos = pos + Vec(gap, 0)
-            pos = pos + Vec(0, item._height)
-            item_ridge = item._bottom_ridge_line + pos
+            pos = pos + Vec(0, item.height)
+            item_ridge = item.bottom_ridge_line + pos
             item_ridge.before = before
             result = merge_ridge_lines(result, item_ridge)
-            pos = pos + Vec(item._width, 0)
+            pos = pos + Vec(item.width, 0)
 
         return merge_ridge_lines(
             result,
             RidgeLine(
-                -self._height,
+                -self.height,
                 [
-                    Vec(0, self._down),
-                    Vec(self._display_width, 0),
+                    Vec(0, self.down),
+                    Vec(self.display_width, 0),
                 ],
             ),
             cmp=min,
@@ -651,12 +689,12 @@ class Sequence(Element[T], _t.Generic[T]):
     def _calculate_gap(
         prev: Element[T], next: Element[T], settings: LayoutSettings[_t.Any]
     ) -> int:
-        prev_gap = prev._end_margin - prev._end_padding - next._start_padding
-        next_gap = next._start_margin - next._start_padding - prev._end_padding
+        prev_gap = prev.end_margin - prev.end_padding - next.start_padding
+        next_gap = next.start_margin - next.start_padding - prev.end_padding
         return max(0, prev_gap, next_gap, settings.arc_margin)
 
     def __str__(self):
         return " ".join(
-            f"{item}" if item._precedence >= self._precedence else f"({item})"
+            f"{item}" if item.precedence >= self.precedence else f"({item})"
             for item in self._items
         )

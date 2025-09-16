@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import dataclasses
 import io
+import json
 import math
 import re
 import sys
 import typing as _t
 from dataclasses import dataclass, field
+from enum import Enum
 
 from syntax_diagrams._impl.render import (
     ConnectionDirection,
@@ -38,6 +41,7 @@ def render_svg(
     settings: SvgRenderSettings = SvgRenderSettings(),
     reverse: bool | None = None,
     href_resolver: HrefResolver[T] = HrefResolver(),
+    dump_debug_data: bool = False,
 ) -> str:
     if max_width is None:
         max_width = settings.max_width
@@ -53,7 +57,7 @@ def render_svg(
 
     layout_settings = svg_layout_settings(settings)
     layout_settings.href_resolver = href_resolver
-    node._calculate_layout(
+    node.calculate_layout(
         layout_settings,
         LayoutContext(
             width=max_width,
@@ -71,12 +75,12 @@ def render_svg(
     )
 
     render = SvgRender(
-        (settings.padding[3] + node._display_width + settings.padding[1]),
+        (settings.padding[3] + node.display_width + settings.padding[1]),
         (
             settings.padding[0]
-            + node._up
-            + node._height
-            + node._down
+            + node.up
+            + node.height
+            + node.down
             + settings.padding[2]
             + 1
         ),
@@ -85,17 +89,18 @@ def render_svg(
         settings.css_style,
         settings.title,
         settings.description,
+        dump_debug_data,
     )
 
-    pos = Vec(settings.padding[3], settings.padding[0] + node._up)
+    pos = Vec(settings.padding[3], settings.padding[0] + node.up)
     if not reverse:
         start_connection_pos = pos
-        end_connection_pos = pos + Vec(node._width, node._height)
+        end_connection_pos = pos + Vec(node.width, node.height)
     else:
-        start_connection_pos = pos + Vec(node._width, 0)
-        end_connection_pos = pos + Vec(0, node._height)
+        start_connection_pos = pos + Vec(node.display_width, 0)
+        end_connection_pos = pos + Vec(node.display_width - node.width, node.height)
 
-    node._render(
+    node.render(
         render,
         RenderContext(
             pos=start_connection_pos,
@@ -149,6 +154,23 @@ def svg_layout_settings(settings: SvgRenderSettings = SvgRenderSettings()):
     )
 
 
+_DEBUG_ATTRS = [
+    "display_width",
+    "width",
+    "content_width",
+    "start_padding",
+    "end_padding",
+    "start_margin",
+    "end_margin",
+    "height",
+    "up",
+    "down",
+    "context",
+]
+
+_IGNORE_ATTRS = {"settings"}
+
+
 class SvgRender(Render[T], _t.Generic[T]):
     def __init__(
         self,
@@ -159,11 +181,16 @@ class SvgRender(Render[T], _t.Generic[T]):
         css: str | dict[str, dict[str, str]] | None,
         title: str | None,
         description: str | None,
+        dump_debug_data: bool,
     ):
         self.settings = settings
         self._width = width
+        self._debug = dump_debug_data
+        self._id = 0
+        self._ids: dict[Element[T], str] = {}
+        self._debug_data: dict[str, _t.Any] = {}
 
-        self._root = _SvgElement(
+        self._root = SvgRender._SvgElement(
             "svg",
             {
                 "xmlns": "http://www.w3.org/2000/svg",
@@ -181,6 +208,9 @@ class SvgRender(Render[T], _t.Generic[T]):
             self._root.elem("title").children.append(title)
         if description is not None:
             self._root.elem("desc").children.append(description)
+
+        if dump_debug_data:
+            self._root.attrs["data-debug"] = self._debug_data
 
         if css:
             if not isinstance(css, str):
@@ -201,8 +231,14 @@ class SvgRender(Render[T], _t.Generic[T]):
 
         self._elems = [self._root.elem("g")]
 
+    def _make_id(self, elem: Element[T]) -> str:
+        if elem not in self._ids:
+            self._ids[elem] = str(self._id)
+            self._id += 1
+        return self._ids[elem]
+
     def write(self, f=sys.stdout):
-        self._root.write_svg(f)
+        self._root.write_svg(f, self)
         f.flush()
 
     def to_string(self):
@@ -213,19 +249,32 @@ class SvgRender(Render[T], _t.Generic[T]):
     def enter(self, node: Element[_t.Any]):
         name = node.__class__.__name__.lower()
         if hasattr(node, "_text"):
-            name += f" {getattr(node, "_text")}"
+            name += f" {json.dumps(getattr(node, "_text"))}"
 
         attrs = {
             "class": "elem",
             "data-dbg-elem": name,
         }
 
-        for k, v in vars(node).items():
-            # Escape HTML special characters before setting attribute
-            if k.startswith("_Element__"):
-                k = "__" + k[len("_Element__") :]
-            escaped_value = _e(repr(v))
-            attrs[f"data-dbg-{k}"] = escaped_value
+        if self._debug:
+            elem_id = attrs["data-dbg-id"] = self._make_id(node)
+            self._id += 1
+            data = {}
+            for k in _DEBUG_ATTRS:
+                data[k] = getattr(node, k, None)
+            for k, v in vars(node).items():
+                # Escape HTML special characters before setting attribute
+                if k.startswith("_Element__"):
+                    k = "__" + k[len("_Element__") :]
+                if k not in _IGNORE_ATTRS and k not in data:
+                    data[k] = v
+            data["$order"] = list(data.keys())
+            self._debug_data[elem_id] = {
+                "parent": self._elem.attrs.get("data-dbg-id"),
+                "index": self._id,
+                "name": name,
+                "data": data,
+            }
 
         self._elems.append(self._elem.elem("g", attrs))
 
@@ -233,11 +282,11 @@ class SvgRender(Render[T], _t.Generic[T]):
         self._elems.pop()
 
     @property
-    def _elem(self) -> _SvgElement:
+    def _elem(self) -> SvgRender._SvgElement:
         return self._elems[-1]
 
     def line(self, pos: Vec, reverse: bool = False, css_class: str = "") -> Line:
-        return _SvgLine(self, pos, reverse, css_class)
+        return SvgRender._SvgLine(self, pos, reverse, css_class)
 
     def node(
         self,
@@ -379,71 +428,74 @@ class SvgRender(Render[T], _t.Generic[T]):
             raise NotImplementedError(f"unknown end class {self.settings.end_class}")
 
     def debug(self, node: Element[_t.Any], context: RenderContext):
+        if not self._debug:
+            return
+
         if not context.reverse:
             pos = context.pos
 
             left_padding_box = pos.x
-            right_padding_box = pos.x + node._width
+            right_padding_box = pos.x + node.width
 
             left_display_box = pos.x
-            right_display_box = pos.x + node._display_width
+            right_display_box = pos.x + node.display_width
 
-            left_content_box = left_padding_box + node._start_padding
-            right_content_box = right_padding_box - node._end_padding
+            left_content_box = left_padding_box + node.start_padding
+            right_content_box = right_padding_box - node.end_padding
 
-            left_margin_box = left_content_box - node._start_margin
-            right_margin_box = right_content_box + node._end_margin
+            left_margin_box = left_content_box - node.start_margin
+            right_margin_box = right_content_box + node.end_margin
         else:
-            pos = context.pos - Vec(node._width, 0)
+            pos = context.pos - Vec(node.width, 0)
 
             left_padding_box = pos.x
-            right_padding_box = pos.x + node._width
+            right_padding_box = pos.x + node.width
 
             left_display_box = pos.x
-            right_display_box = pos.x + node._display_width
+            right_display_box = pos.x + node.display_width
 
-            left_content_box = left_padding_box + node._end_padding
-            right_content_box = right_padding_box - node._start_padding
+            left_content_box = left_padding_box + node.end_padding
+            right_content_box = right_padding_box - node.start_padding
 
-            left_margin_box = left_content_box - node._end_margin
-            right_margin_box = right_content_box + node._start_margin
+            left_margin_box = left_content_box - node.end_margin
+            right_margin_box = right_content_box + node.start_margin
 
         self._debug_box(
             left_display_box,
             right_display_box,
-            pos.y - node._up,
-            node._up + node._height + node._down,
+            pos.y - node.up,
+            node.up + node.height + node.down,
             "dbg-display",
         )
         self._debug_box(
             left_content_box,
             right_content_box,
-            pos.y - node._up,
-            node._up,
+            pos.y - node.up,
+            node.up,
             "dbg-content",
         )
         self._debug_box(
-            left_content_box, right_content_box, pos.y, node._height, "dbg-content-main"
+            left_content_box, right_content_box, pos.y, node.height, "dbg-content-main"
         )
         self._debug_box(
             left_content_box,
             right_content_box,
-            pos.y + node._height,
-            node._down,
+            pos.y + node.height,
+            node.down,
             "dbg-content",
         )
         self._debug_box(
             left_padding_box,
             right_padding_box,
-            pos.y - node._up,
-            node._up + node._height + node._down,
+            pos.y - node.up,
+            node.up + node.height + node.down,
             "dbg-padding",
         )
         self._debug_box(
             left_margin_box,
             right_margin_box,
-            pos.y - node._up,
-            node._up + node._height + node._down,
+            pos.y - node.up,
+            node.up + node.height + node.down,
             "dbg-margin",
         )
 
@@ -463,6 +515,9 @@ class SvgRender(Render[T], _t.Generic[T]):
         )
 
     def debug_pos(self, pos: Vec, css_class: str = ""):
+        if not self._debug:
+            return
+
         if css_class:
             css_class = f"dbg-position {css_class}"
         else:
@@ -476,6 +531,9 @@ class SvgRender(Render[T], _t.Generic[T]):
         )
 
     def debug_ridge_line(self, pos: Vec, node: Element[_t.Any], reverse: bool):
+        if not self._debug:
+            return
+
         if not reverse:
             start = 0
             end = self._width
@@ -485,14 +543,14 @@ class SvgRender(Render[T], _t.Generic[T]):
             end = 0
             dir = -1
 
-        d = f"M{start} {pos.y - node._top_ridge_line.before}"
-        for p in node._top_ridge_line.ridge:
+        d = f"M{start} {pos.y - node.top_ridge_line.before}"
+        for p in node.top_ridge_line.ridge:
             d += f"H{pos.x + dir * p.x}V{pos.y - p.y}"
         d += f"H{end}"
-        pos = pos + Vec(0, node._height)
-        for p in reversed(node._bottom_ridge_line.ridge):
+        pos = pos + Vec(0, node.height)
+        for p in reversed(node.bottom_ridge_line.ridge):
             d += f"V{pos.y + p.y}H{pos.x + dir * p.x}"
-        d += f"V{pos.y + node._bottom_ridge_line.before}H{start}Z"
+        d += f"V{pos.y + node.bottom_ridge_line.before}H{start}Z"
 
         self._elem.elem(
             "path",
@@ -502,167 +560,185 @@ class SvgRender(Render[T], _t.Generic[T]):
             },
         )
 
+    _ESCAPE_RE = re.compile(r"[*_`\[\]<&\"]", re.UNICODE)
 
-class _SvgLine(Line):
-    def __init__(
-        self, render: SvgRender[_t.Any], pos: Vec, reverse: bool, css_class: str
-    ):
-        self._render = render
-        self._pos = Vec(pos.x, pos.y)
-        self._reverse = reverse
-        self._elem = render._elem.elem("path")
-        self._elem.attrs["d"] = f"M{pos.x} {pos.y}"
-        if css_class:
-            self._elem.attrs["class"] = css_class
+    def _e(self, text: _t.Any):
+        if isinstance(text, dict):
+            text = self._DebugJSONEncoder(self).encode(text)
+        return self._ESCAPE_RE.sub(lambda c: f"&#{ord(c[0])};", str(text))
 
-    def segment_abs(
-        self, x: int, arrow_begin: bool = False, arrow_end: bool = False
-    ) -> Line:
-        self._elem.attrs["d"] += f"H{x}"
-        self._pos.x = x
-        return self
+    class _DebugJSONEncoder(json.JSONEncoder):
+        def __init__(self, render: SvgRender[_t.Any]):
+            super().__init__()
+            self._render = render
 
-    def bend(
-        self,
-        y: int,
-        coming_from: Direction,
-        coming_to: Direction | None,
-        arrow_begin: bool = False,
-        arrow_end: bool = False,
-    ):
-        h = y - self._pos.y
+        def default(self, o):
+            if dataclasses.is_dataclass(o) and not isinstance(o, type):
+                d = dataclasses.asdict(o)
+                d["$order"] = list(d.keys())
+                return d
+            elif isinstance(o, Enum):
+                return o.value
+            elif isinstance(o, Element):
+                return {
+                    "$elem": o.__class__.__qualname__,  # type: ignore
+                    "$id": self._render._make_id(o),
+                }
+            return super().default(o)
 
-        double_arc_radius = math.ceil(2 * self._render.settings.arc_radius)
+    class _SvgLine(Line):
+        def __init__(
+            self, render: SvgRender[_t.Any], pos: Vec, reverse: bool, css_class: str
+        ):
+            self._render = render
+            self._pos = Vec(pos.x, pos.y)
+            self._reverse = reverse
+            self._elem = render._elem.elem("path")
+            self._elem.attrs["d"] = f"M{pos.x} {pos.y}"
+            if css_class:
+                self._elem.attrs["class"] = css_class
 
-        if abs(h) < double_arc_radius:
-            return self._bend_bezier(h, coming_from, coming_to)
-        elif h > 0:
-            h -= double_arc_radius
-            intermediate_d = ("s", "n")
-        else:
-            h += double_arc_radius
-            intermediate_d = ("n", "s")
+        def segment_abs(
+            self, x: int, arrow_begin: bool = False, arrow_end: bool = False
+        ) -> Line:
+            self._elem.attrs["d"] += f"H{x}"
+            self._pos.x = x
+            return self
 
-        self._arc(coming_from, intermediate_d[0])
+        def bend(
+            self,
+            y: int,
+            coming_from: Direction,
+            coming_to: Direction | None,
+            arrow_begin: bool = False,
+            arrow_end: bool = False,
+        ):
+            h = y - self._pos.y
 
-        if coming_to is not None:
-            self._elem.attrs["d"] += f"v{h}"
-            self._pos.y += h
-            self._arc(intermediate_d[1], coming_to)
-        else:
-            arc_radius = math.ceil(self._render.settings.arc_radius)
-            self._elem.attrs["d"] += f"v{h + arc_radius}"
-            self._pos.y += h + arc_radius
+            double_arc_radius = math.ceil(2 * self._render.settings.arc_radius)
 
-        return self
-
-    def _arc(self, coming_from: str, coming_to: str):
-        arc_radius = math.ceil(self._render.settings.arc_radius)
-
-        x = arc_radius
-        y = arc_radius
-        if coming_from == "e" or coming_to == "w":
-            x = -x
-        if coming_from == "s" or coming_to == "n":
-            y = -y
-
-        sf = (
-            0
-            if (coming_from, coming_to)
-            in [("n", "e"), ("e", "s"), ("s", "w"), ("w", "n")]
-            else 1
-        )
-
-        self._elem.attrs["d"] += f"a{arc_radius} {arc_radius} 0 0 {sf} {x} {y}"
-
-        self._pos.x += x
-        self._pos.y += y
-
-        return self
-
-    def _bend_bezier(self, h: int, coming_from: str, coming_to: str | None):
-        double_arc_radius = math.ceil(2 * self._render.settings.arc_radius)
-
-        interm_x_1: float = self._pos.x
-        interm_y_1: float = self._pos.y
-        interm_x_2: float = self._pos.x
-        interm_y_2: float = self._pos.y + h
-        out_x = self._pos.x
-        out_y = self._pos.y + h
-
-        if coming_from == "w" and coming_to == "e":
-            interm_x_1 += 2 * double_arc_radius / 3
-            interm_x_2 += double_arc_radius / 3
-            out_x += double_arc_radius
-        elif coming_from == "e" and coming_to == "w":
-            interm_x_1 -= 2 * double_arc_radius / 3
-            interm_x_2 -= double_arc_radius / 3
-            out_x -= double_arc_radius
-        elif coming_from == coming_to == "w":
-            interm_x_1 += 2 * double_arc_radius / 3
-            interm_x_2 += 2 * double_arc_radius / 3
-        elif coming_from == coming_to == "e":
-            interm_x_1 -= 2 * double_arc_radius / 3
-            interm_x_2 -= 2 * double_arc_radius / 3
-        elif coming_from == "w":
-            interm_x_1 += double_arc_radius / 2
-            interm_x_2 += double_arc_radius / 2
-            interm_y_2 = self._pos.y + h / 2
-            out_x += math.ceil(self._render.settings.arc_radius)
-        elif coming_from == "e":
-            interm_x_1 -= double_arc_radius / 2
-            interm_x_2 -= double_arc_radius / 2
-            interm_y_2 = self._pos.y + h / 2
-            out_x -= math.ceil(self._render.settings.arc_radius)
-
-        self._elem.attrs[
-            "d"
-        ] += f"C{interm_x_1} {interm_y_1} {interm_x_2} {interm_y_2} {out_x} {out_y}"
-
-        self._pos.x = out_x
-        self._pos.y += h
-
-        return self
-
-
-@dataclass
-class _SvgElement:
-    name: str
-    """Name of SVG node"""
-
-    attrs: dict[str, _t.Any] = field(default_factory=dict)
-    """SVG node attributes"""
-
-    children: list[_SvgElement | str] = field(default_factory=list)
-    """Children SVG nodes"""
-
-    def elem(
-        self,
-        name: str,
-        attrs: dict[str, _t.Any] | None = None,
-        children: list[_SvgElement | str] | None = None,
-    ):
-        return _SvgElement(name, attrs or {}, children or []).add_to(self)
-
-    def add_to(self, parent: _SvgElement) -> _SvgElement:
-        parent.children.append(self)
-        return self
-
-    def write_svg(self, f: _t.TextIO):
-        f.write(f"<{self.name}")
-        for name, value in sorted(self.attrs.items()):
-            if value is not None:
-                f.write(f' {name}="{_e(value)}"')
-        f.write(">")
-        for child in self.children:
-            if isinstance(child, _SvgElement):
-                child.write_svg(f)
+            if abs(h) < double_arc_radius:
+                return self._bend_bezier(h, coming_from, coming_to)
+            elif h > 0:
+                h -= double_arc_radius
+                intermediate_d = ("s", "n")
             else:
-                f.write(_e(child))
-        f.write(f"</{self.name}>")
+                h += double_arc_radius
+                intermediate_d = ("n", "s")
 
-    _ESCAPE_RE = re.compile(r"[*_`\[\]<&]", re.UNICODE)
+            self._arc(coming_from, intermediate_d[0])
 
+            if coming_to is not None:
+                self._elem.attrs["d"] += f"v{h}"
+                self._pos.y += h
+                self._arc(intermediate_d[1], coming_to)
+            else:
+                arc_radius = math.ceil(self._render.settings.arc_radius)
+                self._elem.attrs["d"] += f"v{h + arc_radius}"
+                self._pos.y += h + arc_radius
 
-def _e(text: _t.Any):
-    return _SvgElement._ESCAPE_RE.sub(lambda c: f"&#{ord(c[0])};", str(text))
+            return self
+
+        def _arc(self, coming_from: str, coming_to: str):
+            arc_radius = math.ceil(self._render.settings.arc_radius)
+
+            x = arc_radius
+            y = arc_radius
+            if coming_from == "e" or coming_to == "w":
+                x = -x
+            if coming_from == "s" or coming_to == "n":
+                y = -y
+
+            sf = (
+                0
+                if (coming_from, coming_to)
+                in [("n", "e"), ("e", "s"), ("s", "w"), ("w", "n")]
+                else 1
+            )
+
+            self._elem.attrs["d"] += f"a{arc_radius} {arc_radius} 0 0 {sf} {x} {y}"
+
+            self._pos.x += x
+            self._pos.y += y
+
+            return self
+
+        def _bend_bezier(self, h: int, coming_from: str, coming_to: str | None):
+            double_arc_radius = math.ceil(2 * self._render.settings.arc_radius)
+
+            interm_x_1: float = self._pos.x
+            interm_y_1: float = self._pos.y
+            interm_x_2: float = self._pos.x
+            interm_y_2: float = self._pos.y + h
+            out_x = self._pos.x
+            out_y = self._pos.y + h
+
+            if coming_from == "w" and coming_to == "e":
+                interm_x_1 += 2 * double_arc_radius / 3
+                interm_x_2 += double_arc_radius / 3
+                out_x += double_arc_radius
+            elif coming_from == "e" and coming_to == "w":
+                interm_x_1 -= 2 * double_arc_radius / 3
+                interm_x_2 -= double_arc_radius / 3
+                out_x -= double_arc_radius
+            elif coming_from == coming_to == "w":
+                interm_x_1 += 2 * double_arc_radius / 3
+                interm_x_2 += 2 * double_arc_radius / 3
+            elif coming_from == coming_to == "e":
+                interm_x_1 -= 2 * double_arc_radius / 3
+                interm_x_2 -= 2 * double_arc_radius / 3
+            elif coming_from == "w":
+                interm_x_1 += double_arc_radius / 2
+                interm_x_2 += double_arc_radius / 2
+                interm_y_2 = self._pos.y + h / 2
+                out_x += math.ceil(self._render.settings.arc_radius)
+            elif coming_from == "e":
+                interm_x_1 -= double_arc_radius / 2
+                interm_x_2 -= double_arc_radius / 2
+                interm_y_2 = self._pos.y + h / 2
+                out_x -= math.ceil(self._render.settings.arc_radius)
+
+            self._elem.attrs[
+                "d"
+            ] += f"C{interm_x_1} {interm_y_1} {interm_x_2} {interm_y_2} {out_x} {out_y}"
+
+            self._pos.x = out_x
+            self._pos.y += h
+
+            return self
+
+    @dataclass
+    class _SvgElement:
+        name: str
+        """Name of SVG node"""
+
+        attrs: dict[str, _t.Any] = field(default_factory=dict)
+        """SVG node attributes"""
+
+        children: list[SvgRender._SvgElement | str] = field(default_factory=list)
+        """Children SVG nodes"""
+
+        def elem(
+            self,
+            name: str,
+            attrs: dict[str, _t.Any] | None = None,
+            children: list[SvgRender._SvgElement | str] | None = None,
+        ):
+            return SvgRender._SvgElement(name, attrs or {}, children or []).add_to(self)
+
+        def add_to(self, parent: SvgRender._SvgElement) -> SvgRender._SvgElement:
+            parent.children.append(self)
+            return self
+
+        def write_svg(self, f: _t.TextIO, render: SvgRender[_t.Any]):
+            f.write(f"<{self.name}")
+            for name, value in sorted(self.attrs.items()):
+                if value is not None:
+                    f.write(f' {name}="{render._e(value)}"')
+            f.write(">")
+            for child in self.children:
+                if isinstance(child, SvgRender._SvgElement):
+                    child.write_svg(f, render)
+                else:
+                    f.write(render._e(child))
+            f.write(f"</{self.name}>")

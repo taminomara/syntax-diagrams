@@ -1,8 +1,8 @@
-import schema from "../../gen/schema.json";
-import Editor, { type Monaco } from "@monaco-editor/react";
-import { type MonacoYaml, configureMonacoYaml } from "monaco-yaml";
-
-let monacoYamlInstance: MonacoYaml | undefined;
+import type { Theme } from "./App";
+import { type Monaco, Editor as MonacoEditor } from "@monaco-editor/react";
+import { configureMonacoYaml } from "monaco-yaml";
+import { useEffect, useState } from "react";
+import schema from "virtual:schema.json";
 
 const CODE = `---
 - optional:
@@ -12,7 +12,8 @@ const CODE = `---
     - non_terminal: "common-table-expression"
     repeat: ","
 - one_or_more:
-  - group:
+  - text: select-core
+    group:
     - choice:
       - stack:
         -
@@ -65,7 +66,6 @@ const CODE = `---
             repeat: ","
           - ")"
           repeat: ","
-    text: select-core
   repeat:
     non_terminal: "compound-operator"
 - optional:
@@ -90,27 +90,50 @@ const CODE = `---
   skip_bottom: true
 `;
 
-export default function () {
+export function Editor({
+  setCode,
+  theme,
+}: {
+  setCode?: (code: string | undefined) => void;
+  theme: Theme;
+}) {
+  const [monaco, setMonaco] = useState<Monaco | null>(null);
+  const defaultValue = localStorage.getItem("code") || CODE;
+
   const beforeMount = (monaco: Monaco) => {
-    if (!monacoYamlInstance) {
-      monacoYamlInstance = configureMonacoYaml(monaco, {
-        hover: true,
-        completion: true,
-        validate: true,
-        format: true,
-        enableSchemaRequest: true,
-        schemas: [
-          {
-            fileMatch: ["**/diagram.yaml"],
-            schema,
-            uri: "https://taminomara.github.io/syntax-diagrams/",
-          },
-        ],
-      });
+    setMonaco(monaco);
+
+    if (setCode) {
+      setCode(defaultValue);
     }
+    monaco.editor.setTheme(theme === "light" ? "vs" : "vs-dark");
+
+    configureMonacoYaml(monaco, {
+      hover: true,
+      completion: true,
+      validate: true,
+      format: true,
+      enableSchemaRequest: true,
+      schemas: [
+        {
+          fileMatch: ["**/diagram.yaml"],
+          schema,
+          uri: import.meta.resolve("virtual:schema.json"),
+        },
+      ],
+    });
   };
 
+  useEffect(() => {
+    if (monaco) {
+      monaco.editor.setTheme(theme === "light" ? "vs" : "vs-dark");
+    }
+  }, [monaco, theme]);
+
   const onChange = (value: string | undefined) => {
+    if (setCode) {
+      setCode(value ?? "");
+    }
     try {
       localStorage.setItem("code", value ?? "");
     } catch (e) {
@@ -119,11 +142,11 @@ export default function () {
   };
 
   return (
-    <Editor
-      height="100vh"
+    <MonacoEditor
+      height="100%"
       defaultLanguage="yaml"
-      defaultValue={localStorage.getItem("code") || CODE}
-      theme="vs-dark"
+      defaultValue={defaultValue}
+      theme={theme === "light" ? "vs" : "vs-dark"}
       path="diagram.yaml"
       beforeMount={beforeMount}
       onChange={onChange}
@@ -142,7 +165,6 @@ export default function () {
           comments: false,
           strings: true,
         },
-        formatOnType: true,
       }}
     />
   );

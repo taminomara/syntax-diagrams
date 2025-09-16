@@ -53,18 +53,18 @@ class OneOrMore(Element[T], _t.Generic[T]):
         return self
 
     @cached_property
-    def _precedence(self) -> int:
+    def precedence(self) -> int:
         # OneOrMore without repeat renders as an unary operator
         return 3 if isinstance(self._repeat, Skip) else 2
 
     @cached_property
-    def _contains_choices(self) -> bool:
-        return self._item._contains_choices or self._repeat._contains_choices
+    def contains_choices(self) -> bool:
+        return self._item.contains_choices or self._repeat.contains_choices
 
     def _calculate_content_layout(
         self, settings: LayoutSettings[T], context: LayoutContext
     ):
-        assert self._cached_context
+        assert self.context
 
         # Whether it's safe to place repeat arcs at the connection points,
         # or we need to shift them inwards.
@@ -112,7 +112,7 @@ class OneOrMore(Element[T], _t.Generic[T]):
             end_direction=context.end_direction,
             allow_shrinking_stacks=context.allow_shrinking_stacks,
         )
-        self._item._calculate_layout(settings, item_context)
+        self._item.calculate_layout(settings, item_context)
 
         repeat_context = LayoutContext(
             width=max(
@@ -140,13 +140,13 @@ class OneOrMore(Element[T], _t.Generic[T]):
             end_direction=ConnectionDirection.UP,
             allow_shrinking_stacks=False,
         )
-        self._repeat._calculate_layout(settings, repeat_context)
+        self._repeat.calculate_layout(settings, repeat_context)
 
         width = max(
-            self._item._width
+            self._item.width
             + self._additional_start_padding
             + self._additional_end_padding,
-            self._repeat._width
+            self._repeat.width
             - 2 * arc_size
             + self._start_arc_size
             + self._end_arc_size
@@ -154,10 +154,10 @@ class OneOrMore(Element[T], _t.Generic[T]):
             + self._additional_end_padding,
         )
         display_width = max(
-            self._item._display_width
+            self._item.display_width
             + self._additional_start_padding
             + self._additional_end_padding,
-            self._repeat._display_width
+            self._repeat.display_width
             - 2 * arc_size
             + self._start_arc_size
             + self._end_arc_size
@@ -173,18 +173,18 @@ class OneOrMore(Element[T], _t.Generic[T]):
             - self._additional_end_padding
         ) // 2
 
-        self._repeat_content_width_l = self._repeat._content_width // 2
+        self._repeat_content_width_l = self._repeat.content_width // 2
         self._repeat_content_width_r = (
-            self._repeat._content_width - self._repeat_content_width_l
+            self._repeat.content_width - self._repeat_content_width_l
         )
 
-        self._start_padding = min(
-            self._item._start_padding + self._additional_start_padding,
+        self.start_padding = min(
+            self._item.start_padding + self._additional_start_padding,
             self._center_offset - self._repeat_content_width_l,
         )
-        self._start_margin = max(
+        self.start_margin = max(
             0,
-            self._start_padding
+            self.start_padding
             - min(
                 (
                     self._start_arc_size + arc_radius
@@ -197,37 +197,37 @@ class OneOrMore(Element[T], _t.Generic[T]):
                 )
                 - settings.arc_margin
                 - arc_radius,
-                self._item._start_padding
+                self._item.start_padding
                 + self._additional_start_padding
-                - self._item._start_margin,
+                - self._item.start_margin,
                 self._center_offset
                 - self._repeat_content_width_l
-                - self._repeat._start_margin,
+                - self._repeat.start_margin,
             ),
         )
-        self._end_padding = max(
+        self.end_padding = max(
             0,
             width
             - max(
-                self._item._start_padding
+                self._item.start_padding
                 + self._additional_start_padding
-                + self._item._content_width,
+                + self._item.content_width,
                 self._center_offset + self._repeat_content_width_r,
             ),
         )
-        self._end_margin = max(
+        self.end_margin = max(
             0,
             max(
-                self._item._start_padding
+                self._item.start_padding
                 + self._additional_start_padding
-                + self._item._content_width
-                + self._item._end_margin,
+                + self._item.content_width
+                + self._item.end_margin,
                 self._center_offset
                 + self._repeat_content_width_r
-                + self._repeat._end_margin,
+                + self._repeat.end_margin,
             )
-            - (width - self._end_padding),
-            self._end_padding
+            - (width - self.end_padding),
+            self.end_padding
             - (
                 self._end_arc_size + arc_radius
                 if self._need_shift_end_arc
@@ -241,24 +241,24 @@ class OneOrMore(Element[T], _t.Generic[T]):
             + settings.arc_margin,
         )
 
-        self._display_width = display_width
-        self._content_width = max(0, width - self._start_padding - self._end_padding)
+        self.display_width = display_width
+        self.content_width = max(0, width - self.start_padding - self.end_padding)
 
-        self._up = self._item._up
-        self._height = self._item._height
-        self._down = (
-            self._item._down
+        self.up = self._item.up
+        self.height = self._item.height
+        self.down = (
+            self._item.down
             + self._vertical_choice_separation
-            + self._repeat._up
-            + self._repeat._height
-            + self._repeat._down
+            + self._repeat.up
+            + self._repeat.height
+            + self._repeat.down
         )
 
     def _render_content(self, render: Render[T], context: RenderContext):
         arc_radius = math.ceil(render.settings.arc_radius)
         arc_size = render.settings.arc_margin + arc_radius
 
-        assert self._cached_context
+        assert self.context
         if self._need_shift_start_arc:
             (
                 (render)
@@ -295,7 +295,7 @@ class OneOrMore(Element[T], _t.Generic[T]):
             ),
         )
 
-        self._item._render(render, item_context)
+        self._item.render(render, item_context)
 
         repeat_start_connection_pos = context.pos + Vec(
             context.dir
@@ -313,7 +313,7 @@ class OneOrMore(Element[T], _t.Generic[T]):
         repeat_end_connection_pos = context.pos + Vec(
             context.dir
             * (
-                self._width
+                self.width
                 - (
                     self._end_arc_size + arc_radius
                     if self._need_shift_end_arc
@@ -324,7 +324,7 @@ class OneOrMore(Element[T], _t.Generic[T]):
                     )
                 )
             ),
-            self._item._height,
+            self._item.height,
         )
 
         center = context.pos + Vec(context.dir * self._center_offset, 0)
@@ -334,68 +334,68 @@ class OneOrMore(Element[T], _t.Generic[T]):
                 center
                 + Vec(
                     context.dir
-                    * (self._repeat._start_padding + self._repeat_content_width_r),
-                    self._item._height
-                    + self._item._down
+                    * (self._repeat.start_padding + self._repeat_content_width_r),
+                    self._item.height
+                    + self._item.down
                     + self._vertical_choice_separation
-                    + self._repeat._up,
+                    + self._repeat.up,
                 )
             ),
             start_connection_pos=repeat_end_connection_pos,
             end_connection_pos=repeat_start_connection_pos,
             reverse=not context.reverse,
         )
-        self._repeat._render(render, repeat_context)
+        self._repeat.render(render, repeat_context)
 
         render.debug_pos(repeat_start_connection_pos)
         render.debug_pos(repeat_end_connection_pos)
         render.debug_pos(center)
 
     def _calculate_top_ridge_line(self) -> RidgeLine:
-        ridge_line = self._item._top_ridge_line
+        ridge_line = self._item.top_ridge_line
         if self._additional_start_padding > 0:
             return ridge_line + Vec(self._additional_start_padding, 0)
         else:
             return ridge_line
 
     def _calculate_bottom_ridge_line(self) -> RidgeLine:
-        assert self._cached_settings
+        assert self.settings
 
-        arc_radius = math.ceil(self._cached_settings.arc_radius)
+        arc_radius = math.ceil(self.settings.arc_radius)
         repeat_start_connection_pos = (
             self._start_arc_size
             if self._need_shift_start_arc
             else (
                 self._start_arc_size
                 + self._additional_start_padding
-                - self._cached_settings.arc_margin
+                - self.settings.arc_margin
                 - arc_radius
             )
         )
-        repeat_end_connection_pos = self._width - (
+        repeat_end_connection_pos = self.width - (
             self._end_arc_size
             if self._need_shift_end_arc
             else (
                 self._end_arc_size
                 + self._additional_end_padding
-                - self._cached_settings.arc_margin
+                - self.settings.arc_margin
                 - arc_radius
             )
         )
 
         x_pos = (
             self._center_offset
-            + self._repeat._start_padding
+            + self._repeat.start_padding
             + self._repeat_content_width_r
         )
-        y_pos = self._item._down + self._vertical_choice_separation + self._repeat._up
+        y_pos = self._item.down + self._vertical_choice_separation + self._repeat.up
         return merge_ridge_lines(
-            reverse_ridge_line(self._repeat._bottom_ridge_line, x_pos)
-            + Vec(0, y_pos + self._repeat._height),
+            reverse_ridge_line(self._repeat.bottom_ridge_line, x_pos)
+            + Vec(0, y_pos + self._repeat.height),
             RidgeLine(
-                -self._height,
+                -self.height,
                 [
-                    Vec(repeat_start_connection_pos, self._down),
+                    Vec(repeat_start_connection_pos, self.down),
                     Vec(repeat_end_connection_pos, 0),
                 ],
             ),
@@ -406,18 +406,18 @@ class OneOrMore(Element[T], _t.Generic[T]):
         if isinstance(self._repeat, Skip):
             return (
                 f"{self._item}+"
-                if self._item._precedence >= self._precedence
+                if self._item.precedence >= self.precedence
                 else f"({self._item})+"
             )
         else:
             item = (
                 f"{self._item}"
-                if self._item._precedence >= self._precedence
+                if self._item.precedence >= self.precedence
                 else f"({self._item})"
             )
             repeat = (
                 f"{self._repeat}"
-                if self._repeat._precedence >= self._precedence
+                if self._repeat.precedence >= self.precedence
                 else f"({self._repeat})"
             )
             return f"{item} ({repeat} {item})*"

@@ -45,15 +45,10 @@ class _Annotation:
 
 
 class Terminal(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a terminal node with optional additional settings.
-
-    """
-
     terminal: _t.Annotated[
         _t.Required[str],
         _Annotation(
-            description="Text of the terminal, required.",
+            description="Describes a terminal node with optional additional settings.",
         ),
     ]
 
@@ -94,15 +89,10 @@ class Terminal(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class NonTerminal(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a non-terminal node with optional additional settings.
-
-    """
-
     non_terminal: _t.Annotated[
         _t.Required[str],
         _Annotation(
-            description="Text of the non-terminal, required.",
+            description="Describes a non-terminal node with optional additional settings.",
         ),
     ]
 
@@ -143,15 +133,10 @@ class NonTerminal(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class Comment(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a comment node with optional additional settings.
-
-    """
-
     comment: _t.Annotated[
         _t.Required[str],
         _Annotation(
-            description="Text of the terminal, required.",
+            description="Describes a comment node with optional additional settings.",
         ),
     ]
 
@@ -192,15 +177,10 @@ class Comment(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class Sequence(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes an automatically wrapped sequence of elements.
-
-    """
-
     sequence: _t.Annotated[
         _t.Required[list[Element[T]]],
         _Annotation(
-            description="Elements in the sequence.",
+            description="Describes an automatically wrapped sequence of elements.",
         ),
     ]
 
@@ -218,43 +198,28 @@ class Sequence(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class Stack(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a sequence of elements that wraps after each element.
-
-    """
-
     stack: _t.Annotated[
         _t.Required[list[Element[T]]],
         _Annotation(
-            description="Elements in the stack.",
+            description="Describes a sequence of elements that wraps after each element.",
         ),
     ]
 
 
 class NoBreak(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a sequence of elements that doesn't wrap.
-
-    """
-
     no_break: _t.Annotated[
         _t.Required[list[Element[T]]],
         _Annotation(
-            description="Elements in the no-break sequence.",
+            description="Describes a sequence of elements that doesn't wrap.",
         ),
     ]
 
 
 class Choice(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a choice between several elements.
-
-    """
-
     choice: _t.Annotated[
         _t.Required[list[Element[T]]],
         _Annotation(
-            description="Elements to choose from.",
+            description="Describes a choice between several elements.",
         ),
     ]
 
@@ -267,15 +232,10 @@ class Choice(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class Optional(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes an optional element.
-
-    """
-
     optional: _t.Annotated[
         _t.Required[Element[T]],
         _Annotation(
-            description="Element that will be made optional.",
+            description="Describes an optional element.",
         ),
     ]
 
@@ -295,15 +255,10 @@ class Optional(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class OneOrMore(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes a repeated element.
-
-    """
-
     one_or_more: _t.Annotated[
         _t.Required[Element[T]],
         _Annotation(
-            description="Element that will be repeated.",
+            description="Describes a repeated element.",
         ),
     ]
 
@@ -323,15 +278,10 @@ class OneOrMore(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class ZeroOrMore(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Describes an optional repeated element.
-
-    """
-
     zero_or_more: _t.Annotated[
         _t.Required[Element[T]],
         _Annotation(
-            description="Element that will be repeated.",
+            description="Describes an optional repeated element.",
         ),
     ]
 
@@ -365,30 +315,22 @@ class ZeroOrMore(_t.TypedDict, _t.Generic[T], total=False):
 
 
 class Barrier(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Isolates an element and disables optimizations that merge lines between
-    this element and the rest of the diagram.
-
-    """
-
     barrier: _t.Annotated[
         _t.Required[Element[T]],
         _Annotation(
-            description="Element that will be isolated.",
+            description=(
+                "Isolates an element and disables optimizations that merge "
+                "lines between this element and the rest of the diagram."
+            )
         ),
     ]
 
 
 class Group(_t.TypedDict, _t.Generic[T], total=False):
-    """
-    Draws a box around some element.
-
-    """
-
     group: _t.Annotated[
         _t.Required[Element[T]],
         _Annotation(
-            description="Group's inner element, required.",
+            description="Draws a box around some element.",
         ),
     ]
 
@@ -870,7 +812,19 @@ def _to_json_schema(
     return schema
 
 
-if __name__ == "__main__":
+def _main():
+    import argparse
     import json
+    import sys
 
-    print(json.dumps(_to_json_schema(Element, globals(), locals()), indent=2))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-o", type=argparse.FileType("w"), default=sys.stdout)
+    args = parser.parse_args()
+
+    print(
+        json.dumps(_to_json_schema(Element, globals(), locals()), indent=2), file=args.o
+    )
+
+
+if __name__ == "__main__":
+    _main()

@@ -37,12 +37,51 @@ To fix code style, you can manually run pre-commit hooks:
 pre-commit run -a  # Fix code style.
 ```
 
+## Run debug server
+
+You'll need node 22.2 or newer.
+
+1. Navigate to `docs/try` and install dependencies:
+
+   ```shell
+   cd docs/try
+   npm install
+   ```
+
+2. Start backend:
+
+   ```shell
+   python ./backend.py
+   ```
+
+3. Start frontend:
+
+   ```shell
+   npm run dev
+   ```
+
+You'll get a local installation of the *try* page that runs
 
 ## Build docs
 
-Just run `sphinx` as usual, nothing special is required:
+To build the main part of documentation, just run `sphinx` as usual:
 
 ```shell
 cd docs/
 make html
+```
+
+To build the *try* page, navigate to `docs/try`, install dependencies
+and run a production build:
+
+```shell
+cd docs/try
+npm install
+npm run build
+```
+
+Optionally preview the production build to make sure it works:
+
+```shell
+npm run preview
 ```

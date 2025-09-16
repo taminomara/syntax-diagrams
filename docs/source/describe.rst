@@ -83,12 +83,12 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
                 diagram = sequence(
                     choice(
                         terminal("lexer"),
-                        None,
+                        skip(),
                         terminal("parser"),
                     )
                     terminal("grammar"),
                     non_terminal("identifier"),
-                    terminal(";")
+                    terminal(";"),
                 )
 
         .. tab-item:: Rendered
@@ -551,11 +551,11 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
             .. code-block:: python
 
                 diagram = choice(
-                    terminal("INT")
-                    terminal("STR")
+                    terminal("INT"),
+                    terminal("STR"),
                     sequence(
                       terminal("("),
-                      non_terminal("expr")
+                      non_terminal("expr"),
                       terminal(")"),
                     )
                 )
@@ -616,7 +616,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
             .. code-block:: python
 
                 diagram = optional(
-                    non_terminal("annotation")
+                    non_terminal("annotation"),
                 )
 
         .. tab-item:: Rendered
@@ -660,9 +660,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
                 one_or_more:
                 - non_terminal: "expr"
-                repeat:
-                - "COMMA"
-                - optional: "SPACE"
+                repeat: "COMMA"
 
         .. tab-item:: Python
             :sync: python
@@ -671,10 +669,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
                 diagram = one_or_more(
                     non_terminal("expr"),
-                    repeat=sequence(
-                        terminal("COMMA"),
-                        optional(terminal("SPACE"))
-                    )
+                    repeat=terminal("COMMA"),
                 )
 
         .. tab-item:: Rendered
@@ -684,9 +679,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
                 one_or_more:
                 - non_terminal: "expr"
-                repeat:
-                - "COMMA"
-                - optional: "SPACE"
+                repeat: "COMMA"
 
 
 .. type:: ZeroOrMore[T]
@@ -732,9 +725,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
                 zero_or_more:
                 - non_terminal: "expr"
-                repeat:
-                - "COMMA"
-                - optional: "SPACE"
+                repeat: "COMMA"
 
         .. tab-item:: Python
             :sync: python
@@ -743,10 +734,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
                 diagram = zero_or_more(
                     non_terminal("expr"),
-                    repeat=sequence(
-                        terminal("COMMA"),
-                        optional(terminal("SPACE"))
-                    )
+                    repeat=terminal("COMMA"),
                 )
 
         .. tab-item:: Rendered
@@ -756,9 +744,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
                 zero_or_more:
                 - non_terminal: "expr"
-                repeat:
-                - "COMMA"
-                - optional: "SPACE"
+                repeat: "COMMA"
 
 
 .. type:: Barrier[T]
@@ -812,7 +798,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
             :sync: rendered
 
             .. list-table::
-                :widths: 50% 50%
+                :widths: 50 50
                 :header-rows: 1
 
                 * - Without barrier:
@@ -835,6 +821,102 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
                           - barrier:
                             - optional:
                             - "C"
+
+
+.. type:: Group[T]
+
+    Draws a box around some element.
+
+    Use :func:`group` to create this description in Python.
+
+    **Dict keys:**
+
+    -   :python:`group: Element[T]`, *required*
+
+        Element that will be placed in a group.
+
+    -   :python:`href: text`
+
+        Optional caption for this group.
+
+    -   :python:`href: str`
+
+        Makes group's caption into a hyperlink.
+
+    -   :python:`title: str`
+
+        Title for hyperlink.
+
+    -   :python:`css_class: str`
+
+        Adds CSS class to group's ``<g>`` element.
+
+    **Example:**
+
+    .. tab-set::
+        :sync-group: diagram-example
+
+        .. tab-item:: YAML
+            :sync: yaml
+
+            .. code-block:: yaml
+
+                - "def"
+                - "("
+                - group:
+                  - zero_or_more:
+                    - non_terminal: "param"
+                    - optional:
+                      - ":"
+                      - non_terminal: "type"
+                    repeat: ","
+                  - optional: ","
+                  text: Function parameters
+                - ")"
+                - ":"
+
+        .. tab-item:: Python
+            :sync: python
+
+            .. code-block:: python
+
+                diagram = sequence(
+                    terminal("def"),
+                    terminal("("),
+                    group(
+                        zero_or_more(
+                            non_terminal("param"),
+                            optional(
+                                terminal(":"),
+                                non_terminal("type"),
+                            ),
+                            repeat=terminal(","),
+                        ),
+                        optional(terminal(",")),
+                        text="Function parameters",
+                    ),
+                    terminal(")"),
+                    terminal(":"),
+                )
+
+        .. tab-item:: Rendered
+            :sync: rendered
+
+            .. code-block:: yaml
+
+                - "def"
+                - "("
+                - group:
+                  - zero_or_more:
+                    - non_terminal: "param"
+                    - optional:
+                      - ":"
+                      - non_terminal: "type"
+                    repeat: ","
+                  - optional: ","
+                  text: Function parameters
+                - ")"
+                - ":"
 
 
 Using constructors
@@ -865,6 +947,8 @@ If you're building diagrams manually in python code, you can use these construct
 .. autofunction:: zero_or_more
 
 .. autofunction:: barrier
+
+.. autofunction:: group
 
 
 Line breaks and wrapping

@@ -168,62 +168,62 @@ class Element(_t.Generic[T]):
     in reverse. `context.dir` is helpful here.
     """
 
-    _display_width: int = 0
+    display_width: int = 0
     """
     Total width this element takes up on the screen. Can be larger than `_width`
     in case of stack optimizations.
 
     """
 
-    _content_width: int = 0
+    content_width: int = 0
     """
     Width of element's contents.
 
     """
 
-    _start_padding: int = 0
+    start_padding: int = 0
     """
     Space that's required to connect element's input to its content.
 
     """
 
-    _end_padding: int = 0
+    end_padding: int = 0
     """
     Space that's required to connect element's content to its output.
 
     """
 
-    _start_margin: int = 0
+    start_margin: int = 0
     """
     Minimal space between this node's content box and content boxes of its neighbors.
 
     """
 
-    _end_margin: int = 0
+    end_margin: int = 0
     """
     Minimal space between this node's content box and content boxes of its neighbors.
 
     """
 
-    _height: int = 0
+    height: int = 0
     """
     Difference between level of element's input line and its output line.
 
     """
 
-    _up: int = 0
+    up: int = 0
     """
     Space the element occupies above its input line.
 
     """
 
-    _down: int = 0
+    down: int = 0
     """
     Space the element occupies below its output line.
 
     """
 
-    _cached_settings: LayoutSettings[T] | None = None
+    settings: LayoutSettings[T] | None = None
     """
     Used to check if settings changed from the last layout calculation,
     and re-calculate layout only if needed.
@@ -233,7 +233,7 @@ class Element(_t.Generic[T]):
 
     """
 
-    _cached_context: LayoutContext | None = None
+    context: LayoutContext | None = None
     """
     Used to check if settings changed from the last layout calculation,
     and re-calculate layout only if needed.
@@ -244,16 +244,16 @@ class Element(_t.Generic[T]):
     """
 
     @property
-    def _width(self) -> int:
+    def width(self) -> int:
         """
         Total width of an element.
 
         """
 
-        return self._start_padding + self._content_width + self._end_padding
+        return self.start_padding + self.content_width + self.end_padding
 
     @cached_property
-    def _precedence(self) -> int:
+    def precedence(self) -> int:
         """
         Element's precedence, used in `__str__` method.
 
@@ -262,7 +262,7 @@ class Element(_t.Generic[T]):
         return 3
 
     @cached_property
-    def _contains_choices(self) -> bool:
+    def contains_choices(self) -> bool:
         """
         True if there are non-trivial `_Choice` elements within this element.
 
@@ -274,7 +274,7 @@ class Element(_t.Generic[T]):
         return False
 
     @cached_property
-    def _can_use_opt_enters(self) -> bool:
+    def can_use_opt_enters(self) -> bool:
         """
         Indicates that this element can benefit from giving it an optional enter line.
 
@@ -283,7 +283,7 @@ class Element(_t.Generic[T]):
         return False
 
     @cached_property
-    def _can_use_opt_exits(self) -> bool:
+    def can_use_opt_exits(self) -> bool:
         """
         Indicates that this element can benefit from giving it an optional exit line.
 
@@ -305,12 +305,12 @@ class Element(_t.Generic[T]):
 
         self.__isolated_start = start
         self.__isolated_end = end
-        assert self._cached_context
+        assert self.context
         return replace(
-            self._cached_context,
+            self.context,
             width=max(
                 0,
-                self._cached_context.width
+                self.context.width
                 - (self.__start_arc_size if start else 0)
                 - (self.__end_arc_size if end else 0),
             ),
@@ -321,18 +321,14 @@ class Element(_t.Generic[T]):
                     else ConnectionType.NULL
                 )
                 if start
-                else self._cached_context.start_connection
+                else self.context.start_connection
             ),
-            start_top_is_clear=(
-                True if start else self._cached_context.start_top_is_clear
-            ),
+            start_top_is_clear=(True if start else self.context.start_top_is_clear),
             start_bottom_is_clear=(
-                True if start else self._cached_context.start_bottom_is_clear
+                True if start else self.context.start_bottom_is_clear
             ),
             start_direction=(
-                ConnectionDirection.STRAIGHT
-                if start
-                else self._cached_context.start_direction
+                ConnectionDirection.STRAIGHT if start else self.context.start_direction
             ),
             end_connection=(
                 (
@@ -341,41 +337,37 @@ class Element(_t.Generic[T]):
                     else ConnectionType.NULL
                 )
                 if end
-                else self._cached_context.end_connection
+                else self.context.end_connection
             ),
-            end_top_is_clear=(True if end else self._cached_context.end_top_is_clear),
-            end_bottom_is_clear=(
-                True if end else self._cached_context.end_bottom_is_clear
-            ),
+            end_top_is_clear=(True if end else self.context.end_top_is_clear),
+            end_bottom_is_clear=(True if end else self.context.end_bottom_is_clear),
             end_direction=(
-                ConnectionDirection.STRAIGHT
-                if end
-                else self._cached_context.end_direction
+                ConnectionDirection.STRAIGHT if end else self.context.end_direction
             ),
         )
 
-    def _calculate_layout(self, settings: LayoutSettings[T], context: LayoutContext):
+    def calculate_layout(self, settings: LayoutSettings[T], context: LayoutContext):
         """
         Run layout calculation.
 
         """
 
-        if settings == self._cached_settings and context == self._cached_context:
+        if settings == self.settings and context == self.context:
             return
 
-        self._cached_settings = settings
-        self._cached_context = context
-        self._display_width = 0
-        self._content_width = 0
-        self._start_padding = 0
-        self._start_margin = 0
-        self._end_margin = 0
-        self._end_padding = 0
-        self._height = 0
-        self._up = 0
-        self._down = 0
-        self.__dict__.pop("_top_ridge_line", None)
-        self.__dict__.pop("_bottom_ridge_line", None)
+        self.settings = settings
+        self.context = context
+        self.display_width = 0
+        self.content_width = 0
+        self.start_padding = 0
+        self.start_margin = 0
+        self.end_margin = 0
+        self.end_padding = 0
+        self.height = 0
+        self.up = 0
+        self.down = 0
+        self.__dict__.pop("top_ridge_line", None)
+        self.__dict__.pop("bottom_ridge_line", None)
 
         self.__start_connection = context.start_connection
         self.__start_arc_size = self.__start_connection.arc_size(settings)
@@ -386,25 +378,25 @@ class Element(_t.Generic[T]):
         self.__isolated_end = False
         self._calculate_content_layout(settings, context)
 
-        self.__width_before_adjustments = self._width
-        self.__start_padding_before_adjustments = self._start_padding
-        self.__end_padding_before_adjustments = self._end_padding
-        self.__start_margin_before_adjustments = self._start_margin
-        self.__end_margin_before_adjustments = self._end_margin
+        self.__width_before_adjustments = self.width
+        self.__start_padding_before_adjustments = self.start_padding
+        self.__end_padding_before_adjustments = self.end_padding
+        self.__start_margin_before_adjustments = self.start_margin
+        self.__end_margin_before_adjustments = self.end_margin
 
         if self.__isolated_start:
-            self._start_padding += self.__start_arc_size
-            self._display_width += self.__start_arc_size
+            self.start_padding += self.__start_arc_size
+            self.display_width += self.__start_arc_size
             if self.__start_connection in (ConnectionType.STACK, ConnectionType.SPLIT):
-                self._start_margin = max(
-                    self._start_padding + settings.arc_margin, self._start_margin
+                self.start_margin = max(
+                    self.start_padding + settings.arc_margin, self.start_margin
                 )
         if self.__isolated_end:
-            self._end_padding += self.__end_arc_size
-            self._display_width += self.__end_arc_size
+            self.end_padding += self.__end_arc_size
+            self.display_width += self.__end_arc_size
             if self.__end_connection in (ConnectionType.STACK, ConnectionType.SPLIT):
-                self._end_margin = max(
-                    self._end_padding + settings.arc_margin, self._end_margin
+                self.end_margin = max(
+                    self.end_padding + settings.arc_margin, self.end_margin
                 )
 
     def _calculate_content_layout(
@@ -417,7 +409,7 @@ class Element(_t.Generic[T]):
 
         raise NotImplementedError()
 
-    def _render(self, render: Render[T], context: RenderContext):
+    def render(self, render: Render[T], context: RenderContext):
         """
         Render the element.
 
@@ -472,7 +464,7 @@ class Element(_t.Generic[T]):
 
         if self.__isolated_end:
             end_connection_pos = start_content_pos + Vec(
-                context.dir * self.__width_before_adjustments, self._height
+                context.dir * self.__width_before_adjustments, self.height
             )
         else:
             end_connection_pos = context.end_connection_pos
@@ -544,7 +536,7 @@ class Element(_t.Generic[T]):
         raise NotImplementedError()
 
     @cached_property
-    def _top_ridge_line(self) -> RidgeLine:
+    def top_ridge_line(self) -> RidgeLine:
         """
         Distances from input line to topmost element at the given coordinate.
 
@@ -560,13 +552,13 @@ class Element(_t.Generic[T]):
         return RidgeLine(
             0,
             [
-                Vec(self._start_padding, self._up),
-                Vec(self._width - self._end_padding, -self._height),
+                Vec(self.start_padding, self.up),
+                Vec(self.width - self.end_padding, -self.height),
             ],
         )
 
     @cached_property
-    def _bottom_ridge_line(self) -> RidgeLine:
+    def bottom_ridge_line(self) -> RidgeLine:
         """
         Distances from output line to bottommost element at the given coordinate.
 
@@ -580,27 +572,27 @@ class Element(_t.Generic[T]):
 
     def _calculate_bottom_ridge_line(self) -> RidgeLine:
         return RidgeLine(
-            -self._height,
+            -self.height,
             [
-                Vec(self._start_padding, self._down),
-                Vec(self._width - self._end_padding, 0),
+                Vec(self.start_padding, self.down),
+                Vec(self.width - self.end_padding, 0),
             ],
         )
 
     @contextmanager
     def __isolated_context(self):
-        start_padding = self._start_padding
-        self._start_padding = self.__start_padding_before_adjustments
-        end_padding = self._end_padding
-        self._end_padding = self.__end_padding_before_adjustments
-        start_margin = self._start_margin
-        self._start_margin = self.__start_margin_before_adjustments
-        end_margin = self._end_margin
-        self._end_margin = self.__end_margin_before_adjustments
+        start_padding = self.start_padding
+        self.start_padding = self.__start_padding_before_adjustments
+        end_padding = self.end_padding
+        self.end_padding = self.__end_padding_before_adjustments
+        start_margin = self.start_margin
+        self.start_margin = self.__start_margin_before_adjustments
+        end_margin = self.end_margin
+        self.end_margin = self.__end_margin_before_adjustments
 
         yield
 
-        self._start_padding = start_padding
-        self._end_padding = end_padding
-        self._start_margin = start_margin
-        self._end_margin = end_margin
+        self.start_padding = start_padding
+        self.end_padding = end_padding
+        self.start_margin = start_margin
+        self.end_margin = end_margin

@@ -8,6 +8,7 @@ from syntax_diagrams.element import Element
 from syntax_diagrams.resolver import HrefResolver
 
 __all__ = [
+    "LoadingError",
     "EndClass",
     "TextRenderSettings",
     "render_text",
@@ -17,6 +18,13 @@ __all__ = [
 ]
 
 T = _t.TypeVar("T")
+
+
+class LoadingError(ValueError):
+    """
+    Indicates incorrect diagram value.
+
+    """
 
 
 class EndClass(Enum):
@@ -52,7 +60,7 @@ class TextRenderSettings:
 
     """
 
-    vertical_choice_separation_outer: int = 2
+    vertical_choice_separation_outer: int = 1
     """
     Vertical space between nodes in a :func:`choice` block,
     if it contains another choice block.
@@ -65,7 +73,7 @@ class TextRenderSettings:
 
     """
 
-    vertical_seq_separation_outer: int = 2
+    vertical_seq_separation_outer: int = 1
     """
     Vertical space between nodes in a :func:`stack` block,
     if it appears outside of any choice block.
@@ -178,6 +186,8 @@ def render_text(
         from JSON or other untrusted source.
     :return:
         a string with a rendered diagram.
+    :throws:
+        `LoadingError`
 
     """
 
@@ -216,7 +226,7 @@ DEFAULT_CSS = {
     },
     "text": {
         "font-size": "14px",
-        "font-family": "'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace",
+        "font-family": "'Consolas', 'Menlo', monospace",
         "text-anchor": "middle",
         "dominant-baseline": "central",
         "font-weight": "bold",
@@ -518,6 +528,7 @@ def render_svg(
     reverse: bool | None = None,
     href_resolver: HrefResolver[T] = HrefResolver(),
     convert_resolver_data: _t.Callable[[_t.Any | None], T | None] | None = None,
+    _dump_debug_data: bool = False,
 ) -> str:
     """
     Render diagram as an SVG.
@@ -539,6 +550,8 @@ def render_svg(
         from JSON or other untrusted source.
     :return:
         a string with a rendered diagram.
+    :throws:
+        `LoadingError`
 
     """
 
@@ -555,4 +568,5 @@ def render_svg(
         settings=settings,
         reverse=reverse,
         href_resolver=href_resolver,
+        dump_debug_data=_dump_debug_data,
     )

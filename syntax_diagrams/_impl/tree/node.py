@@ -39,15 +39,15 @@ class Node(Element[T], _t.Generic[T]):
         href: str | None = None,
         title: str | None = None,
         css_class: str | None = None,
-        resolve: bool = True,
+        resolve: bool | None = None,
         resolver_data: T | None = None,
     ):
         self._style = render
         self._text = text
         self._href = href
         self._title = title
-        self._resolve = resolve
-        self._text_is_weak = resolver_data
+        self._resolve = resolve if resolve is not None else True
+        self._resolver_data = resolver_data
         self._css_class = css_class or ""
 
     def _calculate_content_layout(
@@ -90,24 +90,24 @@ class Node(Element[T], _t.Generic[T]):
             )
         )
 
-        self._display_width = self._content_width = text_width + 2 * padding
-        self._height = 0
-        self._up = math.ceil(height / 2)
-        self._down = math.floor(height / 2)
-        self._start_margin = self._end_margin = settings.horizontal_seq_separation
+        self.display_width = self.content_width = text_width + 2 * padding
+        self.height = 0
+        self.up = math.ceil(height / 2)
+        self.down = math.floor(height / 2)
+        self.start_margin = self.end_margin = settings.horizontal_seq_separation
 
     def _render_content(self, render: Render[T], context: RenderContext):
         if not context.reverse:
             pos = context.pos
         else:
-            pos = context.pos - Vec(self._content_width, 0)
+            pos = context.pos - Vec(self.content_width, 0)
         render.node(
             pos=pos,
             style=self._style,
             css_class=self._css_class,
-            content_width=self._content_width,
-            up=self._up,
-            down=self._down,
+            content_width=self.content_width,
+            up=self.up,
+            down=self.down,
             radius=self._radius,
             padding=self._padding,
             text=self._text,

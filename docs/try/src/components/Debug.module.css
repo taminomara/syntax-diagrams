@@ -1,0 +1,260 @@
+.Debug {
+  font-size: 14px;
+}
+
+.Debug_TreePane {
+  padding: 1rem 2rem;
+  height: 100%;
+  overflow: auto !important;
+}
+
+.Debug_DetailsPane {
+  padding: 1rem 2rem;
+  height: 100%;
+  overflow: auto !important;
+}
+
+.Debug_Node {
+  border-radius: var(--popup-border-radius);
+  background-color: var(--panel-elem-background-color);
+  padding: 0.1rem 0.5rem 0.2rem;
+  user-select: none;
+}
+
+.Debug_Node:hover {
+  background-color: var(--panel-elem-hover-background-color);
+}
+
+.Debug_Node__Selected {
+  background-color: var(--panel-elem-active-background-color);
+}
+
+.Debug_Node__Selected:hover {
+  background-color: var(--panel-elem-active-hover-background-color);
+}
+
+.Debug_Node__Empty {
+}
+
+.Debug_Node__Active {
+}
+
+.Debug_Node__Hidden .Debug_NodeName,
+.Debug_Node__Hidden .Debug_NodeText {
+  color: var(--text-color-inactive);
+}
+
+.Debug_NodeName {
+  color: var(--code-color-key);
+}
+
+.Debug_NodeText {
+  color: var(--code-color-string);
+}
+
+.Debug_NodeToggle {
+  color: var(--panel-elem-text-color);
+}
+
+.Debug_NodeToggle:hover {
+  color: var(--panel-elem-hover-text-color);
+}
+
+.Debug_NodeToggle::before {
+  display: inline-block;
+  width: 13px;
+  content: "";
+  font-size: 10px;
+}
+
+.Debug_NodeToggle__Empty::before {
+  cursor: inherit;
+  content: "";
+}
+
+.Debug_NodeToggle__Active::before {
+  cursor: pointer;
+  content: "▼";
+}
+
+.Debug_NodeToggle__Hidden::before {
+  cursor: pointer;
+  content: "▶";
+}
+
+.Debug_ItemList {
+  display: block;
+  margin: 0;
+  margin-left: 0.7rem;
+  border-left: 1px solid transparent;
+  border-left-color: var(--panel-separator);
+  padding-left: 0.3rem;
+}
+
+.Debug_Item:hover > .Debug_ItemList {
+  border-left-color: var(--panel-separator-active);
+}
+
+.Debug_Item:has(.Debug_Item:hover) > .Debug_ItemList {
+  border-left-color: var(--panel-separator);
+}
+
+.Debug_ItemList__Empty {
+}
+
+.Debug_ItemList__Active {
+}
+
+.Debug_ItemList__Hidden {
+  display: none;
+}
+
+.Debug_Item {
+}
+
+.Debug_ItemInfo {
+  font-size: 12px;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.Debug_ItemInfoList {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.Debug_ItemInfoElement {
+  display: grid;
+  grid-template: "ElementName ElementValue" / 150px 1fr;
+  gap: 1rem;
+  margin: 0.3rem 0;
+}
+
+.Debug_ItemInfoElementName {
+  grid-area: ElementName;
+  z-index: 1;
+  color: var(--code-color-key);
+}
+
+.Debug_ItemInfoElementNameBg {
+  background-color: var(--panel-background-color);
+  padding-right: 0.3rem;
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Debug_ItemInfoElementNameBg:hover {
+  width: max-content;
+}
+
+.Debug_ItemInfoElementValue {
+  grid-area: ElementValue;
+}
+
+.Debug_ItemInfoElementValue__Short {
+}
+
+.Debug_ItemInfoElementValue__Long {
+}
+
+.Debug_ValueNone {
+  color: var(--code-color-keyword);
+}
+
+.Debug_ValueBool {
+  color: var(--code-color-keyword);
+}
+
+.Debug_ValueNumber {
+  color: var(--code-color-number);
+}
+
+.Debug_ValueString {
+  color: var(--code-color-string);
+}
+
+.Debug_ValueNode {
+  cursor: pointer;
+  color: var(--code-color-node);
+}
+
+.Debug_ValueNode::before {
+  content: "<";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueNode::after {
+  content: ">";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueList {
+}
+
+.Debug_ValueList::before {
+  content: "[";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueList::after {
+  content: "]";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueListItem:not(:last-child)::after {
+  content: ", ";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueDict {
+  display: block;
+}
+
+.Debug_ValueList .Debug_ValueDict {
+  display: inline;
+}
+
+.Debug_ValueDict::before {
+  content: "{";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueDict::after {
+  content: "}";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueDictItem {
+  display: block;
+  margin-left: 1rem;
+}
+
+.Debug_ValueList .Debug_ValueDictItem {
+  display: inline;
+  margin-left: 0;
+}
+
+.Debug_ValueDictItem::after {
+  content: ", ";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueList .Debug_ValueDictItem:last-child::after {
+  content: "";
+}
+
+.Debug_ValueDictKey {
+  color: var(--code-color-key);
+}
+
+.Debug_ValueDictKey::after {
+  content: ": ";
+  color: var(--text-color-inactive);
+}
+
+.Debug_ValueDictValue {
+}
+
+.Debug_ValueUnknown {
+}

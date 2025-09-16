@@ -14,6 +14,7 @@ from syntax_diagrams._impl.tree.sequence import Sequence
 from syntax_diagrams._impl.tree.skip import Skip
 from syntax_diagrams.element import Element as _Input
 from syntax_diagrams.element import LineBreak
+from syntax_diagrams.render import LoadingError
 
 T = _t.TypeVar("T")
 
@@ -50,7 +51,7 @@ def load(
                 ctors_found.append(name)
 
         if len(ctors_found) != 1:
-            raise ValueError(f"cannot determine type for {element!r}")
+            raise LoadingError(f"cannot determine type for {element!r}")
 
         name = ctors_found[0]
         element = element.copy()
@@ -59,7 +60,7 @@ def load(
             arg, _t.cast(dict[str, _t.Any], element), convert_resolver_data
         )
     else:
-        raise ValueError(
+        raise LoadingError(
             f"diagram item description should be string, "
             f"list or object, got {type(element)} instead"
         )
@@ -213,8 +214,7 @@ def _load_terminal(
         href=_ensure_type("href", kw.pop("href", None), str, NoneType),
         title=_ensure_type("title", kw.pop("title", None), str, NoneType),
         css_class=_ensure_type("css_class", kw.pop("css_class", None), str, NoneType),
-        resolve=_ensure_type("resolve", kw.pop("resolve", None), bool, NoneType)
-        or False,
+        resolve=_ensure_type("resolve", kw.pop("resolve", None), bool, NoneType),
         resolver_data=convert_resolver_data(kw.pop("resolver_data", None)),
     )
     _ensure_empty_dict("terminal", kw)
@@ -232,8 +232,7 @@ def _load_non_terminal(
         href=_ensure_type("href", kw.pop("href", None), str, NoneType),
         title=_ensure_type("title", kw.pop("title", None), str, NoneType),
         css_class=_ensure_type("css_class", kw.pop("css_class", None), str, NoneType),
-        resolve=_ensure_type("resolve", kw.pop("resolve", None), bool, NoneType)
-        or False,
+        resolve=_ensure_type("resolve", kw.pop("resolve", None), bool, NoneType),
         resolver_data=convert_resolver_data(kw.pop("resolver_data", None)),
     )
     _ensure_empty_dict("non_terminal", kw)
@@ -251,8 +250,7 @@ def _load_comment(
         href=_ensure_type("href", kw.pop("href", None), str, NoneType),
         title=_ensure_type("title", kw.pop("title", None), str, NoneType),
         css_class=_ensure_type("css_class", kw.pop("css_class", None), str, NoneType),
-        resolve=_ensure_type("resolve", kw.pop("resolve", None), bool, NoneType)
-        or False,
+        resolve=_ensure_type("resolve", kw.pop("resolve", None), bool, NoneType),
         resolver_data=convert_resolver_data(kw.pop("resolver_data", None)),
     )
     _ensure_empty_dict("comment", kw)
@@ -278,7 +276,7 @@ def _load_group(
 def _ensure_type(name: str, x: _t.Any, *types: type[T]) -> T:
     if not isinstance(x, types):
         types_str = ", ".join([t.__name__ for t in types])
-        raise ValueError(
+        raise LoadingError(
             f"{name} should be {types_str}, got {type(x)} (={x!r}) instead"
         )
     return x
@@ -287,4 +285,4 @@ def _ensure_type(name: str, x: _t.Any, *types: type[T]) -> T:
 def _ensure_empty_dict(name: str, x: dict[str, _t.Any]):
     if x:
         keys = ", ".join(x.keys())
-        raise ValueError(f"{name} got unexpected parameters: {keys}")
+        raise LoadingError(f"{name} got unexpected parameters: {keys}")

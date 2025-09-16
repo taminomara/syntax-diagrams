@@ -23,15 +23,15 @@ class End(Element[T], _t.Generic[T]):
     ):
         self._isolate()
 
-        self._display_width = self._content_width = settings.marker_width
-        self._up = settings.marker_projected_height
-        self._down = settings.marker_projected_height
-        self._start_margin = 0  # TODO: use node margin?
-        self._end_margin = 0
+        self.display_width = self.content_width = settings.marker_width
+        self.up = settings.marker_projected_height
+        self.down = settings.marker_projected_height
+        self.start_margin = 0  # TODO: use node margin?
+        self.end_margin = 0
 
     def _render_content(self, render: Render[T], context: RenderContext):
         if context.reverse:
-            pos = context.pos - Vec(self._content_width, 0)
+            pos = context.pos - Vec(self.content_width, 0)
         else:
             pos = context.pos
         if self._reverse ^ context.reverse:

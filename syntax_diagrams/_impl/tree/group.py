@@ -51,7 +51,7 @@ class Group(Element[T], _t.Generic[T]):
             allow_shrinking_stacks=False,
         )
 
-        self._item._calculate_layout(settings, context)
+        self._item.calculate_layout(settings, context)
 
         self._text_width = (
             math.ceil(
@@ -73,28 +73,28 @@ class Group(Element[T], _t.Generic[T]):
             else 0
         )
 
-        self._content_width = max(self._item._width, self._text_width) + 2 * (
+        self.content_width = max(self._item.width, self._text_width) + 2 * (
             settings.group_horizontal_padding + settings.group_thickness
         )
-        self._start_padding = 0
-        self._end_padding = 0
-        self._start_margin = settings.group_horizontal_margin
-        self._end_margin = settings.group_horizontal_margin
-        self._height = self._item._height
-        self._up = (
-            self._item._up
+        self.start_padding = 0
+        self.end_padding = 0
+        self.start_margin = settings.group_horizontal_margin
+        self.end_margin = settings.group_horizontal_margin
+        self.height = self._item.height
+        self.up = (
+            self._item.up
             + settings.group_vertical_padding
             + settings.group_thickness
             + self._group_text_vertical_offset
             + settings.group_vertical_margin
         )
-        self._down = (
-            self._item._down
+        self.down = (
+            self._item.down
             + settings.group_vertical_padding
             + settings.group_thickness
             + settings.group_vertical_margin
         )
-        self._display_width = self._width
+        self.display_width = self.width
 
     def _render_content(self, render: Render[T], context: RenderContext):
         context = replace(
@@ -109,26 +109,31 @@ class Group(Element[T], _t.Generic[T]):
                 0,
             ),
         )
-        self._item._render(render, context)
+        self._item.render(render, context)
+
+        if not context.reverse:
+            pos = context.pos
+        else:
+            pos = context.pos - Vec(self.width, 0)
 
         render.group(
-            context.pos
+            pos
             - Vec(
                 context.dir
                 * (
                     render.settings.group_horizontal_padding
                     + render.settings.group_thickness
                 ),
-                self._item._up
+                self._item.up
                 + render.settings.group_vertical_padding
                 + render.settings.group_thickness,
             ),
-            self._width,
+            self.width,
             2
             * (render.settings.group_vertical_padding + render.settings.group_thickness)
-            + self._item._up
-            + self._item._height
-            + self._item._down,
+            + self._item.up
+            + self._item.height
+            + self._item.down,
             self._css_class,
             self._text_width,
             self._text,

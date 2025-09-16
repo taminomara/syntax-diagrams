@@ -1,0 +1,129 @@
+svg.syntax-diagram path {
+  stroke-width: 1.5;
+  stroke: currentColor;
+  fill: none;
+}
+
+svg.syntax-diagram a {
+  text-decoration: none;
+}
+
+svg.syntax-diagram rect {
+  stroke-width: 1.5;
+  stroke: currentColor;
+  fill: none;
+}
+
+svg.syntax-diagram g.comment rect {
+  stroke: none;
+}
+
+svg.syntax-diagram text {
+  font-size: 14px;
+  font-family: "Consolas", "Courier New", monospace;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-weight: bold;
+  fill: currentColor;
+}
+
+svg.syntax-diagram g.comment text {
+  font-style: italic;
+  font-weight: normal;
+}
+
+svg.syntax-diagram .group text {
+  text-anchor: start;
+  opacity: 0.5;
+  font-style: italic;
+  font-weight: normal;
+  dominant-baseline: alphabetic;
+}
+
+svg.syntax-diagram .group rect {
+  opacity: 0.3;
+}
+
+svg.syntax-diagram g.comment text {
+  font-style: italic;
+  font-weight: normal;
+}
+
+svg.syntax-diagram .dbg-content,
+svg.syntax-diagram .dbg-display,
+svg.syntax-diagram .dbg-content-main,
+svg.syntax-diagram .dbg-padding,
+svg.syntax-diagram .dbg-margin,
+svg.syntax-diagram .dbg-position,
+svg.syntax-diagram .dbg-ridge-line {
+  display: none;
+}
+
+.DebugHighlightMain .DebugHighlight > :is(path, rect),
+.DebugHighlightMain .DebugHighlight > .node :is(path, rect),
+.DebugHighlightMain .DebugHighlight > .group :is(path, rect) {
+  display: none !important;
+}
+
+.DebugHighlightOverlay {
+  pointer-events: none;
+  user-select: none;
+}
+
+.DebugHighlightOverlay svg :not(:is(g)) {
+  display: none;
+}
+
+.DebugHighlightOverlay .DebugHighlight > *,
+.DebugHighlightOverlay .DebugHighlight > .node :not(:is(text)),
+.DebugHighlightOverlay .DebugHighlight > .group :not(:is(text)) {
+  display: inherit !important;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-display {
+  stroke: var(--diagram-debug-stroke);
+  stroke-width: 1px;
+  stroke-dasharray: 2;
+  opacity: 0.5;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-content {
+  stroke: var(--diagram-debug-stroke);
+  stroke-width: 1px;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-content-main {
+  stroke: var(--diagram-debug-stroke);
+  stroke-width: 1px;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-padding {
+  stroke: var(--diagram-debug-stroke);
+  stroke-width: 1px;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-margin {
+  stroke: var(--diagram-debug-stroke);
+  stroke-width: 1px;
+  stroke-dasharray: 4;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-position {
+  stroke: var(--diagram-debug-stroke);
+  stroke-width: 1px;
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-position.dbg-primary-pos {
+  stroke: var(--diagram-debug-stroke-connection);
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-position.dbg-isolated-pos,
+.DebugHighlightOverlay .DebugHighlight > .dbg-isolated-line {
+  stroke: var(--diagram-debug-stroke-connection);
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-alternative-pos {
+  stroke: var(--diagram-debug-stroke-optional);
+}
+.DebugHighlightOverlay .DebugHighlight > path,
+.DebugHighlightOverlay .DebugHighlight > .node rect,
+.DebugHighlightOverlay .DebugHighlight > .group rect {
+  stroke: var(--diagram-debug-stroke-line);
+}
+.DebugHighlightOverlay .DebugHighlight > .dbg-ridge-line {
+  stroke: var(--diagram-debug-overlay);
+  stroke-width: 1px;
+  fill: var(--diagram-debug-overlay);
+  opacity: 0.2;
+}

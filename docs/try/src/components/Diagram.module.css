@@ -1,0 +1,13 @@
+.Diagram {
+  position: relative;
+}
+
+.Diagram_Main {
+  position: relative;
+}
+
+.Diagram_Debug {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

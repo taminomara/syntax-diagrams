@@ -51,7 +51,7 @@ def render_text(
 
     layout_settings = text_layout_settings(settings)
     layout_settings.href_resolver = href_resolver
-    node._calculate_layout(
+    node.calculate_layout(
         layout_settings,
         LayoutContext(
             width=max_width,
@@ -69,27 +69,27 @@ def render_text(
     )
 
     render = TextRender(
-        (settings.padding[3] + node._display_width + settings.padding[1]),
+        (settings.padding[3] + node.display_width + settings.padding[1]),
         (
             settings.padding[0]
-            + node._up
-            + node._height
-            + node._down
+            + node.up
+            + node.height
+            + node.down
             + settings.padding[2]
             + 1
         ),
         layout_settings,
     )
 
-    pos = Vec(settings.padding[3], settings.padding[0] + node._up)
+    pos = Vec(settings.padding[3], settings.padding[0] + node.up)
     if not reverse:
         start_connection_pos = pos
-        end_connection_pos = pos + Vec(node._width, node._height)
+        end_connection_pos = pos + Vec(node.width, node.height)
     else:
-        start_connection_pos = pos + Vec(node._width, 0)
-        end_connection_pos = pos + Vec(0, node._height)
+        start_connection_pos = pos + Vec(node.display_width, 0)
+        end_connection_pos = pos + Vec(node.display_width - node.width, node.height)
 
-    node._render(
+    node.render(
         render,
         RenderContext(
             pos=start_connection_pos,
@@ -267,7 +267,7 @@ class TextRender(Render[T], _t.Generic[T]):
         return stream.getvalue()
 
     def line(self, pos: Vec, reverse: bool = False, css_class: str = "") -> Line:
-        return _TextLine(self, pos, reverse)
+        return TextRender._TextLine(self, pos, reverse)
 
     def node(
         self,
@@ -386,86 +386,85 @@ class TextRender(Render[T], _t.Generic[T]):
             if old_d != new_d:
                 self._field[pos.y][pos.x] = _DIRECTION_TO_SYMBOL[new_d]
 
+    class _TextLine(Line):
+        def __init__(self, render: TextRender[_t.Any], pos: Vec, reverse: bool):
+            self._render = render
+            self._pos = Vec(pos.x, pos.y)
+            self._reverse = reverse
 
-class _TextLine(Line):
-    def __init__(self, render: TextRender[_t.Any], pos: Vec, reverse: bool):
-        self._render = render
-        self._pos = Vec(pos.x, pos.y)
-        self._reverse = reverse
+        def segment_abs(
+            self, x: int, arrow_begin: bool = False, arrow_end: bool = False
+        ) -> Line:
+            w = x - self._pos.x
 
-    def segment_abs(
-        self, x: int, arrow_begin: bool = False, arrow_end: bool = False
-    ) -> Line:
-        w = x - self._pos.x
+            if w >= 0:
+                for i in range(w):
+                    self._render._write_cell(self._pos + Vec(i, 0), "we")
 
-        if w >= 0:
-            for i in range(w):
-                self._render._write_cell(self._pos + Vec(i, 0), "we")
+                if arrow_begin:
+                    self._render._field[self._pos.y][self._pos.x] = "→"
+
+                self._pos.x += w
+
+                if arrow_end:
+                    self._render._field[self._pos.y][self._pos.x - 1] = "→"
+            else:
+                for i in range(-1, w - 1, -1):
+                    self._render._write_cell(self._pos + Vec(i, 0), "we")
+
+                if arrow_begin:
+                    self._render._field[self._pos.y][self._pos.x - 1] = "←"
+
+                self._pos.x += w
+
+                if arrow_end:
+                    self._render._field[self._pos.y][self._pos.x] = "←"
+
+            return self
+
+        def bend(
+            self,
+            y: int,
+            coming_from: Direction,
+            coming_to: Direction | None,
+            arrow_begin: bool = False,
+            arrow_end: bool = False,
+        ) -> Line:
+            h = y - self._pos.y
+
+            if coming_from == "e":
+                self._pos.x -= 1
+
+            s = "↓" if h > 0 else "↑"
 
             if arrow_begin:
-                self._render._field[self._pos.y][self._pos.x] = "→"
+                if h > 0:
+                    self._render._field[self._pos.y + 1][self._pos.x] = s
+                elif h < 0:
+                    self._render._field[self._pos.y - 1][self._pos.x] = s
 
-            self._pos.x += w
+            if h == 0:
+                self._render._write_cell(self._pos, coming_from + (coming_to or ""))
+            elif h > 0:
+                for i in range(1, h):
+                    self._render._write_cell(self._pos + Vec(0, i), "ns")
+                self._render._write_cell(self._pos, coming_from + "s")
+                self._render._write_cell(self._pos + Vec(0, h), "n" + (coming_to or ""))
+            else:
+                for i in range(-1, h, -1):
+                    self._render._write_cell(self._pos + Vec(0, i), "ns")
+                self._render._write_cell(self._pos, coming_from + "n")
+                self._render._write_cell(self._pos + Vec(0, h), "s" + (coming_to or ""))
+
+            self._pos.y += h
 
             if arrow_end:
-                self._render._field[self._pos.y][self._pos.x - 1] = "→"
-        else:
-            for i in range(-1, w - 1, -1):
-                self._render._write_cell(self._pos + Vec(i, 0), "we")
+                if h > 0:
+                    self._render._field[self._pos.y - 1][self._pos.x] = s
+                elif h < 0:
+                    self._render._field[self._pos.y + 1][self._pos.x] = s
 
-            if arrow_begin:
-                self._render._field[self._pos.y][self._pos.x - 1] = "←"
+            if coming_to == "e":
+                self._pos.x += 1
 
-            self._pos.x += w
-
-            if arrow_end:
-                self._render._field[self._pos.y][self._pos.x] = "←"
-
-        return self
-
-    def bend(
-        self,
-        y: int,
-        coming_from: Direction,
-        coming_to: Direction | None,
-        arrow_begin: bool = False,
-        arrow_end: bool = False,
-    ) -> Line:
-        h = y - self._pos.y
-
-        if coming_from == "e":
-            self._pos.x -= 1
-
-        s = "↓" if h > 0 else "↑"
-
-        if arrow_begin:
-            if h > 0:
-                self._render._field[self._pos.y + 1][self._pos.x] = s
-            elif h < 0:
-                self._render._field[self._pos.y - 1][self._pos.x] = s
-
-        if h == 0:
-            self._render._write_cell(self._pos, coming_from + (coming_to or ""))
-        elif h > 0:
-            for i in range(1, h):
-                self._render._write_cell(self._pos + Vec(0, i), "ns")
-            self._render._write_cell(self._pos, coming_from + "s")
-            self._render._write_cell(self._pos + Vec(0, h), "n" + (coming_to or ""))
-        else:
-            for i in range(-1, h, -1):
-                self._render._write_cell(self._pos + Vec(0, i), "ns")
-            self._render._write_cell(self._pos, coming_from + "n")
-            self._render._write_cell(self._pos + Vec(0, h), "s" + (coming_to or ""))
-
-        self._pos.y += h
-
-        if arrow_end:
-            if h > 0:
-                self._render._field[self._pos.y - 1][self._pos.x] = s
-            elif h < 0:
-                self._render._field[self._pos.y + 1][self._pos.x] = s
-
-        if coming_to == "e":
-            self._pos.x += 1
-
-        return self
+            return self

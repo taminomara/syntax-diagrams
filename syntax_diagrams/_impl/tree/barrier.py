@@ -29,8 +29,8 @@ class Barrier(Element[T], _t.Generic[T]):
         return self
 
     @cached_property
-    def _precedence(self) -> int:
-        return self._item._precedence
+    def precedence(self) -> int:
+        return self._item.precedence
 
     def _calculate_content_layout(
         self, settings: LayoutSettings[T], context: LayoutContext
@@ -44,17 +44,17 @@ class Barrier(Element[T], _t.Generic[T]):
             opt_exit_bottom=None,
         )
 
-        self._item._calculate_layout(settings, context)
+        self._item.calculate_layout(settings, context)
 
-        self._display_width = self._item._display_width
-        self._content_width = self._item._content_width
-        self._start_padding = self._item._start_padding
-        self._end_padding = self._item._end_padding
-        self._start_margin = self._item._start_margin
-        self._end_margin = self._item._end_margin
-        self._height = self._item._height
-        self._up = self._item._up
-        self._down = self._item._down
+        self.display_width = self._item.display_width
+        self.content_width = self._item.content_width
+        self.start_padding = self._item.start_padding
+        self.end_padding = self._item.end_padding
+        self.start_margin = self._item.start_margin
+        self.end_margin = self._item.end_margin
+        self.height = self._item.height
+        self.up = self._item.up
+        self.down = self._item.down
 
     def _render_content(self, render: Render[T], context: RenderContext):
         context = replace(
@@ -65,13 +65,13 @@ class Barrier(Element[T], _t.Generic[T]):
             opt_exit_bottom=None,
         )
 
-        self._item._render(render, context)
+        self._item.render(render, context)
 
     def _calculate_top_ridge_line(self) -> RidgeLine:
-        return self._item._top_ridge_line
+        return self._item.top_ridge_line
 
     def _calculate_bottom_ridge_line(self) -> RidgeLine:
-        return self._item._bottom_ridge_line
+        return self._item.bottom_ridge_line
 
     def __str__(self) -> str:
         return str(self._item)
