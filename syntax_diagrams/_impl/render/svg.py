@@ -181,7 +181,7 @@ class SvgRender(Render[T], _t.Generic[T]):
         css: str | dict[str, dict[str, str]] | None,
         title: str | None,
         description: str | None,
-        dump_debug_data: bool,
+        dump_debug_data: bool = False,
     ):
         self.settings = settings
         self._width = width

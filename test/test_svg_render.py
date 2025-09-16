@@ -122,8 +122,8 @@ def test_node(regression, svg_layout_settings, svg_css):
     render = SvgRender(200, 150, svg_layout_settings, "", svg_css, None, None)
 
     node = load(rr.comment("fully automated"), lambda x: x)
-    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
-    node._render(
+    node.calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(5, 20),
@@ -134,8 +134,8 @@ def test_node(regression, svg_layout_settings, svg_css):
     )
 
     node = load(rr.terminal("luxury"), lambda x: x)
-    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
-    node._render(
+    node.calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(5, 60),
@@ -146,8 +146,8 @@ def test_node(regression, svg_layout_settings, svg_css):
     )
 
     node = load(rr.non_terminal("gay space communism"), lambda x: x)
-    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
-    node._render(
+    node.calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(5, 100),
@@ -163,8 +163,8 @@ def test_node(regression, svg_layout_settings, svg_css):
 def test_node_enter(regression, svg_layout_settings, svg_css):
     render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
     node = load(rr.terminal("XXX"), lambda x: x)
-    node._calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
-    node._render(
+    node.calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(10, 50),
@@ -177,7 +177,7 @@ def test_node_enter(regression, svg_layout_settings, svg_css):
 
     render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
     node = load(rr.terminal("XXX"), lambda x: x)
-    node._calculate_layout(
+    node.calculate_layout(
         svg_layout_settings,
         LayoutContext(
             width=200,
@@ -186,7 +186,7 @@ def test_node_enter(regression, svg_layout_settings, svg_css):
             end_connection=ConnectionType.SPLIT,
         ),
     )
-    node._render(
+    node.render(
         render,
         RenderContext(
             pos=Vec(10, 50),
@@ -199,7 +199,7 @@ def test_node_enter(regression, svg_layout_settings, svg_css):
 
     render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
     node = load(rr.terminal("XXX"), lambda x: x)
-    node._calculate_layout(
+    node.calculate_layout(
         svg_layout_settings,
         LayoutContext(
             width=200,
@@ -208,7 +208,7 @@ def test_node_enter(regression, svg_layout_settings, svg_css):
             end_connection=ConnectionType.STACK,
         ),
     )
-    node._render(
+    node.render(
         render,
         RenderContext(
             pos=Vec(10, 50),

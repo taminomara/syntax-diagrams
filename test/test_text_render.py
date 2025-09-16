@@ -133,8 +133,8 @@ def test_node(text_layout_settings):
     render = TextRender(27, 9, text_layout_settings)
 
     node = load(rr.comment("fully automated"), lambda x: x)
-    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
-    node._render(
+    node.calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(0, 1),
@@ -145,8 +145,8 @@ def test_node(text_layout_settings):
     )
 
     node = load(rr.terminal("luxury"), lambda x: x)
-    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
-    node._render(
+    node.calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(0, 4),
@@ -157,8 +157,8 @@ def test_node(text_layout_settings):
     )
 
     node = load(rr.non_terminal("🌈gay space communism🌈"), lambda x: x)
-    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
-    node._render(
+    node.calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(0, 7),
@@ -187,8 +187,8 @@ def test_node(text_layout_settings):
 def test_node_enter(text_layout_settings):
     render = TextRender(27, 7, text_layout_settings)
     node = load(rr.terminal("XXX"), lambda x: x)
-    node._calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
-    node._render(
+    node.calculate_layout(text_layout_settings, LayoutContext(width=25, is_outer=True))
+    node.render(
         render,
         RenderContext(
             pos=Vec(0, 3),
@@ -212,7 +212,7 @@ def test_node_enter(text_layout_settings):
 
     render = TextRender(27, 7, text_layout_settings)
     node = load(rr.terminal("XXX"), lambda x: x)
-    node._calculate_layout(
+    node.calculate_layout(
         text_layout_settings,
         LayoutContext(
             width=25,
@@ -221,7 +221,7 @@ def test_node_enter(text_layout_settings):
             end_connection=ConnectionType.SPLIT,
         ),
     )
-    node._render(
+    node.render(
         render,
         RenderContext(
             pos=Vec(0, 3),
@@ -245,7 +245,7 @@ def test_node_enter(text_layout_settings):
 
     render = TextRender(27, 7, text_layout_settings)
     node = load(rr.terminal("XXX"), lambda x: x)
-    node._calculate_layout(
+    node.calculate_layout(
         text_layout_settings,
         LayoutContext(
             width=25,
@@ -254,7 +254,7 @@ def test_node_enter(text_layout_settings):
             end_connection=ConnectionType.STACK,
         ),
     )
-    node._render(
+    node.render(
         render,
         RenderContext(
             pos=Vec(0, 3),
