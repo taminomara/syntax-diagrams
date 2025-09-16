@@ -1,0 +1,1381 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Customizing hyperlink resolution" href="hyperlinks.html" /><link rel="prev" title="Syntax Diagrams" href="index.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>Describing diagrams - Syntax Diagrams 0.1.dev1+geab8a9942 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+geab8a9942 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+geab8a9942 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Describing diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperlinks.html">Customizing hyperlink resolution</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/blob/main/docs/source/describe.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/edit/main/docs/source/describe.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="describing-diagrams">
+<h1>Describing diagrams<a class="headerlink" href="#describing-diagrams" title="Link to this heading">¶</a></h1>
+<section id="using-yaml-or-python-literals">
+<h2>Using YAML or Python literals<a class="headerlink" href="#using-yaml-or-python-literals" title="Link to this heading">¶</a></h2>
+<p>Diagram elements are described as simple types suitable for encoding
+in JSON-like formats. The specific representation was chosen to be ergonomic
+when writing diagrams in YAML syntax. All examples are thus formatted as YAML.</p>
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Element">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span>
+<span class="pre">|</span> <span class="pre">str</span>
+<span class="pre">|</span> <span class="pre">list[Element[T]]</span>
+<span class="pre">|</span> <span class="pre">Terminal[T]</span>
+<span class="pre">|</span> <span class="pre">NonTerminal[T]</span>
+<span class="pre">|</span> <span class="pre">Comment[T]</span>
+<span class="pre">|</span> <span class="pre">Sequence[T]</span>
+<span class="pre">|</span> <span class="pre">Stack[T]</span>
+<span class="pre">|</span> <span class="pre">NoBreak[T]</span>
+<span class="pre">|</span> <span class="pre">Choice[T]</span>
+<span class="pre">|</span> <span class="pre">Optional[T]</span>
+<span class="pre">|</span> <span class="pre">OneOrMore[T]</span>
+<span class="pre">|</span> <span class="pre">ZeroOrMore[T]</span>
+<span class="pre">|</span> <span class="pre">Barrier[T]</span></em><a class="headerlink" href="#syntax_diagrams.Element" title="Link to this definition">¶</a></dt>
+<dd><p>Describes an element of a syntax diagram.</p>
+<p>If element is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, it’s rendered as a simple line with no additional content.
+This can be used to create optional elements using <a class="reference internal" href="#syntax_diagrams.Choice" title="syntax_diagrams.Choice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Choice</span></code></a>.</p>
+<p>If element is a list, it’s rendered as a <a class="reference internal" href="#syntax_diagrams.Sequence" title="syntax_diagrams.Sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sequence</span></code></a>.</p>
+<p>If element is a string, it’s rendered as a <a class="reference internal" href="#syntax_diagrams.Terminal" title="syntax_diagrams.Terminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Terminal</span></code></a>.</p>
+<p>Otherwise, an element should be a dict containing one of the following keys:
+<a class="reference internal" href="#syntax_diagrams.Terminal" title="syntax_diagrams.Terminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">terminal</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.NonTerminal" title="syntax_diagrams.NonTerminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminal</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.Comment" title="syntax_diagrams.Comment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">comment</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.Sequence" title="syntax_diagrams.Sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sequence</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.Stack" title="syntax_diagrams.Stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.NoBreak" title="syntax_diagrams.NoBreak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_break</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.Choice" title="syntax_diagrams.Choice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choice</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.Optional" title="syntax_diagrams.Optional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.OneOrMore" title="syntax_diagrams.OneOrMore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_or_more</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.ZeroOrMore" title="syntax_diagrams.ZeroOrMore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_or_more</span></code></a>,
+<a class="reference internal" href="#syntax_diagrams.ZeroOrMore" title="syntax_diagrams.ZeroOrMore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">barrier</span></code></a>.</p>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-0">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">choice</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;lexer&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;parser&quot;</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grammar</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;identifier&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;;&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-1">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">choice</span><span class="p">(</span>
+        <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;lexer&quot;</span><span class="p">),</span>
+        <span class="n">skip</span><span class="p">(),</span>
+        <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;parser&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;grammar&quot;</span><span class="p">),</span>
+    <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;identifier&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-2">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">choice</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;lexer&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;parser&quot;</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;grammar&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;identifier&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Terminal">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Terminal</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Terminal" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a terminal node with optional additional settings.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.terminal" title="syntax_diagrams.terminal"><code class="xref py py-func docutils literal notranslate"><span class="pre">terminal()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">terminal</span><span class="p">:</span> <span class="nb">str</span></code>, <em>required</em></p>
+<p>Text of the terminal, required.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the moment, we don’t support multiline text.</p>
+</div>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">href</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Makes text node into a hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Title for hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">css_class</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Adds CSS class to node’s <code class="docutils literal notranslate"><span class="pre">&lt;g&gt;</span></code> element.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">resolve</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>, this node will not be passed to <a class="reference internal" href="hyperlinks.html#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>
+before rendering.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">resolver_data</span><span class="p">:</span> <span class="n">T</span></code></p>
+<p>Additional data for <a class="reference internal" href="hyperlinks.html#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-3">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;INT&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-4">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;INT&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-5">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;INT&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Terminal nodes without settings can be encoded as simple strings:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-6">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;INT&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-7" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-7">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;INT&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.NonTerminal">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">NonTerminal</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.NonTerminal" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a non-terminal node with optional additional settings.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.non_terminal" title="syntax_diagrams.non_terminal"><code class="xref py py-func docutils literal notranslate"><span class="pre">non_terminal()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">non_terminal</span><span class="p">:</span> <span class="nb">str</span></code>, <em>required</em></p>
+<p>Text of the non-terminal, required.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the moment, we don’t support multiline text.</p>
+</div>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">href</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Makes text node into a hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Title for hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">css_class</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Adds CSS class to node’s <code class="docutils literal notranslate"><span class="pre">&lt;g&gt;</span></code> element.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">resolve</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>, this node will not be passed to <a class="reference internal" href="hyperlinks.html#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>
+before rendering.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">resolver_data</span><span class="p">:</span> <span class="n">T</span></code></p>
+<p>Additional data for <a class="reference internal" href="hyperlinks.html#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-8">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-9" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-9">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;expr&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-10" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-10">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Comment">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Comment</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Comment" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a comment node with optional additional settings.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.comment" title="syntax_diagrams.comment"><code class="xref py py-func docutils literal notranslate"><span class="pre">comment()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">comment</span><span class="p">:</span> <span class="nb">str</span></code>, <em>required</em></p>
+<p>Text of the terminal, required.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the moment, we don’t support multiline text.</p>
+</div>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">href</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Makes text node into a hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Title for hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">css_class</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Adds CSS class to node’s <code class="docutils literal notranslate"><span class="pre">&lt;g&gt;</span></code> element.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">resolve</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>, this node will not be passed to <a class="reference internal" href="hyperlinks.html#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>
+before rendering.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">resolver_data</span><span class="p">:</span> <span class="n">T</span></code></p>
+<p>Additional data for <a class="reference internal" href="hyperlinks.html#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-11" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-11">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-12" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-12">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">comment</span><span class="p">(</span><span class="s2">&quot;escaped literal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-13" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-13">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Sequence">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Sequence</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Describes an automatically wrapped sequence of elements.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.sequence" title="syntax_diagrams.sequence"><code class="xref py py-func docutils literal notranslate"><span class="pre">sequence()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">sequence</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span></code>, <em>required</em></p>
+<p>Elements in the sequence.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">linebreaks</span><span class="p">:</span> <span class="n">_t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;HARD&quot;</span><span class="p">,</span> <span class="s2">&quot;SOFT&quot;</span><span class="p">,</span> <span class="s2">&quot;DEFAULT&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">_t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;HARD&quot;</span><span class="p">,</span> <span class="s2">&quot;SOFT&quot;</span><span class="p">,</span> <span class="s2">&quot;DEFAULT&quot;</span><span class="p">]]</span></code></p>
+<p>Specifies line breaks after each element of the sequence.</p>
+<p>If given as a string or a <a class="reference internal" href="#syntax_diagrams.LineBreak" title="syntax_diagrams.LineBreak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LineBreak</span></code></a>, this line break will be used
+after each of the sequence’s elements.</p>
+<p>If given as a list of line breaks, each of list’s element determines line break
+after each of the sequence’s elements. This list must be one item shorter
+than number of elements in the sequence.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-14" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-14">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sequence</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+<span class="nt">linebreaks</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SOFT&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-15" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-15">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">comment</span><span class="p">(</span><span class="s2">&quot;escaped literal&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;ESC&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;CHAR&quot;</span><span class="p">),</span>
+    <span class="n">linebreaks</span><span class="p">:</span> <span class="n">LineBreak</span><span class="o">.</span><span class="n">SOFT</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-16" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-16">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sequence</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+<span class="nt">linebreaks</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SOFT&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sequences without settings can also be encoded as simple lists:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-17" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-17">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-18" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-18">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Stack">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Stack</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Stack" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a sequence of elements that wraps after each element.</p>
+<p>This is a shortcut for creating a <a class="reference internal" href="#syntax_diagrams.Sequence" title="syntax_diagrams.Sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sequence</span></code></a>
+with <code class="xref py py-obj docutils literal notranslate"><span class="pre">linebreaks</span></code> set to <a class="reference internal" href="#syntax_diagrams.LineBreak.HARD" title="syntax_diagrams.LineBreak.HARD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HARD</span></code></a>.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.stack" title="syntax_diagrams.stack"><code class="xref py py-func docutils literal notranslate"><span class="pre">stack()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span></code>, <em>required</em></p>
+<p>Elements in the stack.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-19" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-19">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stack</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-20" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-20">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">stack</span><span class="p">(</span>
+    <span class="n">comment</span><span class="p">(</span><span class="s2">&quot;escaped literal&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;ESC&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;CHAR&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-21" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-21">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stack</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.NoBreak">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">NoBreak</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.NoBreak" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a sequence of elements that doesn’t wrap.</p>
+<p>This is a shortcut for creating a <a class="reference internal" href="#syntax_diagrams.Sequence" title="syntax_diagrams.Sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sequence</span></code></a>
+with <code class="xref py py-obj docutils literal notranslate"><span class="pre">linebreaks</span></code> set to <a class="reference internal" href="#syntax_diagrams.LineBreak.NO_BREAK" title="syntax_diagrams.LineBreak.NO_BREAK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NO_BREAK</span></code></a>.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.no_break" title="syntax_diagrams.no_break"><code class="xref py py-func docutils literal notranslate"><span class="pre">no_break()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">no_break</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span></code>, <em>required</em></p>
+<p>Elements in the no-break sequence.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-22" name="sd-tab-set-8" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-22">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">no_break</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-23" name="sd-tab-set-8" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-23">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">no_break</span><span class="p">(</span>
+    <span class="n">comment</span><span class="p">(</span><span class="s2">&quot;escaped literal&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;ESC&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;CHAR&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-24" name="sd-tab-set-8" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-24">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">no_break</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;escaped</span><span class="nv"> </span><span class="s">literal&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ESC&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CHAR&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Choice">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Choice</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Choice" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a choice between several elements.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.choice" title="syntax_diagrams.choice"><code class="xref py py-func docutils literal notranslate"><span class="pre">choice()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">choice</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span></code>, <em>required</em></p>
+<p>Elements to choose from.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">default</span><span class="p">:</span> <span class="nb">int</span></code></p>
+<p>Index of item that will be placed on the main line.</p>
+<p>Should be less then number of choice elements.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-25" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-25">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">choice</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;INT&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;STR&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sequence</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;(&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;)&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-26" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-26">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;INT&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;STR&quot;</span><span class="p">),</span>
+    <span class="n">sequence</span><span class="p">(</span>
+      <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">),</span>
+      <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;expr&quot;</span><span class="p">),</span>
+      <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-27" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-27">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">choice</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;INT&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;STR&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sequence</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;(&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;)&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Optional">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Optional</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Optional" title="Link to this definition">¶</a></dt>
+<dd><p>Describes an optional element.</p>
+<p>This is a shortcut for creating a <a class="reference internal" href="#syntax_diagrams.Choice" title="syntax_diagrams.Choice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Choice</span></code></a>
+with a <a class="reference internal" href="#syntax_diagrams.skip" title="syntax_diagrams.skip"><code class="xref py py-func docutils literal notranslate"><span class="pre">skip()</span></code></a> and a single element.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.optional" title="syntax_diagrams.optional"><code class="xref py py-func docutils literal notranslate"><span class="pre">optional()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">optional</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code>, <em>required</em></p>
+<p>Element that will be made optional.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">skip</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, the optional element will be rendered off the main line.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">skip_bottom</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, the skip line will be rendered below the skipped element.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-28" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-28">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">optional</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;annotation&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-29" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-29">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">optional</span><span class="p">(</span>
+    <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;annotation&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-30" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-30">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">optional</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;annotation&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.OneOrMore">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">OneOrMore</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.OneOrMore" title="Link to this definition">¶</a></dt>
+<dd><p>Describes a repeated element.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.one_or_more" title="syntax_diagrams.one_or_more"><code class="xref py py-func docutils literal notranslate"><span class="pre">one_or_more()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">one_or_more</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code>, <em>required</em></p>
+<p>Element that will be repeated.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">repeat</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code></p>
+<p>An element that will be placed on the backwards path.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">repeat_top</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, the repeat element will be rendered above the repeated one.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-31" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-31">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">one_or_more</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+<span class="nt">repeat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;COMMA&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-32" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-32">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">one_or_more</span><span class="p">(</span>
+    <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;expr&quot;</span><span class="p">),</span>
+    <span class="n">repeat</span><span class="o">=</span><span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;COMMA&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-33" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-33">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">one_or_more</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+<span class="nt">repeat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;COMMA&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.ZeroOrMore">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">ZeroOrMore</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.ZeroOrMore" title="Link to this definition">¶</a></dt>
+<dd><p>Describes an optional repeated element.</p>
+<p>This is a shortcut for creating an <a class="reference internal" href="#syntax_diagrams.Optional" title="syntax_diagrams.Optional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> with an <a class="reference internal" href="#syntax_diagrams.OneOrMore" title="syntax_diagrams.OneOrMore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OneOrMore</span></code></a>
+element inside.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.zero_or_more" title="syntax_diagrams.zero_or_more"><code class="xref py py-func docutils literal notranslate"><span class="pre">zero_or_more()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">zero_or_more</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code>, <em>required</em></p>
+<p>Element that will be repeated.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">repeat</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code></p>
+<p>An element that will be placed on the backwards path.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">repeat_top</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, the repeat element will be rendered above the repeated one.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">skip</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, the optional repeated element will be rendered off the main line.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">skip_bottom</span><span class="p">:</span> <span class="nb">bool</span></code></p>
+<p>If set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, the skip line will be rendered below the skipped element.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-34" name="sd-tab-set-12" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-34">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">zero_or_more</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+<span class="nt">repeat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;COMMA&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-35" name="sd-tab-set-12" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-35">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">zero_or_more</span><span class="p">(</span>
+    <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;expr&quot;</span><span class="p">),</span>
+    <span class="n">repeat</span><span class="o">=</span><span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;COMMA&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-36" name="sd-tab-set-12" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-36">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">zero_or_more</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expr&quot;</span>
+<span class="nt">repeat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;COMMA&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Barrier">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Barrier</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Barrier" title="Link to this definition">¶</a></dt>
+<dd><p>Isolates an element and disables optimizations that merge lines between
+this element and the rest of the diagram.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.barrier" title="syntax_diagrams.barrier"><code class="xref py py-func docutils literal notranslate"><span class="pre">barrier()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">barrier</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code>, <em>required</em></p>
+<p>Element that will be isolated.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-37" name="sd-tab-set-13" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-37">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;A&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;B&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">barrier</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;C&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-38" name="sd-tab-set-13" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-38">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span>
+    <span class="n">optional</span><span class="p">(</span>
+        <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">),</span>
+        <span class="n">barrier</span><span class="p">(</span>
+            <span class="n">optional</span><span class="p">(</span>
+                <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-39" name="sd-tab-set-13" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-39">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Without barrier:</p></th>
+<th class="head"><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;A&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;B&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;C&quot;</span>
+</pre></div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>With barrier:</p></td>
+<td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;A&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;B&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">barrier</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;C&quot;</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py type">
+<dt class="sig sig-object py" id="syntax_diagrams.Group">
+<em class="property"><span class="k"><span class="pre">type</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">Group</span></span><span class="sig-paren">[</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">]</span><a class="headerlink" href="#syntax_diagrams.Group" title="Link to this definition">¶</a></dt>
+<dd><p>Draws a box around some element.</p>
+<p>Use <a class="reference internal" href="#syntax_diagrams.group" title="syntax_diagrams.group"><code class="xref py py-func docutils literal notranslate"><span class="pre">group()</span></code></a> to create this description in Python.</p>
+<p><strong>Dict keys:</strong></p>
+<ul>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">group</span><span class="p">:</span> <span class="n">Element</span><span class="p">[</span><span class="n">T</span><span class="p">]</span></code>, <em>required</em></p>
+<p>Element that will be placed in a group.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">href</span><span class="p">:</span> <span class="n">text</span></code></p>
+<p>Optional caption for this group.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">href</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Makes group’s caption into a hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Title for hyperlink.</p>
+</li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">css_class</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Adds CSS class to group’s <code class="docutils literal notranslate"><span class="pre">&lt;g&gt;</span></code> element.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-40" name="sd-tab-set-14" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-40">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;def&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;(&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zero_or_more</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;param&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;type&quot;</span>
+<span class="w">    </span><span class="nt">repeat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
+<span class="w">  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Function parameters</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;)&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-41" name="sd-tab-set-14" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-41">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;def&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">),</span>
+    <span class="n">group</span><span class="p">(</span>
+        <span class="n">zero_or_more</span><span class="p">(</span>
+            <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;param&quot;</span><span class="p">),</span>
+            <span class="n">optional</span><span class="p">(</span>
+                <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">),</span>
+                <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">repeat</span><span class="o">=</span><span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">optional</span><span class="p">(</span><span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)),</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Function parameters&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-42" name="sd-tab-set-14" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="rendered" for="sd-tab-item-42">
+Rendered</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;def&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;(&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zero_or_more</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;param&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">non_terminal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;type&quot;</span>
+<span class="w">    </span><span class="nt">repeat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
+<span class="w">  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Function parameters</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;)&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+</section>
+<section id="using-constructors">
+<h2>Using constructors<a class="headerlink" href="#using-constructors" title="Link to this heading">¶</a></h2>
+<p>If you’re building diagrams manually in python code, you can use these constructors:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.skip">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">skip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.skip" title="Link to this definition">¶</a></dt>
+<dd><p>Create an element that renders as a single line without content.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Element" title="syntax_diagrams.Element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Element</span></code></a> for more information.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.terminal">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">terminal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">css_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.terminal" title="Link to this definition">¶</a></dt>
+<dd><p>Create a terminal node with optional additional settings.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Terminal" title="syntax_diagrams.Terminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Terminal</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.non_terminal">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">non_terminal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">css_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.non_terminal" title="Link to this definition">¶</a></dt>
+<dd><p>Create a non-terminal node with optional additional settings.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.NonTerminal" title="syntax_diagrams.NonTerminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonTerminal</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.comment">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">comment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">css_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.comment" title="Link to this definition">¶</a></dt>
+<dd><p>Create a comment node with optional additional settings.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Comment" title="syntax_diagrams.Comment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Comment</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.sequence">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linebreaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_t.Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'HARD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'SOFT'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'DEFAULT'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'NO_BREAK'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#syntax_diagrams.LineBreak" title="syntax_diagrams.LineBreak"><span class="pre">LineBreak</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">_t.Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'HARD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'SOFT'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'DEFAULT'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'NO_BREAK'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#syntax_diagrams.LineBreak" title="syntax_diagrams.LineBreak"><span class="pre">LineBreak</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Create an automatically wrapped sequence of elements.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Sequence" title="syntax_diagrams.Sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sequence</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.stack">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">stack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.stack" title="Link to this definition">¶</a></dt>
+<dd><p>Create a sequence of elements that wraps after each element.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Stack" title="syntax_diagrams.Stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stack</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.no_break">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">no_break</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.no_break" title="Link to this definition">¶</a></dt>
+<dd><p>Create a sequence of elements that doesn’t wrap.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.NoBreak" title="syntax_diagrams.NoBreak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoBreak</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.choice">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.choice" title="Link to this definition">¶</a></dt>
+<dd><p>Create a choice between several elements.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Choice" title="syntax_diagrams.Choice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Choice</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.optional">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">optional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_bottom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.optional" title="Link to this definition">¶</a></dt>
+<dd><p>Create an optional element.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Optional" title="syntax_diagrams.Optional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.one_or_more">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">one_or_more</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.one_or_more" title="Link to this definition">¶</a></dt>
+<dd><p>Create a repeated element.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.OneOrMore" title="syntax_diagrams.OneOrMore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OneOrMore</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.zero_or_more">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">zero_or_more</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_bottom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.zero_or_more" title="Link to this definition">¶</a></dt>
+<dd><p>Create an optional repeated element.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.ZeroOrMore" title="syntax_diagrams.ZeroOrMore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZeroOrMore</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.barrier">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">barrier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.barrier" title="Link to this definition">¶</a></dt>
+<dd><p>Create a barrier element.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Barrier" title="syntax_diagrams.Barrier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Barrier</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="syntax_diagrams.group">
+<span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">css_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.group" title="Link to this definition">¶</a></dt>
+<dd><p>Create a group element.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See <a class="reference internal" href="#syntax_diagrams.Group" title="syntax_diagrams.Group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></a> for description of parameters.</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="line-breaks-and-wrapping">
+<h2>Line breaks and wrapping<a class="headerlink" href="#line-breaks-and-wrapping" title="Link to this heading">¶</a></h2>
+<p>You can use <a class="reference internal" href="#syntax_diagrams.Stack" title="syntax_diagrams.Stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stack</span></code></a> and <a class="reference internal" href="#syntax_diagrams.NoBreak" title="syntax_diagrams.NoBreak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoBreak</span></code></a> to control how diagram lines are wrapped.
+Additionally, you can pass a list of line breaks to a <a class="reference internal" href="#syntax_diagrams.Sequence" title="syntax_diagrams.Sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sequence</span></code></a> element.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="syntax_diagrams.LineBreak">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">LineBreak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.LineBreak" title="Link to this definition">¶</a></dt>
+<dd><p>Type of a line break that can be specified when creating a sequence.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="syntax_diagrams.LineBreak.DEFAULT">
+<span class="sig-name descname"><span class="pre">DEFAULT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DEFAULT'</span></em><a class="headerlink" href="#syntax_diagrams.LineBreak.DEFAULT" title="Link to this definition">¶</a></dt>
+<dd><p>Prefers not to break line in this position unless necessary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="syntax_diagrams.LineBreak.HARD">
+<span class="sig-name descname"><span class="pre">HARD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'HARD'</span></em><a class="headerlink" href="#syntax_diagrams.LineBreak.HARD" title="Link to this definition">¶</a></dt>
+<dd><p>Always breaks a line in this position.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="syntax_diagrams.LineBreak.NO_BREAK">
+<span class="sig-name descname"><span class="pre">NO_BREAK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NO_BREAK'</span></em><a class="headerlink" href="#syntax_diagrams.LineBreak.NO_BREAK" title="Link to this definition">¶</a></dt>
+<dd><p>Disables breaking in this position.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="syntax_diagrams.LineBreak.SOFT">
+<span class="sig-name descname"><span class="pre">SOFT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SOFT'</span></em><a class="headerlink" href="#syntax_diagrams.LineBreak.SOFT" title="Link to this definition">¶</a></dt>
+<dd><p>Breaks a line in this position if the sequence can’t fit
+in allowed dimensions.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="hyperlinks.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Customizing hyperlink resolution</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Tamika Nomara
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Describing diagrams</a><ul>
+<li><a class="reference internal" href="#using-yaml-or-python-literals">Using YAML or Python literals</a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Terminal"><code class="docutils literal notranslate"><span class="pre">Terminal</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.NonTerminal"><code class="docutils literal notranslate"><span class="pre">NonTerminal</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Comment"><code class="docutils literal notranslate"><span class="pre">Comment</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Sequence"><code class="docutils literal notranslate"><span class="pre">Sequence</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Stack"><code class="docutils literal notranslate"><span class="pre">Stack</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.NoBreak"><code class="docutils literal notranslate"><span class="pre">NoBreak</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Choice"><code class="docutils literal notranslate"><span class="pre">Choice</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Optional"><code class="docutils literal notranslate"><span class="pre">Optional</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.OneOrMore"><code class="docutils literal notranslate"><span class="pre">OneOrMore</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.ZeroOrMore"><code class="docutils literal notranslate"><span class="pre">ZeroOrMore</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Barrier"><code class="docutils literal notranslate"><span class="pre">Barrier</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.Group"><code class="docutils literal notranslate"><span class="pre">Group</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-constructors">Using constructors</a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.skip"><code class="docutils literal notranslate"><span class="pre">skip()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.terminal"><code class="docutils literal notranslate"><span class="pre">terminal()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.non_terminal"><code class="docutils literal notranslate"><span class="pre">non_terminal()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.comment"><code class="docutils literal notranslate"><span class="pre">comment()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.sequence"><code class="docutils literal notranslate"><span class="pre">sequence()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.stack"><code class="docutils literal notranslate"><span class="pre">stack()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.no_break"><code class="docutils literal notranslate"><span class="pre">no_break()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.choice"><code class="docutils literal notranslate"><span class="pre">choice()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.optional"><code class="docutils literal notranslate"><span class="pre">optional()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.one_or_more"><code class="docutils literal notranslate"><span class="pre">one_or_more()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.zero_or_more"><code class="docutils literal notranslate"><span class="pre">zero_or_more()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.barrier"><code class="docutils literal notranslate"><span class="pre">barrier()</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.group"><code class="docutils literal notranslate"><span class="pre">group()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#line-breaks-and-wrapping">Line breaks and wrapping</a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.LineBreak"><code class="docutils literal notranslate"><span class="pre">LineBreak</span></code></a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.LineBreak.DEFAULT"><code class="docutils literal notranslate"><span class="pre">LineBreak.DEFAULT</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.LineBreak.HARD"><code class="docutils literal notranslate"><span class="pre">LineBreak.HARD</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.LineBreak.NO_BREAK"><code class="docutils literal notranslate"><span class="pre">LineBreak.NO_BREAK</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.LineBreak.SOFT"><code class="docutils literal notranslate"><span class="pre">LineBreak.SOFT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=7e0c102e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    </body>
+</html>
