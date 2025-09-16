@@ -14,7 +14,7 @@ repos:
         types: [python]
         files: ^(?!docs)
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         exclude: "^test/image_diff_reference/.*$"
