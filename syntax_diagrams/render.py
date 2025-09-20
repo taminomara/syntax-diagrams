@@ -235,14 +235,14 @@ DEFAULT_CSS = {
     "g.comment rect": {
         "stroke": "none",
     },
-    "text": {
+    "tspan": {
         "font-size": "14px",
         "font-family": "Consolas, Menlo, monospace",
         "text-anchor": "middle",
         "dominant-baseline": "central",
         "font-weight": "bold",
     },
-    ".group text": {
+    ".group tspan": {
         "text-anchor": "start",
         "opacity": "0.5",
         "font-weight": "normal",
@@ -252,7 +252,7 @@ DEFAULT_CSS = {
     ".group rect": {
         "opacity": "0.3",
     },
-    "g.comment text": {
+    "g.comment tspan": {
         "font-weight": "normal",
         "font-style": "italic",
     },

@@ -1,7 +1,7 @@
 [project]
 name = "syntax-diagrams"
 authors = [{name = "Tamika Nomara", email = "taminomara@gmail.com"}]
-description = "A library for generating railroad syntax diagrams"
+description = "A library for generating syntax diagrams"
 dynamic = ["version"]
 readme = "README.md"
 license = "MIT"
@@ -46,7 +46,7 @@ doc = [
     "sybil==9.2.0",
     "furo==2025.7.19",
     "sphinx_design==0.6.1",
-    "sphinx-syntax~=0.0.0.b0",
+    "sphinx-syntax~=0.0.0.b3",
 ]
 
 [project.urls]

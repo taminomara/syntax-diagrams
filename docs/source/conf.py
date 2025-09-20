@@ -14,8 +14,8 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
-    # "sphinx_autodoc_typehints",
     "sphinx_design",
+    "sphinx_syntax",
 ]
 
 templates_path = ["_templates"]

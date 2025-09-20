@@ -29,7 +29,7 @@ svg.syntax-diagram g.comment rect {
   stroke: none;
 }
 
-svg.syntax-diagram text {
+svg.syntax-diagram tspan {
   font-size: 14px;
   font-family: Consolas, Menlo, monospace;
   text-anchor: middle;
@@ -38,12 +38,7 @@ svg.syntax-diagram text {
   fill: currentColor;
 }
 
-svg.syntax-diagram g.comment text {
-  font-style: italic;
-  font-weight: normal;
-}
-
-svg.syntax-diagram .group text {
+svg.syntax-diagram .group tspan {
   text-anchor: start;
   opacity: 0.5;
   font-style: italic;
@@ -55,7 +50,7 @@ svg.syntax-diagram .group rect {
   opacity: 0.3;
 }
 
-svg.syntax-diagram g.comment text {
+svg.syntax-diagram g.comment tspan {
   font-style: italic;
   font-weight: normal;
 }
