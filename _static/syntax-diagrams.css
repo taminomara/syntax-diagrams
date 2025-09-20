@@ -1,0 +1,66 @@
+svg.syntax-diagram path {
+  stroke-width: 1.5;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+}
+
+svg.syntax-diagram .arrow {
+  stroke: none;
+  fill: currentColor;
+}
+
+svg.syntax-diagram .arrow.arrow-barb {
+  stroke: currentColor;
+  fill: none;
+}
+
+svg.syntax-diagram a {
+  text-decoration: none;
+}
+
+svg.syntax-diagram rect {
+  stroke-width: 1.5;
+  stroke: currentColor;
+  fill: none;
+}
+
+svg.syntax-diagram g.comment rect {
+  stroke: none;
+}
+
+svg.syntax-diagram tspan {
+  font-size: 14px;
+  font-family: Consolas, Menlo, monospace;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-weight: bold;
+  fill: currentColor;
+}
+
+svg.syntax-diagram .group tspan {
+  text-anchor: start;
+  opacity: 0.5;
+  font-style: italic;
+  font-weight: normal;
+  dominant-baseline: alphabetic;
+}
+
+svg.syntax-diagram .group rect {
+  opacity: 0.3;
+}
+
+svg.syntax-diagram g.comment tspan {
+  font-style: italic;
+  font-weight: normal;
+}
+
+svg.syntax-diagram .dbg-content,
+svg.syntax-diagram .dbg-display,
+svg.syntax-diagram .dbg-content-main,
+svg.syntax-diagram .dbg-padding,
+svg.syntax-diagram .dbg-margin,
+svg.syntax-diagram .dbg-position,
+svg.syntax-diagram .dbg-ridge-line {
+  display: none;
+}

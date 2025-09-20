@@ -82,7 +82,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 - choice:
                   - "lexer"
@@ -147,7 +147,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 terminal: "INT"
 
@@ -167,7 +167,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 "INT"
 
@@ -225,7 +225,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 non_terminal: "expr"
 
@@ -283,7 +283,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 comment: "escaped literal"
 
@@ -341,7 +341,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 sequence:
                 - comment: "escaped literal"
@@ -366,7 +366,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 - comment: "escaped literal"
                 - "ESC"
@@ -415,7 +415,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 stack:
                 - comment: "escaped literal"
@@ -465,7 +465,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 no_break:
                 - comment: "escaped literal"
@@ -525,7 +525,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 choice:
                 - "INT"
@@ -582,7 +582,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 optional:
                 - non_terminal: "annotation"
@@ -633,7 +633,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 one_or_more:
                 - non_terminal: "expr"
@@ -696,7 +696,7 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
 
                 zero_or_more:
                 - non_terminal: "expr"
@@ -756,25 +756,27 @@ when writing diagrams in YAML syntax.
                 :header-rows: 1
 
                 * - Without barrier:
-                  -
-                    .. code-block:: yaml
+                  - With barrier:
+
+                * -
+                    .. syntax:diagram::
+                        :svg-padding: 10 1 10 1
 
                         - "A"
                         - optional:
                           - "B"
                           - optional:
                             - "C"
-
-                * - With barrier:
                   -
-                    .. code-block:: yaml
+                    .. syntax:diagram::
+                        :svg-padding: 10 1 10 1
 
                         - "A"
                         - optional:
                           - "B"
                           - barrier:
                             - optional:
-                            - "C"
+                              - "C"
 
 
 .. type:: Group[T]
@@ -854,7 +856,8 @@ when writing diagrams in YAML syntax.
         .. tab-item:: Rendered
             :sync: rendered
 
-            .. code-block:: yaml
+            .. syntax:diagram::
+                :svg-max-width: 700
 
                 - "def"
                 - "("
