@@ -101,13 +101,13 @@ def render_diagram():
             rendered = syntax_diagrams.render_svg(
                 diagram,
                 settings=_t.cast(syntax_diagrams.SvgRenderSettings, settings),
-                _dump_debug_data=True,
+                _dump_debug_data=True,  # type: ignore
             )
         else:
             rendered = syntax_diagrams.render_text(
                 diagram,
                 settings=_t.cast(syntax_diagrams.TextRenderSettings, settings),
-                _dump_debug_data=True,
+                _dump_debug_data=True,  # type: ignore
             )
     except syntax_diagrams.LoadingError as e:
         return str(e), 400

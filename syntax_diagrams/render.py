@@ -20,6 +20,7 @@ __all__ = [
 ]
 
 T = _t.TypeVar("T")
+U = _t.TypeVar("U")
 
 
 class LoadingError(ValueError):
@@ -150,6 +151,32 @@ class TextRenderSettings:
     If enabled, diagram is rendered right-to-left.
 
     """
+
+
+@_t.overload
+def render_text(
+    element: Element[T],
+    /,
+    *,
+    max_width: int | None = None,
+    settings: TextRenderSettings | None = None,
+    reverse: bool | None = None,
+    href_resolver: HrefResolver[T] | None = None,
+    convert_resolver_data: None = None,
+) -> str: ...
+
+
+@_t.overload
+def render_text(
+    element: Element[U],
+    /,
+    *,
+    max_width: int | None = None,
+    settings: TextRenderSettings | None = None,
+    reverse: bool | None = None,
+    href_resolver: HrefResolver[T] | None = None,
+    convert_resolver_data: _t.Callable[[U | None], T | None] | None,
+) -> str: ...
 
 
 def render_text(
@@ -563,6 +590,7 @@ class SvgRenderSettings:
     """
 
 
+@_t.overload
 def render_svg(
     element: Element[T],
     /,
@@ -571,7 +599,32 @@ def render_svg(
     settings: SvgRenderSettings | None = None,
     reverse: bool | None = None,
     href_resolver: HrefResolver[T] | None = None,
-    convert_resolver_data: _t.Callable[[_t.Any | None], T | None] | None = None,
+    convert_resolver_data: None = None,
+) -> str: ...
+
+
+@_t.overload
+def render_svg(
+    element: Element[U],
+    /,
+    *,
+    max_width: int | None = None,
+    settings: SvgRenderSettings | None = None,
+    reverse: bool | None = None,
+    href_resolver: HrefResolver[T] | None = None,
+    convert_resolver_data: _t.Callable[[U | None], T | None] | None,
+) -> str: ...
+
+
+def render_svg(
+    element: Element[T],
+    /,
+    *,
+    max_width: int | None = None,
+    settings: SvgRenderSettings | None = None,
+    reverse: bool | None = None,
+    href_resolver: HrefResolver[T] | None = None,
+    convert_resolver_data: _t.Callable[[T | None], T | None] | None = None,
     _dump_debug_data: bool = False,
 ) -> str:
     """
