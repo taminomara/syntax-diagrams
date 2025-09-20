@@ -24,13 +24,13 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest-cov==6.2.1",
+    "pytest-cov==7.0.0",
     "flask==3.1.2",
     "syntax-diagrams[test,lint,doc]",
 ]
 test = [
-    "pyright==1.1.404",
-    "pytest==8.4.1",
+    "pyright==1.1.405",
+    "pytest==8.4.2",
     "sybil==9.2.0",
     "reportlab[pycairo]==4.4.3",
     "svglib==1.5.1",
@@ -38,7 +38,7 @@ test = [
     "PyYAML==6.0.2",
 ]
 lint = [
-    "black==25.1.0",
+    "black==25.9.0",
     "isort==6.0.1",
     "pre-commit==4.3.0",
 ]
