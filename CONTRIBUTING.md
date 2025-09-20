@@ -1,4 +1,4 @@
-# Contributing to Sphinx-LuaLs
+# Contributing
 
 ## Set up your environment
 
@@ -10,7 +10,7 @@
 
 2. Create a virtual environment with python `3.12` or newer.
 
-3. Install Neat Railroad Diagrams in development mode, and install dev dependencies:
+3. Install Syntax Diagrams in development mode, and install dev dependencies:
 
    ```shell
    pip install -e .[dev]
