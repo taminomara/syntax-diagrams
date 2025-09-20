@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Describing diagrams" href="describe.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Render a diagram" href="render.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>Customizing hyperlink resolution - Syntax Diagrams 0.1.dev1+geab8a9942 documentation</title>
+        <title>Advanced API - Syntax Diagrams 0.1.dev1+gf29bc5555 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+geab8a9942 documentation</div></a>
+      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+gf29bc5555 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+geab8a9942 documentation</span>
+  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+gf29bc5555 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -198,9 +198,14 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="describe.html">Describing diagrams</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Customizing hyperlink resolution</a></li>
+  <ul>
+<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="describe.html">Describe a diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="render.html">Render a diagram</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Advanced API</a></li>
 </ul>
 
 </div>
@@ -221,12 +226,12 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/blob/main/docs/source/hyperlinks.rst?plain=true" title="View this page">
+  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/blob/main/docs/source/advanced.rst?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
 </div><div class="edit-this-page">
-  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/edit/main/docs/source/hyperlinks.rst" rel="edit" title="Edit this page">
+  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/edit/main/docs/source/advanced.rst" rel="edit" title="Edit this page">
     <svg><use href="#svg-pencil"></use></svg>
     <span class="visually-hidden">Edit this page</span>
   </a>
@@ -245,8 +250,10 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="customizing-hyperlink-resolution">
-<h1>Customizing hyperlink resolution<a class="headerlink" href="#customizing-hyperlink-resolution" title="Link to this heading">¶</a></h1>
+          <section id="advanced-api">
+<h1>Advanced API<a class="headerlink" href="#advanced-api" title="Link to this heading">¶</a></h1>
+<section id="customizing-hyperlink-resolution">
+<h2>Customizing hyperlink resolution<a class="headerlink" href="#customizing-hyperlink-resolution" title="Link to this heading">¶</a></h2>
 <p>When diagram is rendered as SVG, hyperlinks and their titles are added to the nodes
 to create interactive elements. You can control this process by supplying
 an implementation of <a class="reference internal" href="#syntax_diagrams.HrefResolver" title="syntax_diagrams.HrefResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HrefResolver</span></code></a>.</p>
@@ -258,7 +265,7 @@ nodes with grammars and production rules by their names.</p>
 <dd><p>An interface that allows pre-processing all hyperlinks in nodes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="syntax_diagrams.HrefResolver.resolve">
-<span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.HrefResolver.resolve" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.HrefResolver.resolve" title="Link to this definition">¶</a></dt>
 <dd><p>Called before rendering a node.</p>
 <p>Should return a tuple <code class="docutils literal notranslate"><span class="pre">(text,</span> <span class="pre">href,</span> <span class="pre">title)</span></code>, possibly modified.</p>
 <dl class="field-list simple">
@@ -275,6 +282,60 @@ nodes with grammars and production rules by their names.</p>
 </dd></dl>
 
 </section>
+<section id="customizing-text-measure">
+<h2>Customizing text measure<a class="headerlink" href="#customizing-text-measure" title="Link to this heading">¶</a></h2>
+<p>SVG renderer needs to know dimensions of node’s text in order to size the diagram
+appropriately. By default, it uses a very crude heuristic of multiplying
+length of text by an average character width. If you have a font file, though,
+you can improve text measuring by providing an instance of <a class="reference internal" href="#syntax_diagrams.TrueTextMeasure" title="syntax_diagrams.TrueTextMeasure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrueTextMeasure</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="syntax_diagrams.TextMeasure">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">TextMeasure</span></span><a class="headerlink" href="#syntax_diagrams.TextMeasure" title="Link to this definition">¶</a></dt>
+<dd><p>An interface for measuring dimensions of rendered text.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="syntax_diagrams.TextMeasure.measure">
+<span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.TextMeasure.measure" title="Link to this definition">¶</a></dt>
+<dd><p>Called before rendering a node to measure its text.</p>
+<p>Should return a tuple <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="syntax_diagrams.SimpleTextMeasure">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">SimpleTextMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_advance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide_character_advance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.SimpleTextMeasure" title="Link to this definition">¶</a></dt>
+<dd><p>A simple text measuring service that multiplies length of the text
+by average width of the character. Works best for monospace fonts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>character_advance</strong> – average length of one character in the used font. Since SVG elements
+cannot expand and shrink dynamically, length of text nodes is calculated
+as number of symbols multiplied by this constant.</p></li>
+<li><p><strong>wide_character_advance</strong> – average length of one wide character in the used font.</p></li>
+<li><p><strong>line_height</strong> – height of a single line, equals to CSS <code class="docutils literal notranslate"><span class="pre">line-height</span></code> property.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="syntax_diagrams.TrueTextMeasure">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">TrueTextMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageFont</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">FreeTypeFont</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.TrueTextMeasure" title="Link to this definition">¶</a></dt>
+<dd><p>A text measuring service that uses Python Image Library to calculate
+text’s actual size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>font</strong> – font data, see <a class="reference external" href="https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.ImageFont" title="(in Pillow (PIL Fork) v11.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PIL.ImageFont.ImageFont</span></code></a>.</p></li>
+<li><p><strong>line_height</strong> – height of a single line, equals to CSS <code class="docutils literal notranslate"><span class="pre">line-height</span></code> property.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
 
         </article>
       </div>
@@ -282,14 +343,14 @@ nodes with grammars and production rules by their names.</p>
         
         <div class="related-pages">
           
-          <a class="prev-page" href="describe.html">
+          <a class="prev-page" href="render.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Describing diagrams</div>
+                <div class="title">Render a diagram</div>
                 
               </div>
             </a>
@@ -323,9 +384,21 @@ nodes with grammars and production rules by their names.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Customizing hyperlink resolution</a><ul>
+<li><a class="reference internal" href="#">Advanced API</a><ul>
+<li><a class="reference internal" href="#customizing-hyperlink-resolution">Customizing hyperlink resolution</a><ul>
 <li><a class="reference internal" href="#syntax_diagrams.HrefResolver"><code class="docutils literal notranslate"><span class="pre">HrefResolver</span></code></a><ul>
 <li><a class="reference internal" href="#syntax_diagrams.HrefResolver.resolve"><code class="docutils literal notranslate"><span class="pre">HrefResolver.resolve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#customizing-text-measure">Customizing text measure</a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.TextMeasure"><code class="docutils literal notranslate"><span class="pre">TextMeasure</span></code></a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.TextMeasure.measure"><code class="docutils literal notranslate"><span class="pre">TextMeasure.measure()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#syntax_diagrams.SimpleTextMeasure"><code class="docutils literal notranslate"><span class="pre">SimpleTextMeasure</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.TrueTextMeasure"><code class="docutils literal notranslate"><span class="pre">TrueTextMeasure</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -339,7 +412,7 @@ nodes with grammars and production rules by their names.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7e0c102e"></script>
+</div><script src="_static/documentation_options.js?v=b00a6f1d"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

@@ -1,13 +1,13 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="./">
-  <head>
-<meta charset="utf-8"/>
+  <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="#" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Describe a diagram" href="describe.html" /><link rel="prev" title="Syntax Diagrams" href="index.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-<meta name="robots" content="noindex" />
-<title>Search - Syntax Diagrams 0.1.dev1+gf29bc5555 documentation</title><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+        <title>Quickstart - Syntax Diagrams 0.1.dev1+gf29bc5555 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -192,7 +192,7 @@
   
   <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+gf29bc5555 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="#" role="search">
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -201,8 +201,8 @@
   <ul>
 <li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="describe.html">Describe a diagram</a></li>
 <li class="toctree-l1"><a class="reference internal" href="render.html">Render a diagram</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced API</a></li>
@@ -225,7 +225,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/blob/main/docs/source/quickstart.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/taminomara/syntax-diagrams/edit/main/docs/source/quickstart.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
@@ -240,25 +250,97 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          
-<noscript>
-<div class="admonition error">
-  <p class="admonition-title">Error</p>
-  <p>
-    Please activate JavaScript to enable the search functionality.
-  </p>
+          <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
+<p>Install <code class="docutils literal notranslate"><span class="pre">syntax-diagrams</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>syntax-diagrams
+</pre></div>
 </div>
-</noscript>
+<p>Describe a syntax diagram using
+<a class="reference internal" href="describe.html#constructors"><span class="std std-ref">constructors</span></a> or <a class="reference internal" href="describe.html#literals"><span class="std std-ref">YAML</span></a>:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="python" for="sd-tab-item-0">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">syntax_diagrams</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<div id="search-results"></div>
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">choice</span><span class="p">(</span>
+        <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;lexer&quot;</span><span class="p">),</span>
+        <span class="n">skip</span><span class="p">(),</span>
+        <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;parser&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;grammar&quot;</span><span class="p">),</span>
+    <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;identifier&quot;</span><span class="p">),</span>
+    <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="diagram-example" data-sync-id="yaml" for="sd-tab-item-1">
+YAML</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">syntax_diagrams</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    - choice:</span>
+<span class="s2">      - &quot;lexer&quot;</span>
+<span class="s2">      -</span>
+<span class="s2">      - &quot;parser&quot;</span>
+<span class="s2">      default: 1</span>
+<span class="s2">    - grammar</span>
+<span class="s2">    - non_terminal: &quot;identifier&quot;</span>
+<span class="s2">    - &quot;;&quot;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Render the diagram using <a class="reference internal" href="render.html#syntax_diagrams.render_svg" title="syntax_diagrams.render_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_svg</span></code></a> or <a class="reference internal" href="render.html#syntax_diagrams.render_text" title="syntax_diagrams.render_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_text</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">svg</span> <span class="o">=</span> <span class="n">render_svg</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Customize rendering by providing <a class="reference internal" href="render.html#syntax_diagrams.SvgRenderSettings" title="syntax_diagrams.SvgRenderSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SvgRenderSettings</span></code></a> or <a class="reference internal" href="render.html#syntax_diagrams.TextRenderSettings" title="syntax_diagrams.TextRenderSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TextRenderSettings</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">svg</span> <span class="o">=</span> <span class="n">render_svg</span><span class="p">(</span>
+    <span class="n">diagram</span><span class="p">,</span>
+    <span class="n">max_width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">settings</span><span class="o">=</span><span class="n">SvgRenderSettings</span><span class="p">(</span>
+        <span class="n">arrow_style</span><span class="o">=</span><span class="n">ArrowStyle</span><span class="o">.</span><span class="n">TRIANGLE</span><span class="p">,</span>
+        <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;my-diagram&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Use <a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">online editor</a> to play with diagram descriptions and settings.</p>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="describe.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Describe a diagram</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -288,8 +370,5 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    
-<script src="_static/searchtools.js"></script>
-<script src="_static/language_data.js"></script>
-<script src="searchindex.js"></script></body>
+    </body>
 </html>
