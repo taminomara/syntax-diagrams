@@ -22,6 +22,7 @@ from syntax_diagrams._impl.tree.end import End
 from syntax_diagrams._impl.tree.sequence import Sequence
 from syntax_diagrams._impl.vec import Vec
 from syntax_diagrams.element import LineBreak
+from syntax_diagrams.measure import SimpleTextMeasure
 from syntax_diagrams.render import EndClass, TextRenderSettings
 from syntax_diagrams.resolver import HrefResolver
 
@@ -36,6 +37,7 @@ def render_text(
     settings: TextRenderSettings = TextRenderSettings(),
     reverse: bool | None = None,
     href_resolver: HrefResolver[T] = HrefResolver(),
+    dump_debug_data: bool = False,
 ) -> str:
     if max_width is None:
         max_width = settings.max_width
@@ -79,6 +81,7 @@ def render_text(
             + 1
         ),
         layout_settings,
+        dump_debug_data,
     )
 
     pos = Vec(settings.padding[3], settings.padding[0] + node.up)
@@ -99,7 +102,17 @@ def render_text(
         ),
     )
 
-    return render.to_string()
+    if dump_debug_data:
+        return render.debug_data()
+    else:
+        return render.to_string()
+
+
+_TEXT_MEASURE = SimpleTextMeasure(
+    character_advance=1,
+    wide_character_advance=2,
+    line_height=1,
+)
 
 
 def text_layout_settings(settings: TextRenderSettings = TextRenderSettings()):
@@ -111,30 +124,25 @@ def text_layout_settings(settings: TextRenderSettings = TextRenderSettings()):
         vertical_seq_separation=settings.vertical_seq_separation,
         arc_radius=0.5,
         arc_margin=1,
-        terminal_padding=2,
-        terminal_height=2,
+        terminal_horizontal_padding=2,
+        terminal_vertical_padding=0,
         terminal_radius=0,
-        non_terminal_padding=2,
-        non_terminal_height=2,
+        non_terminal_horizontal_padding=2,
+        non_terminal_vertical_padding=0,
         non_terminal_radius=0,
-        comment_padding=2,
-        comment_height=2,
+        comment_horizontal_padding=2,
+        comment_vertical_padding=0,
         comment_radius=0,
-        terminal_character_advance=1,
-        terminal_wide_character_advance=2,
-        non_terminal_character_advance=1,
-        non_terminal_wide_character_advance=2,
-        comment_character_advance=1,
-        comment_wide_character_advance=2,
-        group_character_advance=1,
-        group_wide_character_advance=2,
+        terminal_text_measure=_TEXT_MEASURE,
+        non_terminal_text_measure=_TEXT_MEASURE,
+        comment_text_measure=_TEXT_MEASURE,
+        group_text_measure=_TEXT_MEASURE,
         group_vertical_padding=settings.group_vertical_padding,
         group_horizontal_padding=settings.group_horizontal_padding,
         group_vertical_margin=settings.group_vertical_margin,
         group_horizontal_margin=settings.group_horizontal_margin,
         group_thickness=1,
         group_radius=0,
-        group_text_height=settings.group_text_height,
         group_text_vertical_offset=settings.group_text_vertical_offset,
         group_text_horizontal_offset=settings.group_text_horizontal_offset,
         marker_width=4,
@@ -149,8 +157,8 @@ _SYMBOL_TO_DIRECTION: dict[str, frozenset[str]] = {
     "↑": frozenset("ns"),
     "→": frozenset("ew"),
     "←": frozenset("ew"),
-    "─": frozenset("we"),
-    "━": frozenset("WE"),
+    "─": frozenset("ew"),
+    "━": frozenset("EW"),
     "│": frozenset("ns"),
     "┃": frozenset("NS"),
     "┌": frozenset("es"),
@@ -248,8 +256,14 @@ del s
 
 
 class TextRender(Render[T], _t.Generic[T]):
-    def __init__(self, width: int, height: int, settings: LayoutSettings[T]):
-        self.settings = settings
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        settings: LayoutSettings[T],
+        dump_debug_data: bool = False,
+    ):
+        super().__init__(settings, dump_debug_data)
 
         self._pos = Vec(0, 0)
         self._field = [[" "] * width for _ in range(height)]
@@ -279,34 +293,46 @@ class TextRender(Render[T], _t.Generic[T]):
         down: int,
         radius: int,
         padding: int,
+        text_width: int,
+        text_height: int,
         text: str,
         href: str | None,
         title: str | None,
     ):
         if style == NodeStyle.TERMINAL:
-            ch = "┤├┌┐└┘─"
+            ch = "┤├┌┐└┘─│"
         elif style == NodeStyle.NON_TERMINAL:
-            ch = "╢╟╔╗╚╝═"
+            ch = "╢╟╔╗╚╝═║"
         else:
-            ch = "╴╶     "
+            ch = "╴╶      "
 
-        pad = " " * (padding - 1)
-        self._field[pos.y][pos.x + 1] = f"{pad}{text}{pad}"
-        for i in range(2, content_width):
-            self._field[pos.y][pos.x + i] = ""
+        lines = text.splitlines()
+        height = len(lines)
+        offset_top = height // 2
+        offset_bottom = height - offset_top
 
-        self._field[pos.y - 1][pos.x] = ch[2]
+        for j, line in enumerate(lines):
+            line_width, _ = _TEXT_MEASURE.measure(line)
+            x = pos.x + padding
+            y = pos.y - offset_top + j
+            self._field[y][x] = line
+            self._field[y][pos.x] = ch[7]
+            self._field[y][pos.x + content_width - 1] = ch[7]
+            for j in range(1, line_width):
+                self._field[y][x + j] = ""
+
+        self._field[pos.y - offset_top - 1][pos.x] = ch[2]
         for i in range(1, content_width):
-            self._field[pos.y - 1][pos.x + i] = ch[6]
-        self._field[pos.y - 1][pos.x + content_width - 1] = ch[3]
+            self._field[pos.y - offset_top - 1][pos.x + i] = ch[6]
+        self._field[pos.y - offset_top - 1][pos.x + content_width - 1] = ch[3]
+
+        self._field[pos.y + offset_bottom][pos.x] = ch[4]
+        for i in range(1, content_width):
+            self._field[pos.y + offset_bottom][pos.x + i] = ch[6]
+        self._field[pos.y + offset_bottom][pos.x + content_width - 1] = ch[5]
 
         self._field[pos.y][pos.x] = ch[0]
         self._field[pos.y][pos.x + content_width - 1] = ch[1]
-
-        self._field[pos.y + 1][pos.x] = ch[4]
-        for i in range(1, content_width):
-            self._field[pos.y + 1][pos.x + i] = ch[6]
-        self._field[pos.y + 1][pos.x + content_width - 1] = ch[5]
 
     def group(
         self,
@@ -315,6 +341,7 @@ class TextRender(Render[T], _t.Generic[T]):
         height: int,
         css_class: str | None,
         text_width: int,
+        text_height: int,
         text: str | None,
         href: str | None,
         title: str | None,
@@ -333,17 +360,23 @@ class TextRender(Render[T], _t.Generic[T]):
         if not text:
             return
 
+        lines = text.splitlines()
         text_pos = pos + Vec(
             self.settings.group_text_horizontal_offset + self.settings.group_thickness,
-            -self.settings.group_text_vertical_offset,
+            -self.settings.group_text_vertical_offset - len(lines),
         )
-        if self.settings.group_text_vertical_offset == 0:
-            text_pos.x = max(0, text_pos.x - 1)
-            text_width += 2
-            text = f"╸{text}╺"
-        self._field[text_pos.y][text_pos.x] = f"{text}"
-        for i in range(1, text_width):
-            self._field[text_pos.y][text_pos.x + i] = ""
+        for i, line in enumerate(lines):
+            line_width, _ = _TEXT_MEASURE.measure(line)
+            y = text_pos.y + i
+            self._field[y][text_pos.x] = line
+            for j in range(1, line_width):
+                self._field[y][text_pos.x + j] = ""
+            if y == pos.y:
+                if self.settings.group_text_horizontal_offset > 0:
+                    self._field[y][text_pos.x - 1] = "╸"
+                elif self.settings.group_text_horizontal_offset == 0:
+                    self._field[y][text_pos.x - 1] = "╻"
+                self._field[y][text_pos.x + line_width] = "╺"
 
     def left_marker(self, pos: Vec):
         w = self.settings.marker_width
@@ -397,7 +430,7 @@ class TextRender(Render[T], _t.Generic[T]):
         ) -> Line:
             w = x - self._pos.x
 
-            if w >= 0:
+            if w > 0:
                 for i in range(w):
                     self._render._write_cell(self._pos + Vec(i, 0), "we")
 
@@ -408,7 +441,7 @@ class TextRender(Render[T], _t.Generic[T]):
 
                 if arrow_end:
                     self._render._field[self._pos.y][self._pos.x - 1] = "→"
-            else:
+            elif w < 0:
                 for i in range(-1, w - 1, -1):
                     self._render._write_cell(self._pos + Vec(i, 0), "we")
 

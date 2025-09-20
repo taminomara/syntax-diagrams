@@ -58,6 +58,9 @@ Changelog = "https://github.com/taminomara/syntax-diagrams/blob/main/CHANGELOG.m
 [build-system]
 requires = ["setuptools>=60", "setuptools_scm[toml]>=8", "wheel>=0.40"]
 
+[tool.setuptools]
+packages = ["syntax_diagrams"]
+
 [tool.setuptools_scm]
 write_to = "syntax_diagrams/_version.py"
 

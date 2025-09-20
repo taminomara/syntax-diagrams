@@ -114,7 +114,7 @@
 
 .Debug_ItemInfo {
   font-size: 12px;
-  font-family: Consolas, "Courier New", monospace;
+  font-family: Consolas, Menlo, monospace;
 }
 
 .Debug_ItemInfoList {

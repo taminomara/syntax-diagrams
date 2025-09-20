@@ -104,8 +104,8 @@ def svg_layout_settings():
 @pytest.fixture
 def svg_css():
     css = deepcopy(DEFAULT_CSS)
-    css["text"]["dy"] = "4"
-    css[".group text"]["dy"] = "0"
+    css.setdefault("text", {})["transform"] = "translate(0, 4)"
+    css.setdefault(".group text", {})["transform"] = "translate(0, 4)"
     return css
 
 

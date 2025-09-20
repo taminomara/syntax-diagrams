@@ -2,6 +2,17 @@ svg.syntax-diagram path {
   stroke-width: 1.5;
   stroke: currentColor;
   fill: none;
+  stroke-linecap: round;
+}
+
+svg.syntax-diagram .arrow {
+  stroke: none;
+  fill: currentColor;
+}
+
+svg.syntax-diagram .arrow.arrow-barb {
+  stroke: currentColor;
+  fill: none;
 }
 
 svg.syntax-diagram a {
@@ -20,7 +31,7 @@ svg.syntax-diagram g.comment rect {
 
 svg.syntax-diagram text {
   font-size: 14px;
-  font-family: "Consolas", "Courier New", monospace;
+  font-family: Consolas, Menlo, monospace;
   text-anchor: middle;
   dominant-baseline: central;
   font-weight: bold;

@@ -213,7 +213,53 @@ export function DiagramSettings({
             </div>
           </div>
           <h3>Style</h3>
+
           <div className={styles.DiagramSettings_Group}>
+            <div className={styles.DiagramSettings_Item}>
+              <label htmlFor="DiagramSettings_ArrowStyle">Arrow Style</label>
+              <select
+                id="DiagramSettings_ArrowStyle"
+                className={styles.DiagramSettings_Input}
+                value={data.svgArrowStyle}
+                onChange={updateStr("svgArrowStyle")}
+              >
+                <option value="NONE">None</option>
+                <option value="TRIANGLE">Triangle</option>
+                <option value="STEALTH">Stealth</option>
+                <option value="BARB">Barb</option>
+                <option value="HARPOON">Harpoon</option>
+                <option value="HARPOON_UP">Harpoon Up</option>
+              </select>
+              <Help>Controls which rendering engine is used.</Help>
+            </div>
+            <div className={styles.DiagramSettings_Item}>
+              <label htmlFor="DiagramSettings_ArrowLength">Arrow Length</label>
+              <input
+                id="DiagramSettings_ArrowLength"
+                className={styles.DiagramSettings_Input}
+                value={data.svgArrowLength}
+                onChange={updateNum("svgArrowLength")}
+                type="number"
+                min={0}
+                step={1}
+              />
+              <Help>Length of an arrow along its line.</Help>
+            </div>
+            <div className={styles.DiagramSettings_Item}>
+              <label htmlFor="DiagramSettings_ArrowCrossLength">
+                Arrow Cross Length
+              </label>
+              <input
+                id="DiagramSettings_ArrowCrossLength"
+                className={styles.DiagramSettings_Input}
+                value={data.svgArrowCrossLength}
+                onChange={updateNum("svgArrowCrossLength")}
+                type="number"
+                min={0}
+                step={1}
+              />
+              <Help>Length of an arrow across its line.</Help>
+            </div>
             <div className={styles.DiagramSettings_Item}>
               <label htmlFor="DiagramSettings_ArcRadius">Arc Radius</label>
               <input
@@ -244,19 +290,34 @@ export function DiagramSettings({
           <h3>Nodes</h3>
           <div className={styles.DiagramSettings_Group}>
             <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_TerminalPadding">
-                Terminal Padding
+              <label htmlFor="DiagramSettings_TerminalHorizontalPadding">
+                Terminal Horizontal Padding
               </label>
               <input
-                id="DiagramSettings_TerminalPadding"
+                id="DiagramSettings_TerminalHorizontalPadding"
                 className={styles.DiagramSettings_Input}
-                value={data.svgTerminalPadding}
-                onChange={updateNum("svgTerminalPadding")}
+                value={data.svgTerminalHorizontalPadding}
+                onChange={updateNum("svgTerminalHorizontalPadding")}
                 type="number"
                 min={0}
                 step={1}
               />
               <Help>Horizontal padding around text in terminal nodes.</Help>
+            </div>
+            <div className={styles.DiagramSettings_Item}>
+              <label htmlFor="DiagramSettings_TerminalVerticalPadding">
+                Terminal Vertical Padding
+              </label>
+              <input
+                id="DiagramSettings_TerminalVerticalPadding"
+                className={styles.DiagramSettings_Input}
+                value={data.svgTerminalVerticalPadding}
+                onChange={updateNum("svgTerminalVerticalPadding")}
+                type="number"
+                min={0}
+                step={1}
+              />
+              <Help>Vertical padding around text in terminal nodes.</Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
               <label htmlFor="DiagramSettings_TerminalRadius">
@@ -274,34 +335,34 @@ export function DiagramSettings({
               <Help>Border radius in terminal nodes.</Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_TerminalHeight">
-                Terminal Height
+              <label htmlFor="DiagramSettings_NonTerminalHorizontalPadding">
+                Non Terminal Horizontal Padding
               </label>
               <input
-                id="DiagramSettings_TerminalHeight"
+                id="DiagramSettings_NonTerminalHorizontalPadding"
                 className={styles.DiagramSettings_Input}
-                value={data.svgTerminalHeight}
-                onChange={updateNum("svgTerminalHeight")}
-                type="number"
-                min={0}
-                step={1}
-              />
-              <Help>Height of a terminal node.</Help>
-            </div>
-            <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_NonTerminalPadding">
-                Non Terminal Padding
-              </label>
-              <input
-                id="DiagramSettings_NonTerminalPadding"
-                className={styles.DiagramSettings_Input}
-                value={data.svgNonTerminalPadding}
-                onChange={updateNum("svgNonTerminalPadding")}
+                value={data.svgNonTerminalHorizontalPadding}
+                onChange={updateNum("svgNonTerminalHorizontalPadding")}
                 type="number"
                 min={0}
                 step={1}
               />
               <Help>Horizontal padding around text in non-terminal nodes.</Help>
+            </div>
+            <div className={styles.DiagramSettings_Item}>
+              <label htmlFor="DiagramSettings_NonTerminalVerticalPadding">
+                Non Terminal Vertical Padding
+              </label>
+              <input
+                id="DiagramSettings_NonTerminalVerticalPadding"
+                className={styles.DiagramSettings_Input}
+                value={data.svgNonTerminalVerticalPadding}
+                onChange={updateNum("svgNonTerminalVerticalPadding")}
+                type="number"
+                min={0}
+                step={1}
+              />
+              <Help>Vertical padding around text in non-terminal nodes.</Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
               <label htmlFor="DiagramSettings_NonTerminalRadius">
@@ -319,34 +380,34 @@ export function DiagramSettings({
               <Help>Border radius in non-terminal nodes.</Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_NonTerminalHeight">
-                Non Terminal Height
+              <label htmlFor="DiagramSettings_CommentHorizontalPadding">
+                Comment Horizontal Padding
               </label>
               <input
-                id="DiagramSettings_NonTerminalHeight"
+                id="DiagramSettings_CommentHorizontalPadding"
                 className={styles.DiagramSettings_Input}
-                value={data.svgNonTerminalHeight}
-                onChange={updateNum("svgNonTerminalHeight")}
-                type="number"
-                min={0}
-                step={1}
-              />
-              <Help>Height of a non-terminal node.</Help>
-            </div>
-            <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_CommentPadding">
-                Comment Padding
-              </label>
-              <input
-                id="DiagramSettings_CommentPadding"
-                className={styles.DiagramSettings_Input}
-                value={data.svgCommentPadding}
-                onChange={updateNum("svgCommentPadding")}
+                value={data.svgCommentHorizontalPadding}
+                onChange={updateNum("svgCommentHorizontalPadding")}
                 type="number"
                 min={0}
                 step={1}
               />
               <Help>Horizontal padding around text in comment nodes.</Help>
+            </div>
+            <div className={styles.DiagramSettings_Item}>
+              <label htmlFor="DiagramSettings_CommentVerticalPadding">
+                Comment Vertical Padding
+              </label>
+              <input
+                id="DiagramSettings_CommentVerticalPadding"
+                className={styles.DiagramSettings_Input}
+                value={data.svgCommentVerticalPadding}
+                onChange={updateNum("svgCommentVerticalPadding")}
+                type="number"
+                min={0}
+                step={1}
+              />
+              <Help>Vertical padding around text in comment nodes.</Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
               <label htmlFor="DiagramSettings_CommentRadius">
@@ -362,21 +423,6 @@ export function DiagramSettings({
                 step={1}
               />
               <Help>Border radius in comment nodes.</Help>
-            </div>
-            <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_CommentHeight">
-                Comment Height
-              </label>
-              <input
-                id="DiagramSettings_CommentHeight"
-                className={styles.DiagramSettings_Input}
-                value={data.svgCommentHeight}
-                onChange={updateNum("svgCommentHeight")}
-                type="number"
-                min={0}
-                step={1}
-              />
-              <Help>Height of a comment node.</Help>
             </div>
           </div>
           <h3>Groups</h3>
@@ -453,23 +499,6 @@ export function DiagramSettings({
                 step={1}
               />
               <Help>Border radius in groups.</Help>
-            </div>
-            <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_GroupTextHeight">
-                Group Text Height
-              </label>
-              <input
-                id="DiagramSettings_GroupTextHeight"
-                className={styles.DiagramSettings_Input}
-                value={data.svgGroupTextHeight}
-                onChange={updateNum("svgGroupTextHeight")}
-                type="number"
-                min={0}
-                step={1}
-              />
-              <Help>
-                Height of the group text, added to the top vertical margin.
-              </Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
               <label htmlFor="DiagramSettings_GroupTextVerticalOffset">
@@ -583,7 +612,7 @@ export function DiagramSettings({
                 value={data.textVerticalChoiceSeparationOuter}
                 onChange={updateNum("textVerticalChoiceSeparationOuter")}
                 type="number"
-                min={0}
+                min={1}
                 step={1}
               />
               <Help>
@@ -601,7 +630,7 @@ export function DiagramSettings({
                 value={data.textVerticalChoiceSeparation}
                 onChange={updateNum("textVerticalChoiceSeparation")}
                 type="number"
-                min={0}
+                min={1}
                 step={1}
               />
               <Help>
@@ -618,7 +647,7 @@ export function DiagramSettings({
                 value={data.textVerticalSeqSeparationOuter}
                 onChange={updateNum("textVerticalSeqSeparationOuter")}
                 type="number"
-                min={0}
+                min={1}
                 step={1}
               />
               <Help>
@@ -636,7 +665,7 @@ export function DiagramSettings({
                 value={data.textVerticalSeqSeparation}
                 onChange={updateNum("textVerticalSeqSeparation")}
                 type="number"
-                min={0}
+                min={1}
                 step={1}
               />
               <Help>
@@ -653,7 +682,7 @@ export function DiagramSettings({
                 value={data.textHorizontalSeqSeparation}
                 onChange={updateNum("textHorizontalSeqSeparation")}
                 type="number"
-                min={0}
+                min={1}
                 step={1}
               />
               <Help>Horizontal space between adjacent nodes.</Help>
@@ -722,23 +751,6 @@ export function DiagramSettings({
               <Help>Horizontal margin outside of group elements.</Help>
             </div>
             <div className={styles.DiagramSettings_Item}>
-              <label htmlFor="DiagramSettings_GroupTextHeight">
-                Group Text Height
-              </label>
-              <input
-                id="DiagramSettings_GroupTextHeight"
-                className={styles.DiagramSettings_Input}
-                value={data.textGroupTextHeight}
-                onChange={updateNum("textGroupTextHeight")}
-                type="number"
-                min={0}
-                step={1}
-              />
-              <Help>
-                Height of the group text, added to the top vertical margin.
-              </Help>
-            </div>
-            <div className={styles.DiagramSettings_Item}>
               <label htmlFor="DiagramSettings_GroupTextVerticalOffset">
                 Group Text Vertical Offset
               </label>
@@ -748,7 +760,7 @@ export function DiagramSettings({
                 value={data.textGroupTextVerticalOffset}
                 onChange={updateNum("textGroupTextVerticalOffset")}
                 type="number"
-                min={0}
+                min={-1}
                 step={1}
               />
               <Help>Offset from group rectangle to its heading.</Help>

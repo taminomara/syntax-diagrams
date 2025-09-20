@@ -40,24 +40,26 @@ const defaultSettings: Settings = {
   svgVerticalSeqSeparationOuter: 18,
   svgVerticalSeqSeparation: 18,
   svgHorizontalSeqSeparation: 10,
+  svgArrowStyle: "NONE",
+  svgArrowLength: 10,
+  svgArrowCrossLength: 4,
   svgArcRadius: 10,
   svgArcMargin: 5,
-  svgTerminalPadding: 10,
+  svgTerminalHorizontalPadding: 10,
+  svgTerminalVerticalPadding: 3,
   svgTerminalRadius: 10,
-  svgTerminalHeight: 22,
-  svgNonTerminalPadding: 10,
+  svgNonTerminalHorizontalPadding: 10,
+  svgNonTerminalVerticalPadding: 3,
   svgNonTerminalRadius: 0,
-  svgNonTerminalHeight: 22,
-  svgCommentPadding: 3,
+  svgCommentHorizontalPadding: 3,
+  svgCommentVerticalPadding: 3,
   svgCommentRadius: 0,
-  svgCommentHeight: 22,
   svgGroupVerticalPadding: 10,
   svgGroupHorizontalPadding: 10,
   svgGroupVerticalMargin: 5,
   svgGroupHorizontalMargin: 10,
   svgGroupRadius: 0,
-  svgGroupTextHeight: 8,
-  svgGroupTextVerticalOffset: 5,
+  svgGroupTextVerticalOffset: 0,
   svgGroupTextHorizontalOffset: 10,
 
   textMaxWidth: 80,
@@ -68,10 +70,9 @@ const defaultSettings: Settings = {
   textHorizontalSeqSeparation: 2,
   textGroupVerticalPadding: 1,
   textGroupHorizontalPadding: 2,
-  textGroupVerticalMargin: 1,
+  textGroupVerticalMargin: 0,
   textGroupHorizontalMargin: 2,
-  textGroupTextHeight: 0,
-  textGroupTextVerticalOffset: 0,
+  textGroupTextVerticalOffset: -1,
   textGroupTextHorizontalOffset: 2,
 };
 
@@ -107,6 +108,7 @@ export function App() {
   const [settings, setSettings] = useState(defaultSettings);
   const [targetSettings, setTargetSettings] = useState(defaultSettings);
 
+  const [debugData, setDebugData] = useState<unknown>(null);
   const [mainElem, setMainElem] = useState<SVGSVGElement | null>(null);
   const [debugElem, setDebugElem] = useState<SVGSVGElement | null>(null);
 
@@ -133,6 +135,19 @@ export function App() {
             >
               Debug
             </Tab>
+            <div className={clsx(styles.App_Tab, styles.App_Tab__Spacer)} />
+            <a
+              className={clsx(styles.App_Tab, styles.App_Tab__Link)}
+              href="https://taminomara.github.io/syntax-diagrams/"
+            >
+              Docs
+            </a>
+            <a
+              className={clsx(styles.App_Tab, styles.App_Tab__Link)}
+              href="https://github.com/taminomara/syntax-diagrams/"
+            >
+              Repo
+            </a>
             <button
               className={clsx(styles.App_Tab, styles.App_Tab__Icon)}
               onClick={() => {
@@ -188,7 +203,7 @@ export function App() {
             className={clsx(styles.App_TabPanel, styles.App_TabPanel__NoScroll)}
             selectedClassName={styles.App_TabPanel__Active}
           >
-            <Debug main={mainElem} debug={debugElem} />
+            <Debug main={mainElem} debug={debugElem} debugData={debugData} />
           </TabPanel>
         </Tabs>
 
@@ -234,6 +249,7 @@ export function App() {
             continuousRendering={continuousRendering}
             setMainElem={setMainElem}
             setDebugElem={setDebugElem}
+            setDebugData={setDebugData}
           />
         </div>
       </Panel>

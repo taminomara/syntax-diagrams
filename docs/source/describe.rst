@@ -1,5 +1,5 @@
-Describing diagrams
-===================
+Describe a diagram
+==================
 
 
 .. role:: python(code)
@@ -9,52 +9,40 @@ Describing diagrams
 .. currentmodule:: syntax_diagrams
 
 
+.. _literals:
+
 Using YAML or Python literals
 -----------------------------
 
 Diagram elements are described as simple types suitable for encoding
 in JSON-like formats. The specific representation was chosen to be ergonomic
-when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
+when writing diagrams in YAML syntax.
 
 
 .. type:: Element[T]
-    :canonical:
-        None
-        | str
-        | list[Element[T]]
-        | Terminal[T]
-        | NonTerminal[T]
-        | Comment[T]
-        | Sequence[T]
-        | Stack[T]
-        | NoBreak[T]
-        | Choice[T]
-        | Optional[T]
-        | OneOrMore[T]
-        | ZeroOrMore[T]
-        | Barrier[T]
 
     Describes an element of a syntax diagram.
 
-    If element is `None`, it's rendered as a simple line with no additional content.
-    This can be used to create optional elements using `Choice`.
+    -   If element is `None`, it's rendered as a simple line with no additional content.
+        This can be used to create optional elements using `Choice`.
 
-    If element is a list, it's rendered as a `Sequence`.
+    -   If element is a list, it's rendered as a `Sequence`.
 
-    If element is a string, it's rendered as a `Terminal`.
+    -   If element is a string, it's rendered as a `Terminal`.
 
-    Otherwise, an element should be a dict containing one of the following keys:
-    `terminal <Terminal>`,
-    `non_terminal <NonTerminal>`,
-    `comment <Comment>`,
-    `sequence <Sequence>`,
-    `stack <Stack>`,
-    `no_break <NoBreak>`,
-    `choice <Choice>`,
-    `optional <Optional>`,
-    `one_or_more <OneOrMore>`,
-    `zero_or_more <ZeroOrMore>`,
-    `barrier <ZeroOrMore>`.
+    -   Otherwise, an element should be a dict containing one of the following keys:
+        `terminal <Terminal>`,
+        `non_terminal <NonTerminal>`,
+        `comment <Comment>`,
+        `sequence <Sequence>`,
+        `stack <Stack>`,
+        `no_break <NoBreak>`,
+        `choice <Choice>`,
+        `optional <Optional>`,
+        `one_or_more <OneOrMore>`,
+        `zero_or_more <ZeroOrMore>`,
+        `barrier <Barrier>`,
+        `group <Group>`.
 
     **Example:**
 
@@ -110,17 +98,11 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
     Describes a terminal node with optional additional settings.
 
-    Use :func:`terminal` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`terminal: str`, *required*
 
         Text of the terminal, required.
-
-        .. note::
-
-            At the moment, we don't support multiline text.
 
     -   :python:`href: str`
 
@@ -194,17 +176,11 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
     Describes a non-terminal node with optional additional settings.
 
-    Use :func:`non_terminal` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`non_terminal: str`, *required*
 
         Text of the non-terminal, required.
-
-        .. note::
-
-            At the moment, we don't support multiline text.
 
     -   :python:`href: str`
 
@@ -258,17 +234,11 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
     Describes a comment node with optional additional settings.
 
-    Use :func:`comment` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`comment: str`, *required*
 
         Text of the terminal, required.
-
-        .. note::
-
-            At the moment, we don't support multiline text.
 
     -   :python:`href: str`
 
@@ -322,8 +292,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 .. type:: Sequence[T]
 
     Describes an automatically wrapped sequence of elements.
-
-    Use :func:`sequence` to create this description in Python.
 
     **Dict keys:**
 
@@ -412,8 +380,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
     This is a shortcut for creating a `Sequence`
     with `~Sequence.linebreaks` set to `~LineBreak.HARD`.
 
-    Use :func:`stack` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`stack: list[Element[T]]`, *required*
@@ -464,8 +430,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
     This is a shortcut for creating a `Sequence`
     with `~Sequence.linebreaks` set to `~LineBreak.NO_BREAK`.
 
-    Use :func:`no_break` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`no_break: list[Element[T]]`, *required*
@@ -512,8 +476,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 .. type:: Choice[T]
 
     Describes a choice between several elements.
-
-    Use :func:`choice` to create this description in Python.
 
     **Dict keys:**
 
@@ -581,8 +543,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
     This is a shortcut for creating a `Choice`
     with a :func:`skip` and a single element.
 
-    Use :func:`optional` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`optional: Element[T]`, *required*
@@ -632,8 +592,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
     Describes a repeated element.
 
-    Use :func:`one_or_more` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`one_or_more: Element[T]`, *required*
@@ -644,9 +602,9 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
         An element that will be placed on the backwards path.
 
-    -   :python:`repeat_top: bool`
+    .. -   :python:`repeat_top: bool`
 
-        If set to `True`, the repeat element will be rendered above the repeated one.
+    ..     If set to `True`, the repeat element will be rendered above the repeated one.
 
     **Example:**
 
@@ -689,8 +647,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
     This is a shortcut for creating an `Optional` with an `OneOrMore`
     element inside.
 
-    Use :func:`zero_or_more` to create this description in Python.
-
     **Dict keys:**
 
     -   :python:`zero_or_more: Element[T]`, *required*
@@ -701,9 +657,9 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
         An element that will be placed on the backwards path.
 
-    -   :python:`repeat_top: bool`
+    .. -   :python:`repeat_top: bool`
 
-        If set to `True`, the repeat element will be rendered above the repeated one.
+    ..     If set to `True`, the repeat element will be rendered above the repeated one.
 
     -   :python:`skip: bool`
 
@@ -751,8 +707,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 
     Isolates an element and disables optimizations that merge lines between
     this element and the rest of the diagram.
-
-    Use :func:`barrier` to create this description in Python.
 
     **Dict keys:**
 
@@ -826,8 +780,6 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
 .. type:: Group[T]
 
     Draws a box around some element.
-
-    Use :func:`group` to create this description in Python.
 
     **Dict keys:**
 
@@ -918,6 +870,7 @@ when writing diagrams in YAML syntax. All examples are thus formatted as YAML.
                 - ")"
                 - ":"
 
+.. _constructors:
 
 Using constructors
 ------------------

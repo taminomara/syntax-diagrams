@@ -1,11 +1,7 @@
 from __future__ import annotations
 
-import math
 import typing as _t
 from dataclasses import replace
-
-import grapheme  # type: ignore
-import wcwidth  # type: ignore
 
 from syntax_diagrams._impl.render import (
     LayoutContext,
@@ -53,24 +49,8 @@ class Group(Element[T], _t.Generic[T]):
 
         self._item.calculate_layout(settings, context)
 
-        self._text_width = (
-            math.ceil(
-                sum(
-                    (
-                        settings.group_character_advance
-                        if wcwidth.wcwidth(g) == 1  # type: ignore
-                        else settings.group_wide_character_advance
-                    )
-                    for g in grapheme.graphemes(self._text)  # type: ignore
-                )
-            )
-            if self._text
-            else 0
-        )
-        self._group_text_vertical_offset = (
-            settings.group_text_vertical_offset + settings.group_text_height
-            if self._text
-            else 0
+        self._text_width, self._text_height = (
+            settings.group_text_measure.measure(self._text) if self._text else (0, 0)
         )
 
         self.content_width = max(self._item.width, self._text_width) + 2 * (
@@ -85,7 +65,8 @@ class Group(Element[T], _t.Generic[T]):
             self._item.up
             + settings.group_vertical_padding
             + settings.group_thickness
-            + self._group_text_vertical_offset
+            + self._text_height
+            + (settings.group_text_vertical_offset if self._text else 0)
             + settings.group_vertical_margin
         )
         self.down = (
@@ -109,13 +90,10 @@ class Group(Element[T], _t.Generic[T]):
                 0,
             ),
         )
-        self._item.render(render, context)
-
         if not context.reverse:
             pos = context.pos
         else:
             pos = context.pos - Vec(self.width, 0)
-
         render.group(
             pos
             - Vec(
@@ -136,10 +114,13 @@ class Group(Element[T], _t.Generic[T]):
             + self._item.down,
             self._css_class,
             self._text_width,
+            self._text_height,
             self._text,
             self._href,
             self._title,
         )
+
+        self._item.render(render, context)
 
     def __str__(self) -> str:
         return f"<{self._text}>({self._item})"

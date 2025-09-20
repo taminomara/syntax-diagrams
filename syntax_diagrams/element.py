@@ -269,12 +269,12 @@ class OneOrMore(_t.TypedDict, _t.Generic[T], total=False):
         ),
     ]
 
-    repeat_top: _t.Annotated[
-        bool | None,
-        _Annotation(
-            description="If set to `True`, the repeat element will be rendered above the repeated one.",
-        ),
-    ]
+    # repeat_top: _t.Annotated[
+    #     bool | None,
+    #     _Annotation(
+    #         description="If set to `True`, the repeat element will be rendered above the repeated one.",
+    #     ),
+    # ]
 
 
 class ZeroOrMore(_t.TypedDict, _t.Generic[T], total=False):
@@ -292,12 +292,12 @@ class ZeroOrMore(_t.TypedDict, _t.Generic[T], total=False):
         ),
     ]
 
-    repeat_top: _t.Annotated[
-        bool | None,
-        _Annotation(
-            description="If set to `True`, the repeat element will be rendered above the repeated one.",
-        ),
-    ]
+    # repeat_top: _t.Annotated[
+    #     bool | None,
+    #     _Annotation(
+    #         description="If set to `True`, the repeat element will be rendered above the repeated one.",
+    #     ),
+    # ]
 
     skip: _t.Annotated[
         bool | None,
@@ -379,15 +379,8 @@ Element: _t.TypeAlias = _t.Annotated[
     | ZeroOrMore[T]
     | Barrier[T]
     | Group[T],
-    _Annotation(
-        name="Element",
-        description="Describes an element of a syntax diagram.",
-    ),
+    _Annotation(name="Element"),
 ]
-"""
-Describes an element of a syntax diagram.
-
-"""
 
 
 class LineBreak(Enum):
@@ -426,9 +419,7 @@ def skip() -> Element[T]:
     """
     Create an element that renders as a single line without content.
 
-    .. seealso::
-
-       See `Element` for more information.
+    See `Element` for more information.
 
     """
 
@@ -447,9 +438,7 @@ def terminal(
     """
     Create a terminal node with optional additional settings.
 
-    .. seealso::
-
-       See `Terminal` for description of parameters.
+    See `Terminal` for description of parameters.
 
     """
     return {
@@ -474,9 +463,7 @@ def non_terminal(
     """
     Create a non-terminal node with optional additional settings.
 
-    .. seealso::
-
-       See `NonTerminal` for description of parameters.
+    See `NonTerminal` for description of parameters.
 
     """
 
@@ -502,9 +489,7 @@ def comment(
     """
     Create a comment node with optional additional settings.
 
-    .. seealso::
-
-       See `Comment` for description of parameters.
+    See `Comment` for description of parameters.
 
     """
 
@@ -530,9 +515,7 @@ def sequence(
     """
     Create an automatically wrapped sequence of elements.
 
-    .. seealso::
-
-       See `Sequence` for description of parameters.
+    See `Sequence` for description of parameters.
 
     """
 
@@ -546,9 +529,7 @@ def stack(*items: Element[T]) -> Element[T]:
     """
     Create a sequence of elements that wraps after each element.
 
-    .. seealso::
-
-       See `Stack` for description of parameters.
+    See `Stack` for description of parameters.
 
     """
 
@@ -561,9 +542,7 @@ def no_break(*items: Element[T]) -> Element[T]:
     """
     Create a sequence of elements that doesn't wrap.
 
-    .. seealso::
-
-       See `NoBreak` for description of parameters.
+    See `NoBreak` for description of parameters.
 
     """
 
@@ -576,9 +555,7 @@ def choice(*items: Element[T], default: int = 0) -> Element[T]:
     """
     Create a choice between several elements.
 
-    .. seealso::
-
-       See `Choice` for description of parameters.
+    See `Choice` for description of parameters.
 
     """
 
@@ -594,9 +571,7 @@ def optional(
     """
     Create an optional element.
 
-    .. seealso::
-
-       See `Optional` for description of parameters.
+    See `Optional` for description of parameters.
 
     """
 
@@ -610,44 +585,40 @@ def optional(
 def one_or_more(
     *items: Element[T],
     repeat: Element[T] | None = None,
-    repeat_top: bool = False,
+    # repeat_top: bool = False,
 ) -> Element[T]:
     """
     Create a repeated element.
 
-    .. seealso::
-
-       See `OneOrMore` for description of parameters.
+    See `OneOrMore` for description of parameters.
 
     """
 
     return {
         "one_or_more": list(items),
         "repeat": repeat,
-        "repeat_top": repeat_top,
+        # "repeat_top": repeat_top,
     }
 
 
 def zero_or_more(
     *items: Element[T],
     repeat: Element[T] | None = None,
-    repeat_top: bool = False,
+    # repeat_top: bool = False,
     skip: bool = False,
     skip_bottom: bool = False,
 ) -> Element[T]:
     """
     Create an optional repeated element.
 
-    .. seealso::
-
-       See `ZeroOrMore` for description of parameters.
+    See `ZeroOrMore` for description of parameters.
 
     """
 
     return {
         "zero_or_more": list(items),
         "repeat": repeat,
-        "repeat_top": repeat_top,
+        # "repeat_top": repeat_top,
         "skip": skip,
         "skip_bottom": skip_bottom,
     }
@@ -659,9 +630,7 @@ def barrier(
     """
     Create a barrier element.
 
-    .. seealso::
-
-       See `Barrier` for description of parameters.
+    See `Barrier` for description of parameters.
 
     """
 
@@ -680,9 +649,7 @@ def group(
     """
     Create a group element.
 
-    .. seealso::
-
-       See `Group` for description of parameters.
+    See `Group` for description of parameters.
 
     """
 

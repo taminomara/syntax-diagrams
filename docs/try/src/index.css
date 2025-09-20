@@ -5,6 +5,7 @@ body {
   --text-color: #404040;
   --text-color-accent: #000000;
   --text-color-inactive: #808080;
+  --text-color-link: #3b3bff;
 
   --popup-border-radius: 3px;
   --popup-background-color: #f3f3f3;
@@ -67,6 +68,7 @@ body[data-theme="dark"] {
   --text-color: #bbbbbb;
   --text-color-accent: #dddddd;
   --text-color-inactive: #999999;
+  --text-color-link: #8c8cff;
 
   --popup-border-radius: 3px;
   --popup-background-color: #2d2d2d;
@@ -136,9 +138,13 @@ body {
   margin: 0;
 }
 
+a {
+  color: var(--text-color-link);
+}
+
 pre,
 code {
-  font-family: Consolas, "Courier New", monospace;
+  font-family: Consolas, Menlo, monospace;
 }
 
 h1,

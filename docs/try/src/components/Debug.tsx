@@ -6,9 +6,11 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 export function Debug({
   main,
   debug,
+  debugData,
 }: {
   main: SVGSVGElement | null;
   debug: SVGSVGElement | null;
+  debugData: unknown;
 }) {
   if (main === null || debug === null) {
     return (
@@ -19,27 +21,22 @@ export function Debug({
       </div>
     );
   } else {
-    return <DebugImpl main={main} debug={debug} />;
+    return <DebugImpl main={main} debug={debug} rawDebugData={debugData} />;
   }
 }
 
 function DebugImpl({
   main,
   debug,
+  rawDebugData,
 }: {
   main: SVGSVGElement;
   debug: SVGSVGElement;
+  rawDebugData: unknown;
 }) {
   const [debugData, debugDataById] = useMemo(() => {
-    let rawDebugData: unknown;
-    try {
-      rawDebugData = JSON.parse(debug.dataset.debug ?? "{}");
-    } catch (error) {
-      console.error(error);
-      rawDebugData = {};
-    }
     return prepareDebugData(rawDebugData);
-  }, [debug.dataset.debug]);
+  }, [rawDebugData]);
 
   const [selected, setSelected] = useState({ id: "", needScroll: false });
   const [hovered, setHovered] = useState("");

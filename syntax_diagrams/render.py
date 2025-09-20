@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 from syntax_diagrams.element import Element
+from syntax_diagrams.measure import SimpleTextMeasure, TextMeasure
 from syntax_diagrams.resolver import HrefResolver
 
 __all__ = [
@@ -12,6 +13,7 @@ __all__ = [
     "EndClass",
     "TextRenderSettings",
     "render_text",
+    "ArrowStyle",
     "SvgRenderSettings",
     "DEFAULT_CSS",
     "render_svg",
@@ -116,13 +118,7 @@ class TextRenderSettings:
 
     """
 
-    group_text_height: int = 0
-    """
-    Height of the group text, added to the top vertical margin.
-
-    """
-
-    group_text_vertical_offset: int = 0
+    group_text_vertical_offset: int = -1
     """
     Offset from group rectangle to its heading.
 
@@ -161,10 +157,11 @@ def render_text(
     /,
     *,
     max_width: int | None = None,
-    settings: TextRenderSettings = TextRenderSettings(),
+    settings: TextRenderSettings | None = None,
     reverse: bool | None = None,
-    href_resolver: HrefResolver[T] = HrefResolver(),
+    href_resolver: HrefResolver[T] | None = None,
     convert_resolver_data: _t.Callable[[_t.Any | None], T | None] | None = None,
+    _dump_debug_data: bool = False,
 ) -> str:
     """
     Render diagram as an SVG.
@@ -172,12 +169,12 @@ def render_text(
     :param node:
         root diagram node.
     :param max_width:
-        if given, overrides :attribute:`~SvgRenderSettings.max_width`
+        if given, overrides `~SvgRenderSettings.max_width`
         from ``settings``.
     :param settings:
         rendering settings.
     :param reverse:
-        if given, overrides :attribute:`~SvgRenderSettings.reverse`
+        if given, overrides `~SvgRenderSettings.reverse`
         from ``settings``.
     :param href_resolver:
         hyperlink resolver (may be used to transform text).
@@ -193,6 +190,10 @@ def render_text(
 
     if convert_resolver_data is None:
         convert_resolver_data = lambda x: x
+    if settings is None:
+        settings = TextRenderSettings()
+    if href_resolver is None:
+        href_resolver = HrefResolver()
 
     # Prevent circular import.
     from syntax_diagrams._impl.load import load as _load
@@ -204,12 +205,22 @@ def render_text(
         settings=settings,
         reverse=reverse,
         href_resolver=href_resolver,
+        dump_debug_data=_dump_debug_data,
     )
 
 
 DEFAULT_CSS = {
     "path": {
         "stroke-width": "1.5",
+        "stroke": "black",
+        "fill": "none",
+        "stroke-linecap": "round",
+    },
+    ".arrow": {
+        "stroke": "none",
+        "fill": "black",
+    },
+    ".arrow.arrow-barb": {
         "stroke": "black",
         "fill": "none",
     },
@@ -226,7 +237,7 @@ DEFAULT_CSS = {
     },
     "text": {
         "font-size": "14px",
-        "font-family": "'Consolas', 'Menlo', monospace",
+        "font-family": "Consolas, Menlo, monospace",
         "text-anchor": "middle",
         "dominant-baseline": "central",
         "font-weight": "bold",
@@ -249,6 +260,55 @@ DEFAULT_CSS = {
         "stroke": "none",
     },
 }
+
+
+# Measured for Menlo, 14px. Consolas is a bit narrower, but not too much.
+_DEFAULT_TEXT_MEASURE = SimpleTextMeasure(
+    character_advance=8.4, wide_character_advance=14.34, line_height=14 * 1.1
+)
+
+
+class ArrowStyle(Enum):
+    """
+    Arrow shapes for SVG diagrams.
+
+    """
+
+    NONE = "NONE"
+    """
+    Arrows are not rendered.
+
+    """
+
+    TRIANGLE = "TRIANGLE"
+    """
+    Simple triangle arrows.
+
+    """
+
+    STEALTH = "STEALTH"
+    """
+    Pointier triangle arrows.
+
+    """
+
+    BARB = "BARB"
+    """
+    An error that consists of two lines.
+
+    """
+
+    HARPOON = "HARPOON"
+    """
+    Half of a triangle arrow.
+
+    """
+
+    HARPOON_UP = "HARPOON_UP"
+    """
+    Another half of a triangle arrow.
+
+    """
 
 
 @dataclass(frozen=True)
@@ -315,6 +375,24 @@ class SvgRenderSettings:
 
     """
 
+    arrow_style: ArrowStyle = ArrowStyle.NONE
+    """
+    Style of arrows to draw.
+
+    """
+
+    arrow_length: int = 10
+    """
+    Length of an arrow along its line.
+
+    """
+
+    arrow_cross_length: int = 4
+    """
+    Length of an arrow across its line.
+
+    """
+
     max_width: int = 600
     """
     Max width after which a sequence will be wrapped. This option is used to
@@ -336,24 +414,23 @@ class SvgRenderSettings:
 
     """
 
-    terminal_character_advance: float = 8.4
+    terminal_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
     """
-    Average length of one character in the used font. Since SVG elements
-    cannot expand and shrink dynamically, length of text nodes is calculated
-    as number of symbols multiplied by this constant.
+    Service used to measure size of text inside of text nodes.
+
+    By default, set up to match default CSS settings.
 
     """
 
-    terminal_wide_character_advance: float = 14.36
-    """
-    Average length of one wide character in the used font.
-    See :attribute:`~SvgRenderSettings.terminal_character_advance` for explanation.
-
-    """
-
-    terminal_padding: int = 10
+    terminal_horizontal_padding: int = 10
     """
     Horizontal padding around text in terminal nodes.
+
+    """
+
+    terminal_vertical_padding: int = 3
+    """
+    Vertical padding around text in terminal nodes.
 
     """
 
@@ -363,30 +440,23 @@ class SvgRenderSettings:
 
     """
 
-    terminal_height: int = 22
+    non_terminal_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
     """
-    Height of a terminal node.
+    Service used to measure size of text inside of text nodes.
+
+    By default, set up to match default CSS settings.
 
     """
 
-    non_terminal_character_advance: float = 8.4
-    """
-    Average length of one character in the used font. Since SVG elements
-    cannot expand and shrink dynamically, length of text nodes is calculated
-    as number of symbols multiplied by this constant.
-
-    """
-
-    non_terminal_wide_character_advance: float = 14.36
-    """
-    Average length of one wide character in the used font.
-    See :attribute:`~SvgRenderSettings.non_terminal_character_advance` for explanation.
-
-    """
-
-    non_terminal_padding: int = 10
+    non_terminal_horizontal_padding: int = 10
     """
     Horizontal padding around text in non-terminal nodes.
+
+    """
+
+    non_terminal_vertical_padding: int = 3
+    """
+    Vertical padding around text in non-terminal nodes.
 
     """
 
@@ -396,30 +466,23 @@ class SvgRenderSettings:
 
     """
 
-    non_terminal_height: int = 22
+    comment_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
     """
-    Height of a non-terminal node.
+    Service used to measure size of text inside of text nodes.
+
+    By default, set up to match default CSS settings.
 
     """
 
-    comment_character_advance: float = 8.4
-    """
-    Average length of one character in the used font. Since SVG elements
-    cannot expand and shrink dynamically, length of text nodes is calculated
-    as number of symbols multiplied by this constant.
-
-    """
-
-    comment_wide_character_advance: float = 14.36
-    """
-    Average length of one wide character in the used font.
-    See :attribute:`~SvgRenderSettings.comment_character_advance` for explanation.
-
-    """
-
-    comment_padding: int = 3
+    comment_horizontal_padding: int = 3
     """
     Horizontal padding around text in comment nodes.
+
+    """
+
+    comment_vertical_padding: int = 3
+    """
+    Vertical padding around text in comment nodes.
 
     """
 
@@ -429,24 +492,11 @@ class SvgRenderSettings:
 
     """
 
-    comment_height: int = 22
+    group_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
     """
-    Height of a comment node.
+    Service used to measure size of text of groups.
 
-    """
-
-    group_character_advance: int | float = 8.4
-    """
-    Average length of one character in the used font. Since SVG elements
-    cannot expand and shrink dynamically, length of text nodes is calculated
-    as number of symbols multiplied by this constant.
-
-    """
-
-    group_wide_character_advance: int | float = 14.36
-    """
-    Average length of one wide character in the used font.
-    See :attribute:`~SvgRenderSettings.group_character_advance` for explanation.
+    By default, set up to match default CSS settings.
 
     """
 
@@ -480,13 +530,7 @@ class SvgRenderSettings:
 
     """
 
-    group_text_height: int = 8
-    """
-    Height of the group text, added to the top vertical margin.
-
-    """
-
-    group_text_vertical_offset: int = 5
+    group_text_vertical_offset: int = 0
     """
     Offset from group rectangle to its heading.
 
@@ -524,9 +568,9 @@ def render_svg(
     /,
     *,
     max_width: int | None = None,
-    settings: SvgRenderSettings = SvgRenderSettings(),
+    settings: SvgRenderSettings | None = None,
     reverse: bool | None = None,
-    href_resolver: HrefResolver[T] = HrefResolver(),
+    href_resolver: HrefResolver[T] | None = None,
     convert_resolver_data: _t.Callable[[_t.Any | None], T | None] | None = None,
     _dump_debug_data: bool = False,
 ) -> str:
@@ -536,12 +580,12 @@ def render_svg(
     :param node:
         root diagram node.
     :param max_width:
-        if given, overrides :attribute:`~SvgRenderSettings.max_width`
+        if given, overrides `~SvgRenderSettings.max_width`
         from ``settings``.
     :param settings:
         rendering settings.
     :param reverse:
-        if given, overrides :attribute:`~SvgRenderSettings.reverse`
+        if given, overrides `~SvgRenderSettings.reverse`
         from ``settings``.
     :param href_resolver:
         hyperlink resolver (may be used to transform text).
@@ -557,6 +601,10 @@ def render_svg(
 
     if convert_resolver_data is None:
         convert_resolver_data = lambda x: x
+    if settings is None:
+        settings = SvgRenderSettings()
+    if href_resolver is None:
+        href_resolver = HrefResolver()
 
     # Prevent circular import.
     from syntax_diagrams._impl.load import load as _load

@@ -9,17 +9,22 @@ from syntax_diagrams._impl.render import (
 )
 from syntax_diagrams._impl.render.svg import SvgRender
 from syntax_diagrams._impl.vec import Vec
+from syntax_diagrams.render import ArrowStyle
 
 
 def test_line(regression, svg_layout_settings, svg_css):
-    render = SvgRender(50, 15, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        50, 15, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     ((render).line(Vec(10, 5)).segment_abs(40))
     ((render).line(Vec(40, 10)).segment_abs(10))
     regression(render.to_string())
 
 
 def test_line_bend_reverse(regression, svg_layout_settings, svg_css):
-    render = SvgRender(50, 210, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        50, 210, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     (
         (render)
         .line(Vec(30, 10))
@@ -69,7 +74,9 @@ def test_line_bend_reverse(regression, svg_layout_settings, svg_css):
 
 
 def test_line_bend_forward(regression, svg_layout_settings, svg_css):
-    render = SvgRender(50, 210, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        50, 210, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     ((render).line(Vec(0, 10)).segment_abs(20).bend_forward_abs(10).segment_abs(50))
     ((render).line(Vec(0, 30)).segment_abs(20).bend_forward_abs(45).segment_abs(50))
     ((render).line(Vec(0, 80)).segment_abs(20).bend_forward_abs(65).segment_abs(50))
@@ -79,7 +86,9 @@ def test_line_bend_forward(regression, svg_layout_settings, svg_css):
 
 
 def test_line_bend_forward_rtl(regression, svg_layout_settings, svg_css):
-    render = SvgRender(50, 210, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        50, 210, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     (
         (render)
         .line(Vec(50, 10), True)
@@ -119,7 +128,9 @@ def test_line_bend_forward_rtl(regression, svg_layout_settings, svg_css):
 
 
 def test_node(regression, svg_layout_settings, svg_css):
-    render = SvgRender(200, 150, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        200, 150, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
 
     node = load(rr.comment("fully automated"), lambda x: x)
     node.calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
@@ -161,7 +172,9 @@ def test_node(regression, svg_layout_settings, svg_css):
 
 
 def test_node_enter(regression, svg_layout_settings, svg_css):
-    render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        200, 100, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     node = load(rr.terminal("XXX"), lambda x: x)
     node.calculate_layout(svg_layout_settings, LayoutContext(width=200, is_outer=True))
     node.render(
@@ -175,7 +188,9 @@ def test_node_enter(regression, svg_layout_settings, svg_css):
     )
     regression(render.to_string(), "normal")
 
-    render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        200, 100, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     node = load(rr.terminal("XXX"), lambda x: x)
     node.calculate_layout(
         svg_layout_settings,
@@ -197,7 +212,9 @@ def test_node_enter(regression, svg_layout_settings, svg_css):
     )
     regression(render.to_string(), "split")
 
-    render = SvgRender(200, 100, svg_layout_settings, "", svg_css, None, None)
+    render = SvgRender(
+        200, 100, svg_layout_settings, "", svg_css, None, None, ArrowStyle.NONE, 0, 0
+    )
     node = load(rr.terminal("XXX"), lambda x: x)
     node.calculate_layout(
         svg_layout_settings,

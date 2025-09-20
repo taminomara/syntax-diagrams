@@ -4,9 +4,6 @@ import math
 import re
 import typing as _t
 
-import grapheme  # type: ignore
-import wcwidth  # type: ignore
-
 from syntax_diagrams._impl.render import (
     LayoutContext,
     LayoutSettings,
@@ -29,8 +26,13 @@ class Node(Element[T], _t.Generic[T]):
     _resolver_data: T | None
     _css_class: str
 
-    _padding: int
+    _horizontal_padding: int
     _radius: int
+    _text_width: int
+    _text_height: int
+    _processed_text: str
+    _processed_href: str | None
+    _processed_title: str | None
 
     def __init__(
         self,
@@ -56,44 +58,41 @@ class Node(Element[T], _t.Generic[T]):
         self._isolate()
 
         if self._resolve:
-            self._text, self._href, self._title = settings.href_resolver.resolve(
-                self._text, self._href, self._title, self._resolver_data
+            self._processed_text, self._processed_href, self._processed_title = (
+                settings.href_resolver.resolve(
+                    self._text, self._href, self._title, self._resolver_data
+                )
+            )
+        else:
+            self._processed_text, self._processed_href, self._processed_title = (
+                self._text,
+                self._href,
+                self._title,
             )
 
         if self._style == NodeStyle.TERMINAL:
-            height = settings.terminal_height
-            character_advance = settings.terminal_character_advance
-            wide_character_advance = settings.terminal_wide_character_advance
-            self._padding = padding = settings.terminal_padding
+            text_measure = settings.terminal_text_measure
+            self._horizontal_padding = settings.terminal_horizontal_padding
+            self._vertical_padding = settings.terminal_vertical_padding
             self._radius = settings.terminal_radius
         elif self._style == NodeStyle.NON_TERMINAL:
-            height = settings.non_terminal_height
-            character_advance = settings.non_terminal_character_advance
-            wide_character_advance = settings.non_terminal_wide_character_advance
-            self._padding = padding = settings.non_terminal_padding
+            text_measure = settings.non_terminal_text_measure
+            self._horizontal_padding = settings.non_terminal_horizontal_padding
+            self._vertical_padding = settings.non_terminal_vertical_padding
             self._radius = settings.non_terminal_radius
         else:
-            height = settings.comment_height
-            character_advance = settings.comment_character_advance
-            wide_character_advance = settings.comment_wide_character_advance
-            self._padding = padding = settings.comment_padding
+            text_measure = settings.comment_text_measure
+            self._horizontal_padding = settings.comment_horizontal_padding
+            self._vertical_padding = settings.comment_vertical_padding
             self._radius = settings.comment_radius
 
-        text_width = math.ceil(
-            sum(
-                (
-                    character_advance
-                    if wcwidth.wcwidth(g) == 1  # type: ignore
-                    else wide_character_advance
-                )
-                for g in grapheme.graphemes(self._text)  # type: ignore
-            )
-        )
+        self._text_width, self._text_height = text_measure.measure(self._processed_text)
 
-        self.display_width = self.content_width = text_width + 2 * padding
+        self.display_width = self.content_width = (
+            self._text_width + 2 * self._horizontal_padding
+        )
         self.height = 0
-        self.up = math.ceil(height / 2)
-        self.down = math.floor(height / 2)
+        self.up = self.down = math.ceil(self._text_height / 2) + self._vertical_padding
         self.start_margin = self.end_margin = settings.horizontal_seq_separation
 
     def _render_content(self, render: Render[T], context: RenderContext):
@@ -109,10 +108,12 @@ class Node(Element[T], _t.Generic[T]):
             up=self.up,
             down=self.down,
             radius=self._radius,
-            padding=self._padding,
-            text=self._text,
-            href=self._href,
-            title=self._title,
+            padding=self._horizontal_padding,
+            text_width=self._text_width,
+            text_height=self._text_height,
+            text=self._processed_text,
+            href=self._processed_href,
+            title=self._processed_title,
         )
 
     def __str__(self):

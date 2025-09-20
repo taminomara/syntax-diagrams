@@ -12,7 +12,9 @@ release = version = syntax_diagrams.__version__
 
 extensions = [
     "sphinx.ext.githubpages",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
+    # "sphinx_autodoc_typehints",
     "sphinx_design",
 ]
 
@@ -21,10 +23,11 @@ exclude_patterns = []
 
 primary_domain = "py"
 default_role = "py:obj"
-autodoc_type_aliases = {
-    "Element": "syntax_diagrams.Element"
+autodoc_type_aliases = {"Element": "syntax_diagrams.Element"}
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "PIL": ("https://pillow.readthedocs.io/en/stable/", None),
 }
-# python_maximum_signature_line_length = 60
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

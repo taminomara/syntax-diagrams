@@ -163,6 +163,10 @@ _STACK = rr.stack(rr.terminal("A"), rr.terminal("B"))
             rr.comment("A"),
             id="comment",
         ),
+        pytest.param(
+            rr.terminal("A\nB C\nD"),
+            id="terminal_multiline",
+        ),
         # Sequences
         pytest.param(
             rr.sequence(
@@ -939,6 +943,17 @@ _STACK = rr.stack(rr.terminal("A"), rr.terminal("B"))
                 rr.terminal("C"),
             ),
             id="group-long-title",
+        ),
+        pytest.param(
+            rr.sequence(
+                rr.terminal("A"),
+                rr.group(
+                    rr.terminal("B"),
+                    text="Long\ngroup\ntitle",
+                ),
+                rr.terminal("C"),
+            ),
+            id="group-multiline-title",
         ),
     ],
 )

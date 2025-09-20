@@ -10,12 +10,14 @@ export function Diagram({
   continuousRendering,
   setMainElem,
   setDebugElem,
+  setDebugData,
 }: {
   code: string;
   settings: Settings;
   continuousRendering: boolean;
   setMainElem: RefCallback<SVGSVGElement>;
   setDebugElem: RefCallback<SVGSVGElement>;
+  setDebugData: RefCallback<unknown>;
 }) {
   const [rendered, setRendered] = useState<Rendered>({});
   const timeout = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -30,6 +32,11 @@ export function Diagram({
       continuousRendering ? 150 : 0,
     );
   }, [code, settings, continuousRendering]);
+
+  useEffect(
+    () => setDebugData(rendered.debug_data),
+    [setDebugData, rendered.debug_data],
+  );
 
   const [mainElem, debugElem] = useMemo(() => {
     if (rendered.svg) {

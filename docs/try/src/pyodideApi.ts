@@ -16,23 +16,31 @@ export type Settings = {
   svgVerticalSeqSeparationOuter: number;
   svgVerticalSeqSeparation: number;
   svgHorizontalSeqSeparation: number;
+  svgArrowStyle:
+    | "NONE"
+    | "TRIANGLE"
+    | "STEALTH"
+    | "BARB"
+    | "HARPOON"
+    | "HARPOON_UP";
+  svgArrowLength: number;
+  svgArrowCrossLength: number;
   svgArcRadius: number;
   svgArcMargin: number;
-  svgTerminalPadding: number;
+  svgTerminalHorizontalPadding: number;
+  svgTerminalVerticalPadding: number;
   svgTerminalRadius: number;
-  svgTerminalHeight: number;
-  svgNonTerminalPadding: number;
+  svgNonTerminalHorizontalPadding: number;
+  svgNonTerminalVerticalPadding: number;
   svgNonTerminalRadius: number;
-  svgNonTerminalHeight: number;
-  svgCommentPadding: number;
+  svgCommentHorizontalPadding: number;
+  svgCommentVerticalPadding: number;
   svgCommentRadius: number;
-  svgCommentHeight: number;
   svgGroupVerticalPadding: number;
   svgGroupHorizontalPadding: number;
   svgGroupVerticalMargin: number;
   svgGroupHorizontalMargin: number;
   svgGroupRadius: number;
-  svgGroupTextHeight: number;
   svgGroupTextVerticalOffset: number;
   svgGroupTextHorizontalOffset: number;
 
@@ -46,7 +54,6 @@ export type Settings = {
   textGroupHorizontalPadding: number;
   textGroupVerticalMargin: number;
   textGroupHorizontalMargin: number;
-  textGroupTextHeight: number;
   textGroupTextVerticalOffset: number;
   textGroupTextHorizontalOffset: number;
 };
@@ -55,6 +62,7 @@ export type Rendered = {
   svg?: string;
   text?: string;
   error?: string;
+  debug_data?: unknown;
 };
 
 type InProgress = Record<
@@ -105,21 +113,23 @@ if settings["render"] == "svg":
             end_class=syntax_diagrams.EndClass(settings["endClass"]),
             arc_radius=settings["svgArcRadius"],
             arc_margin=settings["svgArcMargin"],
-            terminal_padding=settings["svgTerminalPadding"],
+            arrow_style=syntax_diagrams.ArrowStyle(settings["svgArrowStyle"]),
+            arrow_length=settings["svgArrowLength"],
+            arrow_cross_length=settings["svgArrowCrossLength"],
+            terminal_horizontal_padding=settings["svgTerminalHorizontalPadding"],
+            terminal_vertical_padding=settings["svgTerminalVerticalPadding"],
             terminal_radius=settings["svgTerminalRadius"],
-            terminal_height=settings["svgTerminalHeight"],
-            non_terminal_padding=settings["svgNonTerminalPadding"],
+            non_terminal_horizontal_padding=settings["svgNonTerminalHorizontalPadding"],
+            non_terminal_vertical_padding=settings["svgNonTerminalVerticalPadding"],
             non_terminal_radius=settings["svgNonTerminalRadius"],
-            non_terminal_height=settings["svgNonTerminalHeight"],
-            comment_padding=settings["svgCommentPadding"],
+            comment_horizontal_padding=settings["svgCommentHorizontalPadding"],
+            comment_vertical_padding=settings["svgCommentVerticalPadding"],
             comment_radius=settings["svgCommentRadius"],
-            comment_height=settings["svgCommentHeight"],
             group_vertical_padding=settings["svgGroupVerticalPadding"],
             group_horizontal_padding=settings["svgGroupHorizontalPadding"],
             group_vertical_margin=settings["svgGroupVerticalMargin"],
             group_horizontal_margin=settings["svgGroupHorizontalMargin"],
             group_radius=settings["svgGroupRadius"],
-            group_text_height=settings["svgGroupTextHeight"],
             group_text_vertical_offset=settings["svgGroupTextVerticalOffset"],
             group_text_horizontal_offset=settings["svgGroupTextHorizontalOffset"],
             css_style=None,
@@ -143,10 +153,10 @@ else:
             group_horizontal_padding=settings["textGroupHorizontalPadding"],
             group_vertical_margin=settings["textGroupVerticalMargin"],
             group_horizontal_margin=settings["textGroupHorizontalMargin"],
-            group_text_height=settings["textGroupTextHeight"],
             group_text_vertical_offset=settings["textGroupTextVerticalOffset"],
             group_text_horizontal_offset=settings["textGroupTextHorizontalOffset"],
         ),
+        _dump_debug_data=True,
     )
 
 rendered
@@ -200,17 +210,24 @@ if (import.meta.env.DEV) {
     });
 
     if (!response.ok) {
+      const error =
+        response.headers.get("Content-Type") === "application/json"
+          ? ((await response.json()) as { error: string }).error
+          : await response.text();
       return {
-        error: `Failed to render diagram: error ${response.status}\n${String(await response.text())}`,
+        error: `Failed to render diagram: error ${response.status}\n\n${error}`,
       };
     }
 
-    const result = await response.text();
+    const { rendered, debug_data } = (await response.json()) as {
+      rendered: string;
+      debug_data: string;
+    };
     switch (settings.render) {
       case "svg":
-        return { svg: result };
+        return { svg: rendered, debug_data };
       case "text":
-        return { text: result };
+        return { text: rendered, debug_data };
     }
   };
 } else {
@@ -246,18 +263,24 @@ if (import.meta.env.DEV) {
       context: { diagram, settings },
     } satisfies Message);
 
-    let result: string;
+    let rendered: string;
+    let debug_data: unknown;
     try {
-      result = await promise;
+      const result = JSON.parse(await promise) as {
+        rendered: string;
+        debug_data: string;
+      };
+      rendered = result.rendered;
+      debug_data = result.debug_data;
     } catch (error) {
       return { error: `Failed to render diagram: ${String(error)}` };
     }
 
     switch (settings.render) {
       case "svg":
-        return { svg: result };
+        return { svg: rendered, debug_data };
       case "text":
-        return { text: result };
+        return { text: rendered, debug_data };
     }
   };
 }

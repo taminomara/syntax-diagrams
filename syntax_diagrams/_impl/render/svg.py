@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-import dataclasses
+import base64
 import io
-import json
 import math
 import re
 import sys
 import typing as _t
+import uuid
 from dataclasses import dataclass, field
-from enum import Enum
 
 from syntax_diagrams._impl.render import (
     ConnectionDirection,
@@ -27,7 +26,7 @@ from syntax_diagrams._impl.tree.end import End
 from syntax_diagrams._impl.tree.sequence import Sequence
 from syntax_diagrams._impl.vec import Vec
 from syntax_diagrams.element import LineBreak
-from syntax_diagrams.render import EndClass, SvgRenderSettings
+from syntax_diagrams.render import ArrowStyle, EndClass, SvgRenderSettings
 from syntax_diagrams.resolver import HrefResolver
 
 T = _t.TypeVar("T")
@@ -89,6 +88,9 @@ def render_svg(
         settings.css_style,
         settings.title,
         settings.description,
+        settings.arrow_style,
+        settings.arrow_length,
+        settings.arrow_cross_length,
         dump_debug_data,
     )
 
@@ -110,7 +112,10 @@ def render_svg(
         ),
     )
 
-    return render.to_string()
+    if dump_debug_data:
+        return render.debug_data()
+    else:
+        return render.to_string()
 
 
 def svg_layout_settings(settings: SvgRenderSettings = SvgRenderSettings()):
@@ -122,53 +127,31 @@ def svg_layout_settings(settings: SvgRenderSettings = SvgRenderSettings()):
         vertical_seq_separation=settings.vertical_seq_separation,
         arc_radius=settings.arc_radius,
         arc_margin=settings.arc_margin,
-        terminal_character_advance=settings.terminal_character_advance,
-        terminal_wide_character_advance=settings.terminal_wide_character_advance,
-        terminal_padding=settings.terminal_padding,
+        terminal_text_measure=settings.terminal_text_measure,
+        terminal_horizontal_padding=settings.terminal_horizontal_padding,
         terminal_radius=settings.terminal_radius,
-        terminal_height=settings.terminal_height,
-        non_terminal_character_advance=settings.non_terminal_character_advance,
-        non_terminal_wide_character_advance=settings.non_terminal_wide_character_advance,
-        non_terminal_padding=settings.non_terminal_padding,
+        terminal_vertical_padding=settings.terminal_vertical_padding,
+        non_terminal_text_measure=settings.non_terminal_text_measure,
+        non_terminal_horizontal_padding=settings.non_terminal_horizontal_padding,
         non_terminal_radius=settings.non_terminal_radius,
-        non_terminal_height=settings.non_terminal_height,
-        comment_character_advance=settings.comment_character_advance,
-        comment_wide_character_advance=settings.comment_wide_character_advance,
-        comment_padding=settings.comment_padding,
+        non_terminal_vertical_padding=settings.non_terminal_vertical_padding,
+        comment_text_measure=settings.comment_text_measure,
+        comment_horizontal_padding=settings.comment_horizontal_padding,
         comment_radius=settings.comment_radius,
-        comment_height=settings.comment_height,
-        group_character_advance=settings.group_character_advance,
-        group_wide_character_advance=settings.group_wide_character_advance,
+        comment_vertical_padding=settings.comment_vertical_padding,
+        group_text_measure=settings.group_text_measure,
         group_vertical_padding=settings.group_vertical_padding,
         group_horizontal_padding=settings.group_horizontal_padding,
         group_vertical_margin=settings.group_vertical_margin,
         group_horizontal_margin=settings.group_horizontal_margin,
         group_thickness=0,
         group_radius=settings.group_radius,
-        group_text_height=settings.group_text_height,
         group_text_vertical_offset=settings.group_text_vertical_offset,
         group_text_horizontal_offset=settings.group_text_horizontal_offset,
         marker_width=20,
         marker_projected_height=10,
         end_class=settings.end_class,
     )
-
-
-_DEBUG_ATTRS = [
-    "display_width",
-    "width",
-    "content_width",
-    "start_padding",
-    "end_padding",
-    "start_margin",
-    "end_margin",
-    "height",
-    "up",
-    "down",
-    "context",
-]
-
-_IGNORE_ATTRS = {"settings"}
 
 
 class SvgRender(Render[T], _t.Generic[T]):
@@ -181,14 +164,14 @@ class SvgRender(Render[T], _t.Generic[T]):
         css: str | dict[str, dict[str, str]] | None,
         title: str | None,
         description: str | None,
+        arrow_style: ArrowStyle,
+        arrow_length: int,
+        arrow_cross_length: int,
         dump_debug_data: bool = False,
     ):
-        self.settings = settings
+        super().__init__(settings, dump_debug_data)
+
         self._width = width
-        self._debug = dump_debug_data
-        self._id = 0
-        self._ids: dict[Element[T], str] = {}
-        self._debug_data: dict[str, _t.Any] = {}
 
         self._root = SvgRender._SvgElement(
             "svg",
@@ -205,12 +188,67 @@ class SvgRender(Render[T], _t.Generic[T]):
 
         if title is not None:
             self._root.attrs["aria-label"] = title
-            self._root.elem("title").children.append(title)
+            self._root.elem("title").children.append(self._e(title))
         if description is not None:
-            self._root.elem("desc").children.append(description)
+            self._root.elem("desc").children.append(self._e(description))
 
-        if dump_debug_data:
-            self._root.attrs["data-debug"] = self._debug_data
+        self._arrow_style = arrow_style
+        self._arrow_length = arrow_length
+        self._arrow_cross_length = arrow_cross_length
+        self._arrow_id = (
+            f"arrow-{base64.urlsafe_b64encode(uuid.uuid4().bytes).decode()}"
+        )
+        self._arrow_class = f"arrow arrow-{str(arrow_style.value).lower()}"
+
+        defs = self._root.elem("defs")
+        match self._arrow_style:
+            case ArrowStyle.NONE:
+                pass
+            case ArrowStyle.TRIANGLE:
+                defs.elem(
+                    "path",
+                    {
+                        "id": self._arrow_id,
+                        "class": self._arrow_class,
+                        "d": f"M 0 0 L -{arrow_length} -{arrow_cross_length} L -{arrow_length} {arrow_cross_length} z",
+                    },
+                )
+            case ArrowStyle.STEALTH:
+                defs.elem(
+                    "path",
+                    {
+                        "id": self._arrow_id,
+                        "class": self._arrow_class,
+                        "d": f"M 0 0 L -{arrow_length} -{arrow_cross_length} L -{3 * arrow_length / 4} 0 L -{arrow_length} {arrow_cross_length} z",
+                    },
+                )
+            case ArrowStyle.BARB:
+                defs.elem(
+                    "path",
+                    {
+                        "id": self._arrow_id,
+                        "class": self._arrow_class,
+                        "d": f"M 0 0 L -{arrow_length} -{arrow_cross_length} M 0 0 L -{arrow_length} {arrow_cross_length}",
+                    },
+                )
+            case ArrowStyle.HARPOON:
+                defs.elem(
+                    "path",
+                    {
+                        "id": self._arrow_id,
+                        "class": self._arrow_class,
+                        "d": f"M 0 0 L -{arrow_length} {arrow_cross_length} L -{3 * arrow_length / 4} 0 z",
+                    },
+                )
+            case ArrowStyle.HARPOON_UP:
+                defs.elem(
+                    "path",
+                    {
+                        "id": self._arrow_id,
+                        "class": self._arrow_class,
+                        "d": f"M 0 0 L -{arrow_length} -{arrow_cross_length} L -{3 * arrow_length / 4} 0 z",
+                    },
+                )
 
         if css:
             if not isinstance(css, str):
@@ -227,15 +265,9 @@ class SvgRender(Render[T], _t.Generic[T]):
                 css = stream.getvalue()
 
             self._style = self._root.elem("style")
-            self._style.children.append(css)
+            self._style.children.append(self._e(css))
 
         self._elems = [self._root.elem("g")]
-
-    def _make_id(self, elem: Element[T]) -> str:
-        if elem not in self._ids:
-            self._ids[elem] = str(self._id)
-            self._id += 1
-        return self._ids[elem]
 
     def write(self, f=sys.stdout):
         self._root.write_svg(f, self)
@@ -247,38 +279,20 @@ class SvgRender(Render[T], _t.Generic[T]):
         return stream.getvalue()
 
     def enter(self, node: Element[_t.Any]):
-        name = node.__class__.__name__.lower()
-        if hasattr(node, "_text"):
-            name += f" {json.dumps(getattr(node, "_text"))}"
+        super().enter(node)
 
         attrs = {
             "class": "elem",
-            "data-dbg-elem": name,
         }
 
         if self._debug:
-            elem_id = attrs["data-dbg-id"] = self._make_id(node)
-            self._id += 1
-            data = {}
-            for k in _DEBUG_ATTRS:
-                data[k] = getattr(node, k, None)
-            for k, v in vars(node).items():
-                # Escape HTML special characters before setting attribute
-                if k.startswith("_Element__"):
-                    k = "__" + k[len("_Element__") :]
-                if k not in _IGNORE_ATTRS and k not in data:
-                    data[k] = v
-            data["$order"] = list(data.keys())
-            self._debug_data[elem_id] = {
-                "parent": self._elem.attrs.get("data-dbg-id"),
-                "index": self._id,
-                "name": name,
-                "data": data,
-            }
+            attrs["data-dbg-id"] = self._make_debug_id(node)
 
         self._elems.append(self._elem.elem("g", attrs))
 
     def exit(self):
+        super().exit()
+
         self._elems.pop()
 
     @property
@@ -298,6 +312,8 @@ class SvgRender(Render[T], _t.Generic[T]):
         down: int,
         radius: int,
         padding: int,
+        text_width: int,
+        text_height: int,
         text: str,
         href: str | None,
         title: str | None,
@@ -341,7 +357,7 @@ class SvgRender(Render[T], _t.Generic[T]):
                 },
             )
 
-        g.elem("text", {"x": pos.x + content_width / 2, "y": pos.y}, [text])
+        self._make_text(pos.x + content_width / 2, pos.y, text, text_height).add_to(g)
 
     def group(
         self,
@@ -350,6 +366,7 @@ class SvgRender(Render[T], _t.Generic[T]):
         height: int,
         css_class: str | None,
         text_width: int,
+        text_height: int,
         text: str | None,
         href: str | None,
         title: str | None,
@@ -390,14 +407,38 @@ class SvgRender(Render[T], _t.Generic[T]):
                 },
             )
 
-        g.elem(
-            "text",
-            {
-                "x": pos.x + self.settings.group_text_horizontal_offset,
-                "y": pos.y - self.settings.group_text_vertical_offset,
-            },
-            [text],
-        )
+        self._make_text(
+            pos.x + self.settings.group_text_horizontal_offset,
+            pos.y - self.settings.group_text_vertical_offset,
+            text,
+            text_height,
+            vertical_center=False,
+        ).add_to(g)
+
+    def _make_text(
+        self,
+        x: float,
+        y: float,
+        text: str,
+        text_height: int,
+        vertical_center: bool = True,
+    ) -> _SvgElement:
+        lines = text.splitlines()
+        line_height = text_height / len(lines) if lines else 0
+        if vertical_center:
+            text_offset = text_height / 2 - line_height / 2
+        else:
+            text_offset = text_height - line_height / 2
+
+        e = SvgRender._SvgElement("text", {}, [])
+        for i, line in enumerate(lines):
+            e.elem(
+                "tspan",
+                {"x": x, "y": y - text_offset + i * line_height},
+                [self._e(line)],
+            )
+
+        return e
 
     def left_marker(self, pos: Vec):
         w = self.settings.marker_width
@@ -563,28 +604,7 @@ class SvgRender(Render[T], _t.Generic[T]):
     _ESCAPE_RE = re.compile(r"[*_`\[\]<&\"]", re.UNICODE)
 
     def _e(self, text: _t.Any):
-        if isinstance(text, dict):
-            text = self._DebugJSONEncoder(self).encode(text)
         return self._ESCAPE_RE.sub(lambda c: f"&#{ord(c[0])};", str(text))
-
-    class _DebugJSONEncoder(json.JSONEncoder):
-        def __init__(self, render: SvgRender[_t.Any]):
-            super().__init__()
-            self._render = render
-
-        def default(self, o):
-            if dataclasses.is_dataclass(o) and not isinstance(o, type):
-                d = dataclasses.asdict(o)
-                d["$order"] = list(d.keys())
-                return d
-            elif isinstance(o, Enum):
-                return o.value
-            elif isinstance(o, Element):
-                return {
-                    "$elem": o.__class__.__qualname__,  # type: ignore
-                    "$id": self._render._make_id(o),
-                }
-            return super().default(o)
 
     class _SvgLine(Line):
         def __init__(
@@ -601,9 +621,35 @@ class SvgRender(Render[T], _t.Generic[T]):
         def segment_abs(
             self, x: int, arrow_begin: bool = False, arrow_end: bool = False
         ) -> Line:
+            w = x - self._pos.x
+
+            if arrow_begin and abs(w) >= self._render._arrow_length:
+                self._arrow("e" if w >= 0 else "w")
+
             self._elem.attrs["d"] += f"H{x}"
             self._pos.x = x
+
+            if arrow_end and abs(w) >= self._render._arrow_length:
+                self._arrow("e" if w >= 0 else "w", end=True)
+
             return self
+
+        def _arrow(self, d: Direction, end: bool = False):
+            if self._render._arrow_style is ArrowStyle.NONE:
+                return
+            transform = f"translate({self._pos.x}, {self._pos.y})"
+            if d == "w":
+                transform += f" scale(-1, 1)"
+            if not end:
+                transform += f" translate({self._render._arrow_length}, 0)"
+            self._render._elem.elem(
+                "use",
+                {
+                    "href": f"#{self._render._arrow_id}",
+                    "class": self._render._arrow_class,
+                    "transform": transform,
+                },
+            )
 
         def bend(
             self,
@@ -740,5 +786,5 @@ class SvgRender(Render[T], _t.Generic[T]):
                 if isinstance(child, SvgRender._SvgElement):
                     child.write_svg(f, render)
                 else:
-                    f.write(render._e(child))
+                    f.write(str(child))
             f.write(f"</{self.name}>")

@@ -473,7 +473,11 @@ class Choice(Element[T], _t.Generic[T]):
             (
                 (render)
                 .line(opt_enter_pos, context.reverse, "dbg-alternative-pos")
-                .segment_abs(vertical_line_x)
+                .segment_abs(
+                    vertical_line_x,
+                    arrow_begin=True,
+                    arrow_end=True,
+                )
                 .bend(
                     context.end_connection_pos.y,
                     coming_to,
@@ -508,7 +512,7 @@ class Choice(Element[T], _t.Generic[T]):
             # Special case for skipping stack rows: position of the vertical line
             # is close to the alternative exit.
             if opt_exit_pos_alt and (
-                abs(opt_exit_pos_alt.x - vertical_line_x) < render.settings.arc_radius
+                abs(opt_exit_pos_alt.x - vertical_line_x) <= render.settings.arc_radius
             ):
                 opt_exit_pos = opt_exit_pos_alt
                 coming_to = None
@@ -526,7 +530,11 @@ class Choice(Element[T], _t.Generic[T]):
                     arrow_begin=True,
                     arrow_end=True,
                 )
-                .segment_abs(opt_exit_pos.x)
+                .segment_abs(
+                    opt_exit_pos.x,
+                    arrow_begin=True,
+                    arrow_end=True,
+                )
             )
 
     def _calculate_top_ridge_line(self) -> RidgeLine:

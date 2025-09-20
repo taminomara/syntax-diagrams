@@ -600,7 +600,9 @@ class Sequence(Element[T], _t.Generic[T]):
                     .segment_abs(
                         context.dir * self._line_shift
                         + context.pos.x
-                        + context.dir * arc_radius
+                        + context.dir * arc_radius,
+                        arrow_begin=True,
+                        arrow_end=True,
                     )
                 )
 
