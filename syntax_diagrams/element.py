@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 __all__ = [
+    "Element",
     "Terminal",
     "NonTerminal",
     "Comment",
