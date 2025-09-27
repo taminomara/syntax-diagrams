@@ -131,7 +131,7 @@ jobs:
           python -m pip install . --group doc
       - name: Build docs
         env:
-          SPHINXOPTS: "-j auto"
+          SPHINXOPTS: "-j auto -n"
         run: |
           cd docs
           make html
