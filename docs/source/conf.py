@@ -7,6 +7,8 @@ copyright = f"{datetime.date.today().year}, Tamika Nomara"
 author = "Tamika Nomara"
 release = version = syntax_diagrams.__version__
 
+del syntax_diagrams
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
@@ -34,6 +36,7 @@ intersphinx_mapping = {
 
 html_theme = "furo"
 html_extra_path = ["_extra/robots.txt"]
+html_css_files = ["syntax-diagrams-ext.css"]
 html_theme_options = {
     "source_repository": "https://github.com/taminomara/syntax-diagrams",
     "source_branch": "main",

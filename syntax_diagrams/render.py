@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import typing as _t
 from dataclasses import dataclass, field
 from enum import Enum
@@ -40,11 +41,21 @@ class EndClass(Enum):
     """
     A simple ``T``-shaped ending.
 
+    .. syntax:diagram::
+        :end-class: simple
+
+        Simple
+
     """
 
     COMPLEX = "COMPLEX"
     """
     A ``T``-shaped ending with vertical line doubled.
+
+    .. syntax:diagram::
+        :end-class: complex
+
+        Complex
 
     """
 
@@ -262,24 +273,29 @@ DEFAULT_CSS = {
     "g.comment rect": {
         "stroke": "none",
     },
-    "tspan": {
-        "font-size": "14px",
+    "text": {
         "font-family": "Consolas, Menlo, monospace",
         "text-anchor": "middle",
-        "dominant-baseline": "central",
+        # "dominant-baseline": "central",
         "font-weight": "bold",
     },
-    ".group tspan": {
+    "tspan": {
+        "font-family": "Consolas, Menlo, monospace",
+    },
+    ".escape": {
+        "fill": "brown",
+    },
+    ".group text": {
         "text-anchor": "start",
         "opacity": "0.5",
         "font-weight": "normal",
         "font-style": "italic",
-        "dominant-baseline": "alphabetic",
+        # "dominant-baseline": "alphabetic",
     },
     ".group rect": {
         "opacity": "0.3",
     },
-    "g.comment tspan": {
+    "g.comment text": {
         "font-weight": "normal",
         "font-style": "italic",
     },
@@ -290,8 +306,12 @@ DEFAULT_CSS = {
 
 
 # Measured for Menlo, 14px. Consolas is a bit narrower, but not too much.
-_DEFAULT_TEXT_MEASURE = SimpleTextMeasure(
-    character_advance=8.4, wide_character_advance=14.34, line_height=14 * 1.1
+_DEFAULT_TEXT_MEASURE_FACTORY = lambda: SimpleTextMeasure(
+    character_advance=8.44,
+    wide_character_advance=14.34,
+    font_size=14,
+    line_height=14 * 1.1,
+    ascent=12,
 )
 
 
@@ -305,11 +325,25 @@ class ArrowStyle(Enum):
     """
     Arrows are not rendered.
 
+    .. syntax:diagram::
+        :svg-arrow-style: none
+        :svg-padding: 10 10 10 10
+
+        optional: "node"
+        skip: true
+
     """
 
     TRIANGLE = "TRIANGLE"
     """
     Simple triangle arrows.
+
+    .. syntax:diagram::
+        :svg-arrow-style: triangle
+        :svg-padding: 10 10 10 10
+
+        optional: "node"
+        skip: true
 
     """
 
@@ -317,11 +351,25 @@ class ArrowStyle(Enum):
     """
     Pointier triangle arrows.
 
+    .. syntax:diagram::
+        :svg-arrow-style: stealth
+        :svg-padding: 10 10 10 10
+
+        optional: "node"
+        skip: true
+
     """
 
     BARB = "BARB"
     """
     An error that consists of two lines.
+
+    .. syntax:diagram::
+        :svg-arrow-style: barb
+        :svg-padding: 10 10 10 10
+
+        optional: "node"
+        skip: true
 
     """
 
@@ -329,11 +377,25 @@ class ArrowStyle(Enum):
     """
     Half of a triangle arrow.
 
+    .. syntax:diagram::
+        :svg-arrow-style: harpoon
+        :svg-padding: 10 10 10 10
+
+        optional: "node"
+        skip: true
+
     """
 
     HARPOON_UP = "HARPOON_UP"
     """
     Another half of a triangle arrow.
+
+    .. syntax:diagram::
+        :svg-arrow-style: harpoon-up
+        :svg-padding: 10 10 10 10
+
+        optional: "node"
+        skip: true
 
     """
 
@@ -441,7 +503,9 @@ class SvgRenderSettings:
 
     """
 
-    terminal_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
+    terminal_text_measure: TextMeasure = dataclasses.field(
+        default_factory=_DEFAULT_TEXT_MEASURE_FACTORY
+    )
     """
     Service used to measure size of text inside of text nodes.
 
@@ -467,7 +531,9 @@ class SvgRenderSettings:
 
     """
 
-    non_terminal_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
+    non_terminal_text_measure: TextMeasure = dataclasses.field(
+        default_factory=_DEFAULT_TEXT_MEASURE_FACTORY
+    )
     """
     Service used to measure size of text inside of text nodes.
 
@@ -493,7 +559,9 @@ class SvgRenderSettings:
 
     """
 
-    comment_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
+    comment_text_measure: TextMeasure = dataclasses.field(
+        default_factory=_DEFAULT_TEXT_MEASURE_FACTORY
+    )
     """
     Service used to measure size of text inside of text nodes.
 
@@ -519,7 +587,9 @@ class SvgRenderSettings:
 
     """
 
-    group_text_measure: TextMeasure = _DEFAULT_TEXT_MEASURE
+    group_text_measure: TextMeasure = dataclasses.field(
+        default_factory=_DEFAULT_TEXT_MEASURE_FACTORY
+    )
     """
     Service used to measure size of text of groups.
 

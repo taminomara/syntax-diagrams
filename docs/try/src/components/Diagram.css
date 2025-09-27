@@ -29,28 +29,32 @@ svg.syntax-diagram g.comment rect {
   stroke: none;
 }
 
-svg.syntax-diagram tspan {
+svg.syntax-diagram text {
   font-size: 14px;
   font-family: Consolas, Menlo, monospace;
   text-anchor: middle;
-  dominant-baseline: central;
+  /* dominant-baseline: central; */
   font-weight: bold;
   fill: currentColor;
 }
 
-svg.syntax-diagram .group tspan {
+svg.syntax-diagram .escape {
+  fill: var(--code-color-escape);
+}
+
+svg.syntax-diagram .group text {
   text-anchor: start;
   opacity: 0.5;
   font-style: italic;
   font-weight: normal;
-  dominant-baseline: alphabetic;
+  /* dominant-baseline: alphabetic; */
 }
 
 svg.syntax-diagram .group rect {
   opacity: 0.3;
 }
 
-svg.syntax-diagram g.comment tspan {
+svg.syntax-diagram g.comment text {
   font-style: italic;
   font-weight: normal;
 }

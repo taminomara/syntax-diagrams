@@ -259,6 +259,8 @@ class LayoutSettings(_t.Generic[T]):
 
     end_class: EndClass
 
+    hidden_symbol_escape: tuple[str, str]
+
     href_resolver: HrefResolver[T] = HrefResolver()
 
 

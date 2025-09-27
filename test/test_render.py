@@ -136,11 +136,11 @@ _STACK = rr.stack(rr.terminal("A"), rr.terminal("B"))
     "reverse",
     [
         False,
-        # True,
+        True,
     ],
     ids=[
         "ltr",
-        # "rtl",
+        "rtl",
     ],
 )
 @pytest.mark.parametrize(

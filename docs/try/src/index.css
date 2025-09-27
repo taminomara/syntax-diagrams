@@ -53,6 +53,7 @@ body {
   --code-color-number: #098658;
   --code-color-string: #0451a5;
   --code-color-node: #8f08c4;
+  --code-color-escape: #a31515;
 
   --diagram-debug-stroke: #005cc5;
   --diagram-debug-stroke-connection: #d73a49;
@@ -114,6 +115,7 @@ body[data-theme="dark"] {
   --code-color-number: #b5cea8;
   --code-color-string: #ce9178;
   --code-color-node: #d8a0df;
+  --code-color-escape: #ffd68f;
 
   --diagram-debug-stroke: #4c84c4;
   --diagram-debug-stroke-connection: #d73a49;

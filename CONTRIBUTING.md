@@ -13,7 +13,7 @@
 3. Install Syntax Diagrams in development mode, and install dev dependencies:
 
    ```shell
-   pip install -e .[dev]
+   pip install -e . --group dev
    ```
 
 4. Install pre-commit hooks:

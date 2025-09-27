@@ -26,6 +26,7 @@ from syntax_diagrams._impl.tree.end import End
 from syntax_diagrams._impl.tree.sequence import Sequence
 from syntax_diagrams._impl.vec import Vec
 from syntax_diagrams.element import LineBreak
+from syntax_diagrams.measure import TextMeasure
 from syntax_diagrams.render import ArrowStyle, EndClass, SvgRenderSettings
 from syntax_diagrams.resolver import HrefResolver
 
@@ -150,6 +151,7 @@ def svg_layout_settings(settings: SvgRenderSettings = SvgRenderSettings()):
         group_text_horizontal_offset=settings.group_text_horizontal_offset,
         marker_width=20,
         marker_projected_height=10,
+        hidden_symbol_escape=("\0", "\0"),
         end_class=settings.end_class,
     )
 
@@ -325,10 +327,13 @@ class SvgRender(Render[T], _t.Generic[T]):
         match style:
             case NodeStyle.TERMINAL:
                 css_class += " terminal"
+                measure = self.settings.terminal_text_measure
             case NodeStyle.NON_TERMINAL:
                 css_class += " non-terminal"
+                measure = self.settings.non_terminal_text_measure
             case NodeStyle.COMMENT:
                 css_class += " comment"
+                measure = self.settings.comment_text_measure
         g = self._elem.elem(
             "g",
             {
@@ -357,7 +362,9 @@ class SvgRender(Render[T], _t.Generic[T]):
                 },
             )
 
-        self._make_text(pos.x + content_width / 2, pos.y, text, text_height).add_to(g)
+        self._make_text(
+            pos.x + content_width / 2, pos.y, text, text_height, measure
+        ).add_to(g)
 
     def group(
         self,
@@ -412,8 +419,11 @@ class SvgRender(Render[T], _t.Generic[T]):
             pos.y - self.settings.group_text_vertical_offset,
             text,
             text_height,
+            self.settings.group_text_measure,
             vertical_center=False,
         ).add_to(g)
+
+    _UNESCAPE_RE = re.compile(r"\0(.*?)\0")
 
     def _make_text(
         self,
@@ -421,24 +431,37 @@ class SvgRender(Render[T], _t.Generic[T]):
         y: float,
         text: str,
         text_height: int,
+        measure: TextMeasure,
         vertical_center: bool = True,
     ) -> _SvgElement:
+        style = f"font-size: {measure.font_size}px"
+
         lines = text.splitlines()
         line_height = text_height / len(lines) if lines else 0
         if vertical_center:
-            text_offset = text_height / 2 - line_height / 2
+            # Pain =(
+            ascent = measure.ascent + (measure.line_height - measure.font_size) / 2
+            text_offset = text_height / 2 - ascent
         else:
             text_offset = text_height - line_height / 2
 
-        e = SvgRender._SvgElement("text", {}, [])
+        g = SvgRender._SvgElement("g", {}, [])
         for i, line in enumerate(lines):
-            e.elem(
-                "tspan",
-                {"x": x, "y": y - text_offset + i * line_height},
-                [self._e(line)],
+            e = g.elem(
+                "text",
+                {"x": x, "y": y - text_offset + i * line_height, "style": style},
             )
 
-        return e
+            j = 0
+            for esc in self._UNESCAPE_RE.finditer(line):
+                if part := line[j : esc.start()]:
+                    e.children.append(self._e(part))
+                j = esc.end()
+                e.elem("tspan", {"class": "escape"}, [self._e(esc.group(1))])
+            if part := line[j:]:
+                e.children.append(self._e(part))
+
+        return g
 
     def left_marker(self, pos: Vec):
         w = self.settings.marker_width

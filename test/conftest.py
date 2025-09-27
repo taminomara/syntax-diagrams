@@ -87,10 +87,6 @@ def text_regression(_image_diff_info: DiffInfoCallableType, request):
     yield _factory
 
 
-def _diff(l: str, r: str):
-    pass
-
-
 @pytest.fixture
 def text_layout_settings():
     return _text_layout_settings()
@@ -104,8 +100,8 @@ def svg_layout_settings():
 @pytest.fixture
 def svg_css():
     css = deepcopy(DEFAULT_CSS)
-    css.setdefault("text", {})["transform"] = "translate(0, 4)"
-    css.setdefault(".group text", {})["transform"] = "translate(0, 4)"
+    css.setdefault("text", {})["transform"] = "translate(0, -2)"
+    css.setdefault(".group text", {})["transform"] = "translate(0, -2)"
     return css
 
 

@@ -18,15 +18,16 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "grapheme~=0.6",
     "wcwidth~=0.2",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest-cov==7.0.0",
     "flask==3.1.2",
-    "syntax-diagrams[test,lint,doc]",
+    {include-group = "test"},
+    {include-group = "lint"},
+    {include-group = "doc"},
 ]
 test = [
     "pyright==1.1.405",

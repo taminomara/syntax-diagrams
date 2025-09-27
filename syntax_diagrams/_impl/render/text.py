@@ -110,8 +110,10 @@ def render_text(
 
 _TEXT_MEASURE = SimpleTextMeasure(
     character_advance=1,
+    font_size=1,
     wide_character_advance=2,
     line_height=1,
+    ascent=1,
 )
 
 
@@ -147,6 +149,7 @@ def text_layout_settings(settings: TextRenderSettings = TextRenderSettings()):
         group_text_horizontal_offset=settings.group_text_horizontal_offset,
         marker_width=4,
         marker_projected_height=0,
+        hidden_symbol_escape=("", ""),
         end_class=settings.end_class,
     )
 

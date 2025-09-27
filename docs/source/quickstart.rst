@@ -3,11 +3,19 @@ Quickstart
 
 .. currentmodule:: syntax_diagrams
 
-Install ``syntax-diagrams``:
+
+Installation
+------------
+
+Install ``syntax-diagrams`` using Pip:
 
 .. code-block:: console
 
     $ pip install syntax-diagrams
+
+
+Describing diagrams
+-------------------
 
 Describe a syntax diagram using
 :ref:`constructors <constructors>` or :ref:`YAML <literals>`:
@@ -27,7 +35,7 @@ Describe a syntax diagram using
                     terminal("lexer"),
                     skip(),
                     terminal("parser"),
-                )
+                ),
                 terminal("grammar"),
                 non_terminal("identifier"),
                 terminal(";"),
@@ -42,7 +50,7 @@ Describe a syntax diagram using
 
             from syntax_diagrams import *
 
-            diagram = yaml.load("""
+            diagram = yaml.safe_load("""
                 - choice:
                   - "lexer"
                   -
@@ -52,6 +60,14 @@ Describe a syntax diagram using
                 - non_terminal: "identifier"
                 - ";"
             """)
+
+
+Rendering diagrams
+------------------
+
+.. invisible-code-block: python
+
+    diagram = None
 
 Render the diagram using `render_svg` or `render_text`:
 

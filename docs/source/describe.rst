@@ -1,5 +1,5 @@
-Describe a diagram
-==================
+Describing diagrams
+===================
 
 
 .. role:: python(code)
@@ -7,6 +7,10 @@ Describe a diagram
    :class: highlight
 
 .. currentmodule:: syntax_diagrams
+
+.. invisible-code-block: python
+
+    from syntax_diagrams import *
 
 
 .. _literals:
@@ -47,10 +51,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -64,7 +66,6 @@ when writing diagrams in YAML syntax.
                 - ";"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -73,14 +74,13 @@ when writing diagrams in YAML syntax.
                         terminal("lexer"),
                         skip(),
                         terminal("parser"),
-                    )
+                    ),
                     terminal("grammar"),
                     non_terminal("identifier"),
                     terminal(";"),
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -128,44 +128,39 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 terminal: "INT"
+                href: "#syntax_diagrams.Terminal"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
-                diagram = terminal("INT")
+                diagram = terminal("INT", href="#syntax_diagrams.Terminal")
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
                 terminal: "INT"
+                href: "#syntax_diagrams.Terminal"
 
 
     Terminal nodes without settings can be encoded as simple strings:
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 "INT"
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -206,28 +201,26 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 non_terminal: "expr"
+                href: "#syntax_diagrams.NonTerminal"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
-                diagram = non_terminal("expr")
+                diagram = non_terminal("expr", href="#syntax_diagrams.NonTerminal")
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
                 non_terminal: "expr"
+                href: "#syntax_diagrams.NonTerminal"
 
 
 .. type:: Comment[T]
@@ -264,28 +257,26 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 comment: "escaped literal"
+                href: "#syntax_diagrams.Comment"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
-                diagram = comment("escaped literal")
+                diagram = comment("escaped literal", href="#syntax_diagrams.Comment")
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
                 comment: "escaped literal"
+                href: "#syntax_diagrams.Comment"
 
 
 
@@ -313,10 +304,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -324,10 +313,11 @@ when writing diagrams in YAML syntax.
                 - comment: "escaped literal"
                 - "ESC"
                 - "CHAR"
-                linebreaks: "SOFT"
+                linebreaks:
+                - "NO_BREAK"
+                - "DEFAULT"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -335,11 +325,13 @@ when writing diagrams in YAML syntax.
                     comment("escaped literal"),
                     terminal("ESC"),
                     terminal("CHAR"),
-                    linebreaks: LineBreak.SOFT,
+                    linebreaks=[
+                        LineBreak.NO_BREAK,
+                        LineBreak.DEFAULT,
+                    ],
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -347,15 +339,15 @@ when writing diagrams in YAML syntax.
                 - comment: "escaped literal"
                 - "ESC"
                 - "CHAR"
-                linebreaks: "SOFT"
+                linebreaks:
+                - "NO_BREAK"
+                - "DEFAULT"
 
     Sequences without settings can also be encoded as simple lists:
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -364,7 +356,6 @@ when writing diagrams in YAML syntax.
                 - "CHAR"
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -389,10 +380,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -402,7 +391,6 @@ when writing diagrams in YAML syntax.
                 - "CHAR"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -413,7 +401,6 @@ when writing diagrams in YAML syntax.
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -439,10 +426,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -452,7 +437,6 @@ when writing diagrams in YAML syntax.
                 - "CHAR"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -463,7 +447,6 @@ when writing diagrams in YAML syntax.
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -492,10 +475,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -506,9 +487,9 @@ when writing diagrams in YAML syntax.
                   - "("
                   - non_terminal: "expr"
                   - ")"
+                default: 1
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -519,11 +500,11 @@ when writing diagrams in YAML syntax.
                       terminal("("),
                       non_terminal("expr"),
                       terminal(")"),
-                    )
+                    ),
+                    default=1,
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
@@ -534,6 +515,7 @@ when writing diagrams in YAML syntax.
                   - "("
                   - non_terminal: "expr"
                   - ")"
+                default: 1
 
 
 .. type:: Optional[T]
@@ -560,32 +542,31 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 optional:
                 - non_terminal: "annotation"
+                skip: true
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
                 diagram = optional(
                     non_terminal("annotation"),
+                    skip=True,
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
                 optional:
-                - non_terminal: "annotation"
+                  non_terminal: "annotation"
+                skip: true
 
 
 .. type:: OneOrMore[T]
@@ -609,19 +590,16 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 one_or_more:
-                - non_terminal: "expr"
+                  non_terminal: "expr"
                 repeat: "COMMA"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -631,12 +609,11 @@ when writing diagrams in YAML syntax.
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
                 one_or_more:
-                - non_terminal: "expr"
+                  non_terminal: "expr"
                 repeat: "COMMA"
 
 
@@ -672,19 +649,16 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
                 zero_or_more:
-                - non_terminal: "expr"
+                  non_terminal: "expr"
                 repeat: "COMMA"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -694,12 +668,11 @@ when writing diagrams in YAML syntax.
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
 
                 zero_or_more:
-                - non_terminal: "expr"
+                  non_terminal: "expr"
                 repeat: "COMMA"
 
 
@@ -717,10 +690,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -732,7 +703,6 @@ when writing diagrams in YAML syntax.
                       - "C"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -749,7 +719,6 @@ when writing diagrams in YAML syntax.
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. list-table::
                 :widths: 50 50
@@ -760,7 +729,7 @@ when writing diagrams in YAML syntax.
 
                 * -
                     .. syntax:diagram::
-                        :svg-padding: 10 1 10 1
+                        :svg-padding: 10 10 10 10
 
                         - "A"
                         - optional:
@@ -769,7 +738,7 @@ when writing diagrams in YAML syntax.
                             - "C"
                   -
                     .. syntax:diagram::
-                        :svg-padding: 10 1 10 1
+                        :svg-padding: 10 10 10 10
 
                         - "A"
                         - optional:
@@ -808,10 +777,8 @@ when writing diagrams in YAML syntax.
     **Example:**
 
     .. tab-set::
-        :sync-group: diagram-example
 
         .. tab-item:: YAML
-            :sync: yaml
 
             .. code-block:: yaml
 
@@ -830,7 +797,6 @@ when writing diagrams in YAML syntax.
                 - ":"
 
         .. tab-item:: Python
-            :sync: python
 
             .. code-block:: python
 
@@ -854,10 +820,8 @@ when writing diagrams in YAML syntax.
                 )
 
         .. tab-item:: Rendered
-            :sync: rendered
 
             .. syntax:diagram::
-                :svg-max-width: 700
 
                 - "def"
                 - "("
