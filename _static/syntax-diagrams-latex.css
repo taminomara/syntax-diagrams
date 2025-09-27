@@ -1,17 +1,17 @@
 svg.syntax-diagram path {
   stroke-width: 1.5;
-  stroke: currentColor;
+  stroke: black;
   fill: none;
   stroke-linecap: round;
 }
 
 svg.syntax-diagram .arrow {
   stroke: none;
-  fill: currentColor;
+  fill: black;
 }
 
 svg.syntax-diagram .arrow.arrow-barb {
-  stroke: currentColor;
+  stroke: black;
   fill: none;
 }
 
@@ -21,7 +21,7 @@ svg.syntax-diagram a {
 
 svg.syntax-diagram rect {
   stroke-width: 1.5;
-  stroke: currentColor;
+  stroke: black;
   fill: none;
 }
 
@@ -29,29 +29,29 @@ svg.syntax-diagram g.comment rect {
   stroke: none;
 }
 
-svg.syntax-diagram text {
-  font-family: Consolas, Menlo, monospace;
+svg.syntax-diagram tspan {
+  font-family: monospace;
   text-anchor: middle;
   font-weight: bold;
-  fill: currentColor;
+  fill: black;
 }
 
 svg.syntax-diagram .escape {
   fill: brown;
 }
 
-svg.syntax-diagram .group text {
+svg.syntax-diagram .group tspan {
   text-anchor: start;
-  opacity: 0.5;
+  fill: #808080;
   font-style: italic;
   font-weight: normal;
 }
 
 svg.syntax-diagram .group rect {
-  opacity: 0.3;
+  fill: #a0a0a0;
 }
 
-svg.syntax-diagram g.comment text {
+svg.syntax-diagram g.comment tspan {
   font-style: italic;
   font-weight: normal;
 }
