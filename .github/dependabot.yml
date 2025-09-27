@@ -7,18 +7,22 @@ updates:
     groups:
       dev:
         patterns:
-        - "black"
+        - "flask"
         - "furo"
-        - "isort"
-        - "pre-commit"
         - "pyright"
         - "pytest-cov"
         - "pytest-image-diff"
         - "pytest"
+        - "PyYAML"
         - "reportlab"
         - "sphinx_design"
         - "svglib"
         - "sybil"
+      style:
+        patterns:
+        - "black"
+        - "isort"
+        - "pre-commit"
   - package-ecosystem: "npm"
     directory: "/docs/try"
     schedule:
