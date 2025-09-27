@@ -1,7 +1,9 @@
 from __future__ import annotations
-import typing as _t
+
 import traceback
-from flask import Flask, request, Response
+import typing as _t
+
+from flask import Flask, Response, request
 
 import syntax_diagrams
 
