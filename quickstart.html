@@ -3,15 +3,16 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Describe a diagram" href="describe.html" /><link rel="prev" title="Syntax Diagrams" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Describing diagrams" href="describe.html" /><link rel="prev" title="Syntax Diagrams" href="index.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>Quickstart - Syntax Diagrams 0.1.dev1+gea666e817 documentation</title>
+        <title>Quickstart - Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/syntax-diagrams.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/syntax-diagrams-ext.css" />
     
     
 
@@ -168,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+gea666e817 documentation</div></a>
+      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +181,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -191,7 +192,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+gea666e817 documentation</span>
+  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -199,14 +200,16 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
-</ul>
-<ul class="current">
+  <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="describe.html">Describe a diagram</a></li>
-<li class="toctree-l1"><a class="reference internal" href="render.html">Render a diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="describe.html">Describing diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="render.html">Rendering diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/taminomara/syntax-diagrams/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
 </ul>
 
 </div>
@@ -245,7 +248,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -253,10 +256,15 @@
         <article role="main" id="furo-main-content">
           <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
-<p>Install <code class="docutils literal notranslate"><span class="pre">syntax-diagrams</span></code>:</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">syntax-diagrams</span></code> using Pip:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>syntax-diagrams
 </pre></div>
 </div>
+</section>
+<section id="describing-diagrams">
+<h2>Describing diagrams<a class="headerlink" href="#describing-diagrams" title="Link to this heading">¶</a></h2>
 <p>Describe a syntax diagram using
 <a class="reference internal" href="describe.html#constructors"><span class="std std-ref">constructors</span></a> or <a class="reference internal" href="describe.html#literals"><span class="std std-ref">YAML</span></a>:</p>
 <div class="sd-tab-set docutils">
@@ -270,7 +278,7 @@ Python</label><div class="sd-tab-content docutils">
         <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;lexer&quot;</span><span class="p">),</span>
         <span class="n">skip</span><span class="p">(),</span>
         <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;parser&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
+    <span class="p">),</span>
     <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;grammar&quot;</span><span class="p">),</span>
     <span class="n">non_terminal</span><span class="p">(</span><span class="s2">&quot;identifier&quot;</span><span class="p">),</span>
     <span class="n">terminal</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">),</span>
@@ -285,7 +293,7 @@ YAML</label><div class="sd-tab-content docutils">
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">syntax_diagrams</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">diagram</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    - choice:</span>
 <span class="s2">      - &quot;lexer&quot;</span>
 <span class="s2">      -</span>
@@ -299,6 +307,9 @@ YAML</label><div class="sd-tab-content docutils">
 </div>
 </div>
 </div>
+</section>
+<section id="rendering-diagrams">
+<h2>Rendering diagrams<a class="headerlink" href="#rendering-diagrams" title="Link to this heading">¶</a></h2>
 <p>Render the diagram using <a class="reference internal" href="render.html#syntax_diagrams.render_svg" title="syntax_diagrams.render_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_svg</span></code></a> or <a class="reference internal" href="render.html#syntax_diagrams.render_text" title="syntax_diagrams.render_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_text</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">svg</span> <span class="o">=</span> <span class="n">render_svg</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 </pre></div>
@@ -316,6 +327,7 @@ YAML</label><div class="sd-tab-content docutils">
 </div>
 <p>Use <a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">online editor</a> to play with diagram descriptions and settings.</p>
 </section>
+</section>
 
         </article>
       </div>
@@ -327,7 +339,7 @@ YAML</label><div class="sd-tab-content docutils">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Describe a diagram</div>
+                <div class="title">Describing diagrams</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -360,13 +372,34 @@ YAML</label><div class="sd-tab-content docutils">
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#describing-diagrams">Describing diagrams</a></li>
+<li><a class="reference internal" href="#rendering-diagrams">Rendering diagrams</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=1af2648a"></script>
+</div><script src="_static/documentation_options.js?v=86f4c9de"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

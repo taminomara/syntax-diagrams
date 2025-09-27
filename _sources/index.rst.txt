@@ -116,14 +116,16 @@ Table of contents
 -----------------
 
 .. toctree::
-    :hidden:
-
-    Try in browser <https://taminomara.github.io/syntax-diagrams/try/>
-
-.. toctree::
     :maxdepth: 2
 
     quickstart
     describe
     render
     advanced
+
+.. toctree::
+    :hidden:
+    :caption: Links
+
+    GitHub <https://github.com/taminomara/syntax-diagrams/>
+    Try in browser <https://taminomara.github.io/syntax-diagrams/try/>

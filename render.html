@@ -3,15 +3,16 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Advanced API" href="advanced.html" /><link rel="prev" title="Describe a diagram" href="describe.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Advanced API" href="advanced.html" /><link rel="prev" title="Describing diagrams" href="describe.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>Render a diagram - Syntax Diagrams 0.1.dev1+gea666e817 documentation</title>
+        <title>Rendering diagrams - Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/syntax-diagrams.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/syntax-diagrams-ext.css" />
     
     
 
@@ -168,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+gea666e817 documentation</div></a>
+      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +192,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+gea666e817 documentation</span>
+  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -199,14 +200,16 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
-</ul>
-<ul class="current">
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="describe.html">Describe a diagram</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Render a diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="describe.html">Describing diagrams</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Rendering diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/taminomara/syntax-diagrams/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
 </ul>
 
 </div>
@@ -251,8 +254,8 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="render-a-diagram">
-<h1>Render a diagram<a class="headerlink" href="#render-a-diagram" title="Link to this heading">¶</a></h1>
+          <section id="rendering-diagrams">
+<h1>Rendering diagrams<a class="headerlink" href="#rendering-diagrams" title="Link to this heading">¶</a></h1>
 <p>We support rendering SVG and ASCII diagrams:</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="syntax_diagrams.render_svg">
@@ -362,7 +365,7 @@ from JSON or other untrusted source.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.SvgRenderSettings.comment_text_measure">
-<span class="sig-name descname"><span class="pre">comment_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;syntax_diagrams.measure.SimpleTextMeasure</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.comment_text_measure" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">comment_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.comment_text_measure" title="Link to this definition">¶</a></dt>
 <dd><p>Service used to measure size of text inside of text nodes.</p>
 <p>By default, set up to match default CSS settings.</p>
 </dd></dl>
@@ -423,7 +426,7 @@ from JSON or other untrusted source.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.SvgRenderSettings.group_text_measure">
-<span class="sig-name descname"><span class="pre">group_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;syntax_diagrams.measure.SimpleTextMeasure</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.group_text_measure" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">group_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.group_text_measure" title="Link to this definition">¶</a></dt>
 <dd><p>Service used to measure size of text of groups.</p>
 <p>By default, set up to match default CSS settings.</p>
 </dd></dl>
@@ -475,7 +478,7 @@ fit to its <code class="docutils literal notranslate"><span class="pre">max_widt
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.SvgRenderSettings.non_terminal_text_measure">
-<span class="sig-name descname"><span class="pre">non_terminal_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;syntax_diagrams.measure.SimpleTextMeasure</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.non_terminal_text_measure" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">non_terminal_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.non_terminal_text_measure" title="Link to this definition">¶</a></dt>
 <dd><p>Service used to measure size of text inside of text nodes.</p>
 <p>By default, set up to match default CSS settings.</p>
 </dd></dl>
@@ -513,7 +516,7 @@ padding between the diagram and its container.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.SvgRenderSettings.terminal_text_measure">
-<span class="sig-name descname"><span class="pre">terminal_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;syntax_diagrams.measure.SimpleTextMeasure</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.terminal_text_measure" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">terminal_text_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="advanced.html#syntax_diagrams.TextMeasure" title="syntax_diagrams.measure.TextMeasure"><span class="pre">TextMeasure</span></a></em><a class="headerlink" href="#syntax_diagrams.SvgRenderSettings.terminal_text_measure" title="Link to this definition">¶</a></dt>
 <dd><p>Service used to measure size of text inside of text nodes.</p>
 <p>By default, set up to match default CSS settings.</p>
 </dd></dl>
@@ -668,13 +671,13 @@ if it appears outside of any choice block.</p>
 <dt class="sig sig-object py" id="syntax_diagrams.EndClass.COMPLEX">
 <span class="sig-name descname"><span class="pre">COMPLEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'COMPLEX'</span></em><a class="headerlink" href="#syntax_diagrams.EndClass.COMPLEX" title="Link to this definition">¶</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">T</span></code>-shaped ending with vertical line doubled.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="25" role="img" viewBox="0 0 142 25" width="142" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g><g class="elem"><g class="elem"><path d="M1 12h20m-20 -10v20m10 -20v20"></path><path class="dbg-isolated-line" d="M21 12H21"></path></g><path d="M21 12H31"></path><g class="elem"><path class="dbg-isolated-line" d="M31 12H31"></path><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M31 12H31"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="80" x="31" y="1"></rect><g><text style="font-size: 14px" x="71.0" y="16.700000000000003">Complex</text></g></g><path class="dbg-isolated-line" d="M111 12H111"></path></g><path d="M111 12H121"></path><g class="elem"><path class="dbg-isolated-line" d="M121 12H121"></path><path d="M121 12h20m0 -10v20m-10 -20v20"></path></g></g></g></g></g></svg></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.EndClass.SIMPLE">
 <span class="sig-name descname"><span class="pre">SIMPLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SIMPLE'</span></em><a class="headerlink" href="#syntax_diagrams.EndClass.SIMPLE" title="Link to this definition">¶</a></dt>
 <dd><p>A simple <code class="docutils literal notranslate"><span class="pre">T</span></code>-shaped ending.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="25" role="img" viewBox="0 0 133 25" width="133" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g><g class="elem"><g class="elem"><path d="M1 12h20m-20 -10v20"></path><path class="dbg-isolated-line" d="M21 12H21"></path></g><path d="M21 12H31"></path><g class="elem"><path class="dbg-isolated-line" d="M31 12H31"></path><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M31 12H31"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="71" x="31" y="1"></rect><g><text style="font-size: 14px" x="66.5" y="16.700000000000003">Simple</text></g></g><path class="dbg-isolated-line" d="M102 12H102"></path></g><path d="M102 12H112"></path><g class="elem"><path class="dbg-isolated-line" d="M112 12H112"></path><path d="M112 12h20m0 -10v20"></path></g></g></g></g></g></svg></dd></dl>
 
 </dd></dl>
 
@@ -686,13 +689,13 @@ if it appears outside of any choice block.</p>
 <dt class="sig sig-object py" id="syntax_diagrams.ArrowStyle.BARB">
 <span class="sig-name descname"><span class="pre">BARB</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BARB'</span></em><a class="headerlink" href="#syntax_diagrams.ArrowStyle.BARB" title="Link to this definition">¶</a></dt>
 <dd><p>An error that consists of two lines.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="62" role="img" viewBox="0 0 174 62" width="174" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path class="arrow arrow-barb" d="M 0 0 L -10 -4 M 0 0 L -10 4" id="arrow-K6HX0lL&#95;SS6GBoWyRtJQkA=="></path></defs><g><g class="elem"><g class="elem"><path d="M10 20h20m-20 -10v20m10 -20v20"></path><path class="dbg-isolated-line" d="M30 20H30"></path></g><path d="M30 20H35"></path><g class="elem"><path class="dbg-isolated-line" d="M35 20H35"></path><g class="elem"><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M35 20C48.333333333333336 20 41.666666666666664 20 55 20H119C132.33333333333334 20 125.66666666666667 20 139 20"></path><use class="arrow arrow-barb" href="#arrow-K6HX0lL&#95;SS6GBoWyRtJQkA==" transform="translate(55, 20) translate(10, 0)"></use><use class="arrow arrow-barb" href="#arrow-K6HX0lL&#95;SS6GBoWyRtJQkA==" transform="translate(119, 20)"></use></g><g class="elem"><path class="dbg-isolated-line" d="M35 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10H60"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="54" x="60" y="29"></rect><g><text style="font-size: 14px" x="87.0" y="44.7">node</text></g></g><path class="dbg-isolated-line" d="M114 40H119a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path></g></g><path d="M139 20H144"></path><g class="elem"><path class="dbg-isolated-line" d="M144 20H144"></path><path d="M144 20h20m0 -10v20m-10 -20v20"></path></g></g></g></g></g></svg></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.ArrowStyle.HARPOON">
 <span class="sig-name descname"><span class="pre">HARPOON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'HARPOON'</span></em><a class="headerlink" href="#syntax_diagrams.ArrowStyle.HARPOON" title="Link to this definition">¶</a></dt>
 <dd><p>Half of a triangle arrow.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="62" role="img" viewBox="0 0 174 62" width="174" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path class="arrow arrow-harpoon" d="M 0 0 L -10 4 L -7.5 0 z" id="arrow-FjH7GnymRliWvgNEDmSLfA=="></path></defs><g><g class="elem"><g class="elem"><path d="M10 20h20m-20 -10v20m10 -20v20"></path><path class="dbg-isolated-line" d="M30 20H30"></path></g><path d="M30 20H35"></path><g class="elem"><path class="dbg-isolated-line" d="M35 20H35"></path><g class="elem"><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M35 20C48.333333333333336 20 41.666666666666664 20 55 20H119C132.33333333333334 20 125.66666666666667 20 139 20"></path><use class="arrow arrow-harpoon" href="#arrow-FjH7GnymRliWvgNEDmSLfA==" transform="translate(55, 20) translate(10, 0)"></use><use class="arrow arrow-harpoon" href="#arrow-FjH7GnymRliWvgNEDmSLfA==" transform="translate(119, 20)"></use></g><g class="elem"><path class="dbg-isolated-line" d="M35 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10H60"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="54" x="60" y="29"></rect><g><text style="font-size: 14px" x="87.0" y="44.7">node</text></g></g><path class="dbg-isolated-line" d="M114 40H119a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path></g></g><path d="M139 20H144"></path><g class="elem"><path class="dbg-isolated-line" d="M144 20H144"></path><path d="M144 20h20m0 -10v20m-10 -20v20"></path></g></g></g></g></g></svg></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.ArrowStyle.HARPOON_UP">
@@ -704,19 +707,19 @@ if it appears outside of any choice block.</p>
 <dt class="sig sig-object py" id="syntax_diagrams.ArrowStyle.NONE">
 <span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NONE'</span></em><a class="headerlink" href="#syntax_diagrams.ArrowStyle.NONE" title="Link to this definition">¶</a></dt>
 <dd><p>Arrows are not rendered.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="62" role="img" viewBox="0 0 174 62" width="174" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g><g class="elem"><g class="elem"><path d="M10 20h20m-20 -10v20m10 -20v20"></path><path class="dbg-isolated-line" d="M30 20H30"></path></g><path d="M30 20H35"></path><g class="elem"><path class="dbg-isolated-line" d="M35 20H35"></path><g class="elem"><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M35 20C48.333333333333336 20 41.666666666666664 20 55 20H119C132.33333333333334 20 125.66666666666667 20 139 20"></path></g><g class="elem"><path class="dbg-isolated-line" d="M35 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10H60"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="54" x="60" y="29"></rect><g><text style="font-size: 14px" x="87.0" y="44.7">node</text></g></g><path class="dbg-isolated-line" d="M114 40H119a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path></g></g><path d="M139 20H144"></path><g class="elem"><path class="dbg-isolated-line" d="M144 20H144"></path><path d="M144 20h20m0 -10v20m-10 -20v20"></path></g></g></g></g></g></svg></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.ArrowStyle.STEALTH">
 <span class="sig-name descname"><span class="pre">STEALTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'STEALTH'</span></em><a class="headerlink" href="#syntax_diagrams.ArrowStyle.STEALTH" title="Link to this definition">¶</a></dt>
 <dd><p>Pointier triangle arrows.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="62" role="img" viewBox="0 0 174 62" width="174" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path class="arrow arrow-stealth" d="M 0 0 L -10 -4 L -7.5 0 L -10 4 z" id="arrow-bW1UHJo2TOGmtO0MqQjTRw=="></path></defs><g><g class="elem"><g class="elem"><path d="M10 20h20m-20 -10v20m10 -20v20"></path><path class="dbg-isolated-line" d="M30 20H30"></path></g><path d="M30 20H35"></path><g class="elem"><path class="dbg-isolated-line" d="M35 20H35"></path><g class="elem"><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M35 20C48.333333333333336 20 41.666666666666664 20 55 20H119C132.33333333333334 20 125.66666666666667 20 139 20"></path><use class="arrow arrow-stealth" href="#arrow-bW1UHJo2TOGmtO0MqQjTRw==" transform="translate(55, 20) translate(10, 0)"></use><use class="arrow arrow-stealth" href="#arrow-bW1UHJo2TOGmtO0MqQjTRw==" transform="translate(119, 20)"></use></g><g class="elem"><path class="dbg-isolated-line" d="M35 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10H60"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="54" x="60" y="29"></rect><g><text style="font-size: 14px" x="87.0" y="44.7">node</text></g></g><path class="dbg-isolated-line" d="M114 40H119a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path></g></g><path d="M139 20H144"></path><g class="elem"><path class="dbg-isolated-line" d="M144 20H144"></path><path d="M144 20h20m0 -10v20m-10 -20v20"></path></g></g></g></g></g></svg></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="syntax_diagrams.ArrowStyle.TRIANGLE">
 <span class="sig-name descname"><span class="pre">TRIANGLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TRIANGLE'</span></em><a class="headerlink" href="#syntax_diagrams.ArrowStyle.TRIANGLE" title="Link to this definition">¶</a></dt>
 <dd><p>Simple triangle arrows.</p>
-</dd></dl>
+<svg class="syntax-diagram" height="62" role="img" viewBox="0 0 174 62" width="174" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path class="arrow arrow-triangle" d="M 0 0 L -10 -4 L -10 4 z" id="arrow-Z&#95;KLtFCYQ1mdK-285BjwwQ=="></path></defs><g><g class="elem"><g class="elem"><path d="M10 20h20m-20 -10v20m10 -20v20"></path><path class="dbg-isolated-line" d="M30 20H30"></path></g><path d="M30 20H35"></path><g class="elem"><path class="dbg-isolated-line" d="M35 20H35"></path><g class="elem"><g class="elem"><g class="elem"><path class="dbg-isolated-line" d="M35 20C48.333333333333336 20 41.666666666666664 20 55 20H119C132.33333333333334 20 125.66666666666667 20 139 20"></path><use class="arrow arrow-triangle" href="#arrow-Z&#95;KLtFCYQ1mdK-285BjwwQ==" transform="translate(55, 20) translate(10, 0)"></use><use class="arrow arrow-triangle" href="#arrow-Z&#95;KLtFCYQ1mdK-285BjwwQ==" transform="translate(119, 20)"></use></g><g class="elem"><path class="dbg-isolated-line" d="M35 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10H60"></path><g class="node  terminal"><rect height="22" rx="10" ry="10" width="54" x="60" y="29"></rect><g><text style="font-size: 14px" x="87.0" y="44.7">node</text></g></g><path class="dbg-isolated-line" d="M114 40H119a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path></g></g><path d="M139 20H144"></path><g class="elem"><path class="dbg-isolated-line" d="M144 20H144"></path><path d="M144 20h20m0 -10v20m-10 -20v20"></path></g></g></g></g></g></svg></dd></dl>
 
 </dd></dl>
 
@@ -753,7 +756,7 @@ if it appears outside of any choice block.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Describe a diagram</div>
+                <div class="title">Describing diagrams</div>
                 
               </div>
             </a>
@@ -787,7 +790,7 @@ if it appears outside of any choice block.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Render a diagram</a><ul>
+<li><a class="reference internal" href="#">Rendering diagrams</a><ul>
 <li><a class="reference internal" href="#syntax_diagrams.render_svg"><code class="docutils literal notranslate"><span class="pre">render_svg()</span></code></a></li>
 <li><a class="reference internal" href="#syntax_diagrams.render_text"><code class="docutils literal notranslate"><span class="pre">render_text()</span></code></a></li>
 <li><a class="reference internal" href="#settings">Settings</a><ul>
@@ -881,7 +884,7 @@ if it appears outside of any choice block.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=1af2648a"></script>
+</div><script src="_static/documentation_options.js?v=86f4c9de"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

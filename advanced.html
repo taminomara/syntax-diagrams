@@ -3,15 +3,16 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Render a diagram" href="render.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Rendering diagrams" href="render.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>Advanced API - Syntax Diagrams 0.1.dev1+gea666e817 documentation</title>
+        <title>Advanced API - Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/syntax-diagrams.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/syntax-diagrams-ext.css" />
     
     
 
@@ -168,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+gea666e817 documentation</div></a>
+      <a href="index.html"><div class="brand">Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +192,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+gea666e817 documentation</span>
+  <span class="sidebar-brand-text">Syntax Diagrams 0.1.dev1+ge7f8e94d0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -199,14 +200,16 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
-</ul>
-<ul class="current">
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="describe.html">Describe a diagram</a></li>
-<li class="toctree-l1"><a class="reference internal" href="render.html">Render a diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="describe.html">Describing diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="render.html">Rendering diagrams</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Advanced API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/taminomara/syntax-diagrams/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://taminomara.github.io/syntax-diagrams/try/">Try in browser</a></li>
 </ul>
 
 </div>
@@ -293,9 +296,27 @@ you can improve text measuring by providing an instance of <a class="reference i
 <dt class="sig sig-object py" id="syntax_diagrams.TextMeasure">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">TextMeasure</span></span><a class="headerlink" href="#syntax_diagrams.TextMeasure" title="Link to this definition">¶</a></dt>
 <dd><p>An interface for measuring dimensions of rendered text.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="syntax_diagrams.TextMeasure.ascent">
+<em class="property"><span class="k"><span class="pre">abstract</span></span><span class="w"> </span><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ascent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#syntax_diagrams.TextMeasure.ascent" title="Link to this definition">¶</a></dt>
+<dd><p>Distance from the baseline to the highest outline point.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="syntax_diagrams.TextMeasure.font_size">
+<em class="property"><span class="k"><span class="pre">abstract</span></span><span class="w"> </span><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">font_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#syntax_diagrams.TextMeasure.font_size" title="Link to this definition">¶</a></dt>
+<dd><p>Font size.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="syntax_diagrams.TextMeasure.line_height">
+<em class="property"><span class="k"><span class="pre">abstract</span></span><span class="w"> </span><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">line_height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#syntax_diagrams.TextMeasure.line_height" title="Link to this definition">¶</a></dt>
+<dd><p>Height of a single line, equals to CSS <code class="docutils literal notranslate"><span class="pre">line-height</span></code> property.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="syntax_diagrams.TextMeasure.measure">
-<span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.TextMeasure.measure" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#syntax_diagrams.TextMeasure.measure" title="Link to this definition">¶</a></dt>
 <dd><p>Called before rendering a node to measure its text.</p>
 <p>Should return a tuple <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>.</p>
 </dd></dl>
@@ -304,7 +325,7 @@ you can improve text measuring by providing an instance of <a class="reference i
 
 <dl class="py class">
 <dt class="sig sig-object py" id="syntax_diagrams.SimpleTextMeasure">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">SimpleTextMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_advance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide_character_advance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.SimpleTextMeasure" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">SimpleTextMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_advance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide_character_advance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.SimpleTextMeasure" title="Link to this definition">¶</a></dt>
 <dd><p>A simple text measuring service that multiplies length of the text
 by average width of the character. Works best for monospace fonts.</p>
 <dl class="field-list simple">
@@ -314,7 +335,12 @@ by average width of the character. Works best for monospace fonts.</p>
 cannot expand and shrink dynamically, length of text nodes is calculated
 as number of symbols multiplied by this constant.</p></li>
 <li><p><strong>wide_character_advance</strong> – average length of one wide character in the used font.</p></li>
+<li><p><strong>font_size</strong> – font size.</p></li>
 <li><p><strong>line_height</strong> – height of a single line, equals to CSS <code class="docutils literal notranslate"><span class="pre">line-height</span></code> property.</p></li>
+<li><p><strong>ascent</strong> – <p>the distance from the baseline to the highest outline point.</p>
+<p>This is required because Chrome, Firefox and Safari all treat
+<code class="docutils literal notranslate"><span class="pre">dominant-baseline</span></code> attribute in a slightly different way.</p>
+</p></li>
 </ul>
 </dd>
 </dl>
@@ -322,13 +348,19 @@ as number of symbols multiplied by this constant.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="syntax_diagrams.TrueTextMeasure">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">TrueTextMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageFont</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">FreeTypeFont</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.TrueTextMeasure" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">syntax_diagrams.</span></span><span class="sig-name descname"><span class="pre">TrueTextMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">font</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FreeTypeFont</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#syntax_diagrams.TrueTextMeasure" title="Link to this definition">¶</a></dt>
 <dd><p>A text measuring service that uses Python Image Library to calculate
 text’s actual size.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>font</strong> – font data, see <a class="reference external" href="https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.ImageFont" title="(in Pillow (PIL Fork) v11.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PIL.ImageFont.ImageFont</span></code></a>.</p></li>
+<li><p><strong>font</strong> – <p>font data, a path to a font file, or a font file name.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.ImageFont" title="(in Pillow (PIL Fork) v11.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PIL.ImageFont.ImageFont</span></code></a>, <a class="reference external" href="https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype" title="(in Pillow (PIL Fork) v11.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PIL.ImageFont.truetype</span></code></a></p>
+</div>
+</p></li>
+<li><p><strong>font_size</strong> – font size.</p></li>
 <li><p><strong>line_height</strong> – height of a single line, equals to CSS <code class="docutils literal notranslate"><span class="pre">line-height</span></code> property.</p></li>
 </ul>
 </dd>
@@ -351,7 +383,7 @@ text’s actual size.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Render a diagram</div>
+                <div class="title">Rendering diagrams</div>
                 
               </div>
             </a>
@@ -395,6 +427,9 @@ text’s actual size.</p>
 </li>
 <li><a class="reference internal" href="#customizing-text-measure">Customizing text measure</a><ul>
 <li><a class="reference internal" href="#syntax_diagrams.TextMeasure"><code class="docutils literal notranslate"><span class="pre">TextMeasure</span></code></a><ul>
+<li><a class="reference internal" href="#syntax_diagrams.TextMeasure.ascent"><code class="docutils literal notranslate"><span class="pre">TextMeasure.ascent</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.TextMeasure.font_size"><code class="docutils literal notranslate"><span class="pre">TextMeasure.font_size</span></code></a></li>
+<li><a class="reference internal" href="#syntax_diagrams.TextMeasure.line_height"><code class="docutils literal notranslate"><span class="pre">TextMeasure.line_height</span></code></a></li>
 <li><a class="reference internal" href="#syntax_diagrams.TextMeasure.measure"><code class="docutils literal notranslate"><span class="pre">TextMeasure.measure()</span></code></a></li>
 </ul>
 </li>
@@ -413,7 +448,7 @@ text’s actual size.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=1af2648a"></script>
+</div><script src="_static/documentation_options.js?v=86f4c9de"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

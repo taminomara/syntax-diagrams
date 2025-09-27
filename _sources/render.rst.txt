@@ -1,5 +1,5 @@
-Render a diagram
-================
+Rendering diagrams
+==================
 
 .. currentmodule:: syntax_diagrams
 
