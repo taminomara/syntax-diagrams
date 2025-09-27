@@ -158,8 +158,7 @@ jobs:
     name: Publish docs to GitHub Pages
     needs:
       - build_docs
-    # if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && !contains(github.event.ref, '.dev') }}
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && !contains(github.event.ref, '.dev') }}
     concurrency:
       group: publish-docs-${{ github.ref }}
       cancel-in-progress: true
