@@ -35,9 +35,9 @@ test = [
     "pytest==8.4.2",
     "sybil==9.2.0",
     "reportlab[pycairo]==4.4.3",
-    "svglib==1.5.1",
+    "svglib==1.6.0",
     "pytest-image-diff==0.0.14",
-    "PyYAML==6.0.2",
+    "PyYAML==6.0.3",
 ]
 lint = [
     "black==25.9.0",
@@ -46,7 +46,7 @@ lint = [
 ]
 doc = [
     "sybil==9.2.0",
-    "furo==2025.7.19",
+    "furo==2025.9.25",
     "sphinx_design==0.6.1",
     "sphinx-syntax>=1.0.0,<2.0",
 ]
