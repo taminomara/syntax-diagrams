@@ -48,7 +48,7 @@ doc = [
     "sybil==9.2.0",
     "furo==2025.7.19",
     "sphinx_design==0.6.1",
-    "sphinx-syntax>=1.0.0.b0,<2.0",
+    "sphinx-syntax>=1.0.0,<2.0",
 ]
 
 [project.urls]
