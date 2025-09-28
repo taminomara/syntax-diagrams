@@ -134,12 +134,12 @@ jobs:
 
   # Builds sphinx documentation.
   #
-  # Runs on all events except when closing a pull request.
+  # Only runs on tag pushes.
   build_docs:
     name: Build docs
     needs:
       - test
-    if: ${{ !(github.event_name == 'pull_request' && github.event.action == 'closed') }}
+    if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && !contains(github.event.ref, '.dev') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
