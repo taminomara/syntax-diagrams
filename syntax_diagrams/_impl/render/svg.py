@@ -434,8 +434,6 @@ class SvgRender(Render[T], _t.Generic[T]):
         measure: TextMeasure,
         vertical_center: bool = True,
     ) -> _SvgElement:
-        style = f"font-size: {measure.font_size}px"
-
         lines = text.splitlines()
         line_height = text_height / len(lines) if lines else 0
         if vertical_center:
@@ -449,7 +447,11 @@ class SvgRender(Render[T], _t.Generic[T]):
         for i, line in enumerate(lines):
             e = g.elem(
                 "text",
-                {"x": x, "y": y - text_offset + i * line_height, "style": style},
+                {
+                    "x": x,
+                    "y": y - text_offset + i * line_height,
+                    "font-size": measure.font_size,
+                },
             )
 
             j = 0

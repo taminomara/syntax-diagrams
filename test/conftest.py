@@ -7,7 +7,7 @@ from copy import deepcopy
 import pytest
 from pytest_image_diff.plugin import DiffInfoCallableType  # type: ignore
 from reportlab.graphics import renderPM
-from svglib import svglib  # type: ignore
+from svglib import svglib
 
 import syntax_diagrams as rr
 from syntax_diagrams._impl.render.svg import svg_layout_settings as _svg_layout_settings
@@ -101,6 +101,10 @@ def svg_layout_settings():
 def svg_css():
     css = deepcopy(DEFAULT_CSS)
     css.setdefault("text", {})["transform"] = "translate(0, -2)"
+    css.setdefault("text", {})["font-family"] = "Courier New"
+    css.setdefault("text", {})["font-size"] = "14"
+    css.setdefault("tspan", {})["font-family"] = "Courier New"
+    css.setdefault("tspan", {})["font-size"] = "14"
     css.setdefault(".group text", {})["transform"] = "translate(0, -2)"
     return css
 

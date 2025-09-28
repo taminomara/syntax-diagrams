@@ -275,12 +275,13 @@ DEFAULT_CSS = {
     },
     "text": {
         "font-family": "Consolas, Menlo, monospace",
+        "font-size": "14px",
         "text-anchor": "middle",
-        # "dominant-baseline": "central",
         "font-weight": "bold",
     },
     "tspan": {
         "font-family": "Consolas, Menlo, monospace",
+        "font-size": "14px",
     },
     ".escape": {
         "fill": "brown",
@@ -290,7 +291,6 @@ DEFAULT_CSS = {
         "opacity": "0.5",
         "font-weight": "normal",
         "font-style": "italic",
-        # "dominant-baseline": "alphabetic",
     },
     ".group rect": {
         "opacity": "0.3",
