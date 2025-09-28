@@ -34,7 +34,7 @@ test = [
     "pyright==1.1.405",
     "pytest==8.4.2",
     "sybil==9.2.0",
-    "reportlab[pycairo]==4.4.3",
+    "reportlab[pycairo]==4.4.4",
     "svglib==1.6.0",
     "pytest-image-diff==0.0.14",
     "PyYAML==6.0.2",
