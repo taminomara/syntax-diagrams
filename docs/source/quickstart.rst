@@ -90,4 +90,4 @@ Customize rendering by providing `SvgRenderSettings` or `TextRenderSettings`:
 
 Use `online editor`__ to play with diagram descriptions and settings.
 
-__ https://taminomara.github.io/syntax-diagrams/try/
+__ https://syntax-diagrams.readthedocs.io/en/stable/try

@@ -15,7 +15,7 @@ Features
 -   See also: `sphinx-syntax`__, a Sphinx plugin for documenting grammars.
 
 __ https://syntax-diagrams.readthedocs.io/en/stable/try
-__ https://taminomara.github.io/sphinx-syntax/
+__ https://sphinx-syntax.readthedocs.io/en/stable/
 
 
 Example output

@@ -14,7 +14,7 @@ an implementation of `HrefResolver`.
 For example, `Sphinx plugin`__ for syntax diagrams uses this functionality to link
 nodes with grammars and production rules by their names.
 
-__ https://taminomara.github.io/sphinx-syntax
+__ https://sphinx-syntax.readthedocs.io/en/stable/
 
 .. autoclass:: HrefResolver
     :members:
