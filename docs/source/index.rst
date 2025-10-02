@@ -14,7 +14,7 @@ Features
 -   `Try it in your browser.`__
 -   See also: `sphinx-syntax`__, a Sphinx plugin for documenting grammars.
 
-__ https://taminomara.github.io/syntax-diagrams/try/
+__ https://syntax-diagrams.readthedocs.io/en/stable/try
 __ https://taminomara.github.io/sphinx-syntax/
 
 
@@ -128,4 +128,4 @@ Table of contents
     :caption: Links
 
     GitHub <https://github.com/taminomara/syntax-diagrams/>
-    Try in browser <https://taminomara.github.io/syntax-diagrams/try/>
+    Try in browser <https://syntax-diagrams.readthedocs.io/en/stable/try>
