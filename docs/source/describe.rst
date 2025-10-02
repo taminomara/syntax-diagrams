@@ -369,7 +369,7 @@ when writing diagrams in YAML syntax.
     Describes a sequence of elements that wraps after each element.
 
     This is a shortcut for creating a `Sequence`
-    with `~Sequence.linebreaks` set to `~LineBreak.HARD`.
+    with ``linebreaks`` set to `~LineBreak.HARD`.
 
     **Dict keys:**
 
@@ -415,7 +415,7 @@ when writing diagrams in YAML syntax.
     Describes a sequence of elements that doesn't wrap.
 
     This is a shortcut for creating a `Sequence`
-    with `~Sequence.linebreaks` set to `~LineBreak.NO_BREAK`.
+    with ``linebreaks`` set to `~LineBreak.NO_BREAK`.
 
     **Dict keys:**
 

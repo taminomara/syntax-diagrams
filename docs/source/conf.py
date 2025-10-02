@@ -30,6 +30,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "PIL": ("https://pillow.readthedocs.io/en/stable/", None),
 }
+nitpick_ignore_regex = [(r"py:class", r"(.*\.)?(T|U|K|V|E|Element|_.*)")]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
