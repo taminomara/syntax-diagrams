@@ -55,6 +55,16 @@
   text-decoration: none;
 }
 
+.App_Tab__Version {
+  color: var(--code-color-escape);
+}
+
+.App_Tab__Version:hover {
+  background-color: inherit;
+  color: var(--code-color-escape);
+  cursor: default;
+}
+
 .App_Tab__Link::after {
   vertical-align: middle;
   margin-left: 0.25rem;

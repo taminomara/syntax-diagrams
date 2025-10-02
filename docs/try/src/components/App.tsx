@@ -138,7 +138,7 @@ export function App() {
             <div className={clsx(styles.App_Tab, styles.App_Tab__Spacer)} />
             <a
               className={clsx(styles.App_Tab, styles.App_Tab__Link)}
-              href="https://taminomara.github.io/syntax-diagrams/"
+              href={__CANONICAL_URL__ || "/"}
             >
               Docs
             </a>
@@ -148,6 +148,9 @@ export function App() {
             >
               Repo
             </a>
+            {__BUILD_VERSION__ !== "stable" ? <div className={clsx(styles.App_Tab, styles.App_Tab__Version)}>
+              Version: {__BUILD_VERSION__}
+            </div> : null}
             <button
               className={clsx(styles.App_Tab, styles.App_Tab__Icon)}
               onClick={() => {

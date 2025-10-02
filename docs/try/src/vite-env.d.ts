@@ -10,3 +10,6 @@ declare module "virtual:wheels.json" {
   const wheels: string[];
   export default wheels;
 }
+
+declare const __CANONICAL_URL__: string;
+declare const __BUILD_VERSION__: string;

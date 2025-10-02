@@ -3,11 +3,18 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.13"
+    nodejs: "22"
   jobs:
     post_checkout:
       - git fetch --unshallow || true
     install:
       - pip install -U pip
       - pip install . --group doc
+    post_build:
+      - |
+        cd docs/try
+        npm install
+        npm run build
+        cp -r dist/ $READTHEDOCS_OUTPUT/html/try/
 sphinx:
    configuration: docs/source/conf.py

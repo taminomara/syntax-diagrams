@@ -6,7 +6,7 @@ import wheels from "virtual:wheels.json";
 async function load() {
   return loadPyodide({
     packages: wheels.map(
-      (wheel: string) => `/syntax-diagrams/try/assets/wheels/${wheel}`,
+      (wheel: string) => `${__CANONICAL_URL__}/try/assets/wheels/${wheel}`,
     ),
   });
 }

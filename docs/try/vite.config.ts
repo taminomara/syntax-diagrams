@@ -115,6 +115,11 @@ function resolveSchema(): PluginOption {
 }
 
 export default defineConfig(({ mode }) => {
+  let canonicalUrl = process.env["READTHEDOCS_CANONICAL_URL"] ?? "";
+  if (canonicalUrl.endsWith("/")) {
+    canonicalUrl = canonicalUrl.slice(0, canonicalUrl.length - 1);
+  }
+  const version = process.env["READTHEDOCS_VERSION_NAME"] ?? "local";
   const plugins: PluginOption[] = [
     react(),
     staticCopyPyodide(),
@@ -129,12 +134,16 @@ export default defineConfig(({ mode }) => {
   return {
     plugins,
     optimizeDeps: { exclude: ["pyodide"] },
-    base: "/syntax-diagrams/try",
+    base: `${canonicalUrl}/try`,
     worker: {
       format: "es",
       plugins() {
         return webWorkerPlugins;
       },
+    },
+    define: {
+      __CANONICAL_URL__: JSON.stringify(canonicalUrl),
+      __BUILD_VERSION__: JSON.stringify(version),
     },
     server: {
       proxy: {
