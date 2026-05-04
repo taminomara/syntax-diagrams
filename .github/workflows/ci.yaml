@@ -40,7 +40,7 @@ jobs:
       # Tests
       - name: Install image diff dependencies
         if: ${{ matrix.type == 'test' }}
-        run: sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
+        run: sudo apt-get install -y libcairo2-dev libjpeg-dev libgif-dev
       - name: Install test dependencies
         if: ${{ matrix.type == 'test' }}
         run: python -m pip install . --group test
