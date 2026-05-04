@@ -38,7 +38,7 @@ def regression(image_regression, request):
         stream = io.StringIO(render)
         drawing = svglib.svg2rlg(stream)  # type: ignore
         assert drawing
-        data = renderPM.drawToString(drawing, dpi=72)  # type: ignore
+        data = renderPM.drawToString(drawing, dpi=72, fmt="PNG")  # type: ignore
         assert image_regression(data, threshold=0.0001, suffix=suffix)
 
     return regression
