@@ -19,7 +19,7 @@
     "react-dom": "^19.1.1",
     "react-resizable-panels": "^3.0.6",
     "react-tabs": "^6.1.0",
-    "yaml": "2.8.1"
+    "yaml": "2.8.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
