@@ -10,14 +10,14 @@ from syntax_diagrams.measure import SimpleTextMeasure, TextMeasure
 from syntax_diagrams.resolver import HrefResolver
 
 __all__ = [
-    "LoadingError",
-    "EndClass",
-    "TextRenderSettings",
-    "render_text",
-    "ArrowStyle",
-    "SvgRenderSettings",
     "DEFAULT_CSS",
+    "ArrowStyle",
+    "EndClass",
+    "LoadingError",
+    "SvgRenderSettings",
+    "TextRenderSettings",
     "render_svg",
+    "render_text",
 ]
 
 T = _t.TypeVar("T")

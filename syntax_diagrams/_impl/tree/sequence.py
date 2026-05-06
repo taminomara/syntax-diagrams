@@ -63,7 +63,7 @@ class Sequence(Element[T], _t.Generic[T]):
             if isinstance(item, Skip):
                 continue
             if isinstance(item, Sequence):
-                self._items.extend(item._items)  # type: ignore
+                self._items.extend(item._items)
                 self._linebreaks.extend(item._linebreaks)
             else:
                 self._items.append(item)
@@ -233,7 +233,6 @@ class Sequence(Element[T], _t.Generic[T]):
         for i, (item, linebreak) in enumerate(
             itertools.zip_longest(self._items, self._linebreaks)
         ):
-
             # Prepare item's layout context.
             item_context = LayoutContext(
                 width=max_line_width,

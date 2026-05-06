@@ -14,8 +14,8 @@ except ImportError:
     pass
 
 __all__ = [
-    "TextMeasure",
     "SimpleTextMeasure",
+    "TextMeasure",
     "TrueTextMeasure",
 ]
 
@@ -253,7 +253,7 @@ def _main():
     line_height = 1.1 * args.size
     ascent = tm.ascent
 
-    print(
+    print(  # noqa: T201
         textwrap.dedent(
             f"""
                 SimpleTextMeasure(
