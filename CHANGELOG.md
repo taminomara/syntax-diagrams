@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [Unreleased]
 
 - Releases are no longer uploaded to test version of PyPi.
 
