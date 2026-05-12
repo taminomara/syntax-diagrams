@@ -37,7 +37,7 @@ test = [
     "pytest==9.0.3",
     "sybil==10.0.1",
     "reportlab[pycairo]==4.5.1",
-    "svglib==1.6.0",
+    "svglib<1.6.0",
     "pytest-image-diff==0.0.14",
     "PyYAML==6.0.3",
 ]
