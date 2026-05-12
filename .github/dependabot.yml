@@ -7,22 +7,41 @@ updates:
     groups:
       dev:
         patterns:
-        - "flask"
-        - "furo"
-        - "pyright"
-        - "pytest-cov"
-        - "pytest-image-diff"
-        - "pytest"
-        - "PyYAML"
-        - "reportlab"
-        - "sphinx_design"
-        - "svglib"
-        - "sybil"
+          - "flask"
+          - "furo"
+          - "pyright"
+          - "pytest-cov"
+          - "pytest-image-diff"
+          - "pytest"
+          - "PyYAML"
+          - "reportlab"
+          - "sphinx_design"
+          - "sphinx-autobuild"
+          - "sphinx-syntax"
+          - "sphinx"
+          - "svglib"
+          - "sybil"
+          - "tox"
       style:
         patterns:
-        - "black"
-        - "isort"
-        - "pre-commit"
+          - "prek"
+          - "ruff"
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      pre-commit:
+        patterns:
+          - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      gh-actions:
+        patterns:
+          - "*"
   - package-ecosystem: "npm"
     directory: "/docs/try"
     schedule:
@@ -30,4 +49,4 @@ updates:
     groups:
       dev:
         patterns:
-        - "*"
+          - "*"

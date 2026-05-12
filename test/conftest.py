@@ -84,7 +84,7 @@ def text_regression(_image_diff_info: DiffInfoCallableType, request):
                 )
         return True
 
-    yield _factory
+    return _factory
 
 
 @pytest.fixture

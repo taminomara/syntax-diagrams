@@ -71,7 +71,7 @@ class Render(_t.Generic[T]):
             node_id = self._make_debug_id(node)
             name = node.__class__.__name__.lower()
             if hasattr(node, "_text"):
-                name += f" {json.dumps(getattr(node, "_text"))}"
+                name += f" {json.dumps(getattr(node, '_text'))}"
             data = {}
             for k in _DEBUG_ATTRS:
                 data[k] = getattr(node, k, None)

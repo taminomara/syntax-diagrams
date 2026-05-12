@@ -662,7 +662,7 @@ class SvgRender(Render[T], _t.Generic[T]):
                 return
             transform = f"translate({self._pos.x}, {self._pos.y})"
             if d == "w":
-                transform += f" scale(-1, 1)"
+                transform += " scale(-1, 1)"
             if not end:
                 transform += f" translate({self._render._arrow_length}, 0)"
             self._render._elem.elem(
@@ -767,9 +767,9 @@ class SvgRender(Render[T], _t.Generic[T]):
                 interm_y_2 = self._pos.y + h / 2
                 out_x -= math.ceil(self._render.settings.arc_radius)
 
-            self._elem.attrs[
-                "d"
-            ] += f"C{interm_x_1} {interm_y_1} {interm_x_2} {interm_y_2} {out_x} {out_y}"
+            self._elem.attrs["d"] += (
+                f"C{interm_x_1} {interm_y_1} {interm_x_2} {interm_y_2} {out_x} {out_y}"
+            )
 
             self._pos.x = out_x
             self._pos.y += h
