@@ -20,7 +20,7 @@ export function Diagram({
   setDebugData: RefCallback<unknown>;
 }) {
   const [rendered, setRendered] = useState<Rendered>({});
-  const timeout = useRef<NodeJS.Timeout | undefined>(undefined);
+  const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     clearTimeout(timeout.current);

@@ -112,7 +112,7 @@ export function Editor({
       hover: true,
       completion: true,
       validate: true,
-      format: true,
+      format: { enable: true },
       enableSchemaRequest: true,
       schemas: [
         {

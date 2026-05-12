@@ -7,7 +7,7 @@ import { Editor } from "./Editor";
 import clsx from "clsx";
 import deepEqual from "deep-equal";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Group, Panel, Separator } from "react-resizable-panels";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
 export type Theme = "light" | "dark";
@@ -113,8 +113,8 @@ export function App() {
   const [debugElem, setDebugElem] = useState<SVGSVGElement | null>(null);
 
   return (
-    <PanelGroup className={styles.App} direction="horizontal">
-      <Panel defaultSize={40} minSize={20} className={styles.App_SidePane}>
+    <Group className={styles.App} orientation="horizontal">
+      <Panel defaultSize="40%" minSize="20%" className={styles.App_SidePane}>
         <Tabs className={styles.App_Tabs} forceRenderTabPanel={true}>
           <TabList className={styles.App_TabList}>
             <Tab
@@ -243,8 +243,8 @@ export function App() {
           </button>
         </div>
       </Panel>
-      <PanelResizeHandle className="ResizeHandle ResizeHandle__Vertical" />
-      <Panel minSize={20} className={styles.App_MainPane}>
+      <Separator className="ResizeHandle ResizeHandle__Vertical" />
+      <Panel minSize="20%" className={styles.App_MainPane}>
         <div className={styles.App_MainPaneContent}>
           <Diagram
             code={targetCode ?? ""}
@@ -256,6 +256,6 @@ export function App() {
           />
         </div>
       </Panel>
-    </PanelGroup>
+    </Group>
   );
 }

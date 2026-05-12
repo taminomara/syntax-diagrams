@@ -6,13 +6,6 @@ import { fileURLToPath } from "url";
 import { type PluginOption, defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
-const PYODIDE_EXCLUDE = [
-  "!**/*.{md,html}",
-  "!**/*.d.ts",
-  "!**/*.whl",
-  "!**/node_modules",
-];
-
 const SRC_DIR = resolve(join(__dirname, "../../"));
 const WHEELS_DIR = resolve(join(__dirname, "../../dist"));
 
@@ -21,8 +14,15 @@ function staticCopyPyodide() {
   return viteStaticCopy({
     targets: [
       {
-        src: [join(pyodideDir, "*")].concat(PYODIDE_EXCLUDE),
+        src: [
+          join(pyodideDir, "*"),
+          "!" + join(pyodideDir, "**/*.{md,html}"),
+          "!" + join(pyodideDir, "**/*.d.ts"),
+          "!" + join(pyodideDir, "**/*.whl"),
+          "!" + join(pyodideDir, "**/node_modules"),
+        ],
         dest: "assets",
+        rename: { stripBase: true },
       },
     ],
     watch: {
@@ -59,6 +59,7 @@ function buildWheels(): PluginOption[] {
         {
           src: join(WHEELS_DIR, "*.whl"),
           dest: "assets/wheels",
+          rename: { stripBase: true },
         },
       ],
     }),

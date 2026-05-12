@@ -1,7 +1,7 @@
 import styles from "./Debug.module.css";
 import clsx from "clsx";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Group, Panel, Separator } from "react-resizable-panels";
 
 export function Debug({
   main,
@@ -70,8 +70,8 @@ function DebugImpl({
   }, [selected, main]);
 
   return (
-    <PanelGroup direction="vertical" className={styles.Debug}>
-      <Panel defaultSize={70} minSize={20} className={styles.Debug_TreePane}>
+    <Group orientation="vertical" className={styles.Debug}>
+      <Panel defaultSize="70%" minSize="20%" className={styles.Debug_TreePane}>
         {debugData.map((data) => (
           <DebugItem
             data={data}
@@ -82,8 +82,8 @@ function DebugImpl({
           />
         ))}
       </Panel>
-      <PanelResizeHandle className="ResizeHandle ResizeHandle__Horizontal" />
-      <Panel minSize={20} className={styles.Debug_DetailsPane}>
+      <Separator className="ResizeHandle ResizeHandle__Horizontal" />
+      <Panel minSize="20%" className={styles.Debug_DetailsPane}>
         {selected.id ? (
           <ItemInfo
             data={debugDataById[selected.id]?.data}
@@ -94,7 +94,7 @@ function DebugImpl({
           <span>Select an item to view its debug data.</span>
         )}
       </Panel>
-    </PanelGroup>
+    </Group>
   );
 }
 
